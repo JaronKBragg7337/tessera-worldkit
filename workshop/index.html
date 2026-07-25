@@ -1,0 +1,245 @@
+<!doctype html>
+<!-- Tessera Workshop. SPDX-License-Identifier: 0BSD -->
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#121713">
+  <meta name="description" content="Give an AI the Tessera tools and context its environment can actually use.">
+  <link rel="manifest" href="./manifest.webmanifest">
+  <link rel="stylesheet" href="./styles.css">
+  <title>Tessera Workshop — deterministic hands for world-building AIs</title>
+</head>
+<body>
+  <a class="skip-link" href="#builder">Skip to the handoff builder</a>
+
+  <header class="site-header">
+    <a class="brand" href="./" aria-label="Tessera Workshop home">
+      <span class="brand-mark" aria-hidden="true">
+        <i></i><i></i><i></i><i></i>
+      </span>
+      <span>Tessera <strong>Workshop</strong></span>
+    </a>
+    <nav aria-label="Primary">
+      <a href="#builder">Build a handoff</a>
+      <a href="#validator">Check a layout</a>
+      <a href="https://github.com/JaronKBragg7337/tessera-worldkit">Source</a>
+    </nav>
+  </header>
+
+  <main>
+    <section class="hero">
+      <div class="hero-copy">
+        <p class="eyebrow">One contract · several kinds of hands</p>
+        <h1>Give the AI a smaller world to hold.</h1>
+        <p class="lede">
+          Tessera turns measurable world-building work into compact facts,
+          executable checks, and exact corrections. A phone chat receives a
+          capsule. A sandbox receives tools. A desktop agent keeps everything.
+        </p>
+        <div class="hero-actions">
+          <a class="button primary" href="#builder">Make an AI handoff</a>
+          <a class="button quiet" href="./downloads/tessera-sandbox.zip" download>
+            Download the sandbox kit
+          </a>
+        </div>
+      </div>
+      <aside class="proof-card" aria-label="Current Tessera proof">
+        <p class="proof-kicker">Current contract</p>
+        <div class="proof-number" id="assetCount">—</div>
+        <p>original generated parts</p>
+        <dl>
+          <div><dt>Runtime dependencies</dt><dd>0</dd></div>
+          <div><dt>Catalog fingerprint</dt><dd id="fingerprint">loading</dd></div>
+          <div><dt>Hosted account required</dt><dd>no</dd></div>
+        </dl>
+        <span class="live-dot"><i></i> runs in this browser</span>
+      </aside>
+    </section>
+
+    <section class="principle-band" aria-label="How Tessera divides the work">
+      <span>AI decides intent</span>
+      <b aria-hidden="true">→</b>
+      <span>Tessera solves mechanics</span>
+      <b aria-hidden="true">→</b>
+      <span>Validator proves the result</span>
+    </section>
+
+    <section class="work-section" id="builder">
+      <div class="section-heading">
+        <p class="eyebrow">Handoff builder</p>
+        <h2>Fit the tools to the environment.</h2>
+        <p>
+          Choose what the receiving AI can do. The contract stays the same;
+          only the delivery changes.
+        </p>
+      </div>
+
+      <div class="builder-grid">
+        <div class="control-panel">
+          <fieldset>
+            <legend>1. Where will the AI work?</legend>
+            <div class="target-grid" id="targets">
+              <button type="button" class="target active" data-target="chat">
+                <span>Chat app</span><small>No terminal assumed</small>
+              </button>
+              <button type="button" class="target" data-target="browser">
+                <span>Browser agent</span><small>Can operate this page</small>
+              </button>
+              <button type="button" class="target" data-target="sandbox">
+                <span>Code sandbox</span><small>Temporary files + Python</small>
+              </button>
+              <button type="button" class="target" data-target="desktop">
+                <span>Desktop agent</span><small>Repository + engines</small>
+              </button>
+            </div>
+          </fieldset>
+
+          <label class="field-label" for="taskPrompt">2. What should it build?</label>
+          <textarea id="taskPrompt" rows="5">Build a compact survivor workshop with one clear entrance, a window, an interior work area, and a route from outside to the workbench. Return a Tessera layout and state whether validation actually ran.</textarea>
+
+          <fieldset>
+            <div class="legend-line">
+              <legend>3. Which pieces does it need?</legend>
+              <div>
+                <button type="button" class="text-button" id="selectAll">all</button>
+                <button type="button" class="text-button" id="selectNone">none</button>
+              </div>
+            </div>
+            <div class="role-grid" id="roles" aria-live="polite"></div>
+          </fieldset>
+
+          <div class="capability-readout" id="capabilityReadout"></div>
+
+          <div class="action-row">
+            <button type="button" class="button primary" id="buildCapsule">Build handoff</button>
+            <span id="capsuleCost">—</span>
+          </div>
+        </div>
+
+        <div class="output-panel">
+          <div class="output-heading">
+            <div>
+              <p class="eyebrow">Portable result</p>
+              <h3 id="outputTitle">Chat capsule</h3>
+            </div>
+            <span class="status-pill" id="scopeStatus">waiting</span>
+          </div>
+          <pre id="capsuleOutput" tabindex="0">Choose the target and pieces, then build the handoff.</pre>
+          <div class="output-actions">
+            <button type="button" class="button primary" id="copyCapsule" disabled>Copy</button>
+            <button type="button" class="button quiet" id="downloadCapsule" disabled>Download .md</button>
+            <button type="button" class="button quiet" id="downloadJson" disabled>Download .json</button>
+          </div>
+          <p class="fine-print">
+            The fingerprint travels with the handoff. If the catalog changes,
+            the validator refuses the mismatch instead of approving a world
+            assembled from stale dimensions.
+          </p>
+        </div>
+      </div>
+    </section>
+
+    <section class="environment-section">
+      <div class="section-heading compact">
+        <p class="eyebrow">Capability ladder</p>
+        <h2>Missing tools change the route—not the ambition.</h2>
+      </div>
+      <div class="ladder">
+        <article>
+          <span>01</span><h3>Specification</h3>
+          <p>A chat reads a sliced brief and emits a fingerprinted layout.</p>
+        </article>
+        <article>
+          <span>02</span><h3>Execution</h3>
+          <p>A sandbox receives the zero-dependency CLI, source, catalog, and selected meshes.</p>
+        </article>
+        <article>
+          <span>03</span><h3>Correction</h3>
+          <p>The validator returns exact transforms; repair applies only corrections proven to help.</p>
+        </article>
+        <article>
+          <span>04</span><h3>Engine</h3>
+          <p>Desktop agents retain Blender, Unreal, Unity, and three.js adapters.</p>
+        </article>
+      </div>
+    </section>
+
+    <section class="work-section validator-section" id="validator">
+      <div class="section-heading">
+        <p class="eyebrow">Browser hand</p>
+        <h2>Check a layout without installing anything.</h2>
+        <p>
+          Load a validated example or paste a layout from an AI. The browser
+          performs the runtime-safe subset immediately; the sandbox download
+          carries the full Python validator.
+        </p>
+      </div>
+
+      <div class="validator-grid">
+        <div class="layout-controls">
+          <label class="field-label" for="exampleSelect">Start with an example</label>
+          <select id="exampleSelect"></select>
+          <label class="upload-zone" for="layoutFile">
+            <strong>Open a layout file</strong>
+            <span>JSON stays on this device</span>
+            <input id="layoutFile" type="file" accept=".json,application/json">
+          </label>
+          <label class="field-label" for="layoutInput">Or paste layout JSON</label>
+          <textarea id="layoutInput" rows="13" spellcheck="false"></textarea>
+          <div class="action-row wrap">
+            <button type="button" class="button primary" id="runValidation">Run browser check</button>
+            <button type="button" class="button quiet" id="repairLayout">Apply proven fixes</button>
+          </div>
+          <p class="fine-print" id="coverageNote">
+            Browser check: loading coverage information…
+          </p>
+        </div>
+
+        <div class="plan-panel">
+          <div class="plan-heading">
+            <div>
+              <p class="eyebrow">Orthographic plan</p>
+              <h3 id="layoutName">No layout loaded</h3>
+            </div>
+            <span class="status-pill" id="validationStatus">waiting</span>
+          </div>
+          <canvas id="planCanvas" aria-label="Top-down occupancy plan"></canvas>
+          <div class="report-summary" id="reportSummary"></div>
+          <ol class="diagnostics" id="diagnostics"></ol>
+          <div class="output-actions">
+            <button type="button" class="button quiet" id="downloadLayout" disabled>Download layout</button>
+            <button type="button" class="button quiet" id="downloadReport" disabled>Download report</button>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="download-section">
+      <div>
+        <p class="eyebrow">Keep the workshop replaceable</p>
+        <h2>The website is a convenience. The repository is the product.</h2>
+      </div>
+      <div class="download-links">
+        <a href="./downloads/tessera-chat.zip" download>
+          <span>Chat pack</span><small>Brief + AI instructions</small>
+        </a>
+        <a href="./downloads/tessera-sandbox.zip" download>
+          <span>Sandbox pack</span><small>Validator + selected assets</small>
+        </a>
+        <a href="https://github.com/JaronKBragg7337/tessera-worldkit">
+          <span>Full repository</span><small>All layers and adapters</small>
+        </a>
+      </div>
+    </section>
+  </main>
+
+  <footer>
+    <p>Tessera WorldKit · public, no login, no telemetry, no runtime dependencies.</p>
+    <p>Code 0BSD · generated assets CC0-1.0</p>
+  </footer>
+
+  <noscript>This Workshop needs JavaScript. The downloadable packs and repository do not.</noscript>
+  <script type="module" src="./app.mjs"></script>
+</body>
+</html>

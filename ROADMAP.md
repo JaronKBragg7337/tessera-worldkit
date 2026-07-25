@@ -14,6 +14,12 @@ against a real 5.6.1 install.
 the renders exposed. Then the intent layer, which is the largest remaining
 reduction in agent reasoning but benefits from having more to reason about.
 
+**The public handoff surface now exists.** The no-login
+[Tessera Workshop](https://jaronkbragg7337.github.io/tessera-worldkit/) slices
+briefs by role, packages chat/browser/sandbox/desktop handoffs, previews exact
+occupancy in a phone-friendly browser, runs a labelled runtime validation
+subset, and ships the full zero-dependency validator in its sandbox download.
+
 **Read first if you are new here.** [`AGENTS.md`](AGENTS.md) if you are an
 agent. [`docs/decisions/0008`](docs/decisions/0008-scope-and-replaceable-layers.md)
 for why scope is wide and coupling is not.
@@ -289,11 +295,14 @@ Logged, in the review's own priority order:
 - [ ] **4. Completeness validation.** Detect an expected enclosure surface that
       is simply absent. This is the gable-end class of defect: every rule passes
       and a picture shows daylight through the building
-- [ ] **5. `tessera repair`** — apply every `fix_transform` to a fixed point
+- [ ] **5. `tessera repair`** — a conservative first implementation now tries
+      validator-supplied transforms on copies and commits only proven
+      improvements; the ≥90% perturbation acceptance target remains
 - [ ] **6. Road, terrain, gate, fence and checkpoint assets** — M3
 - [ ] **7. Runtime navigation verified in every supported engine** — M2
-- [ ] **8. A verified interactive browser demo.** No public demo is currently
-      discoverable, which the review correctly noted
+- [x] **8. A verified interactive browser demo.** The public Workshop exposes
+      handoff building, plan previews, a labelled browser validation subset and
+      downloadable full-validator packs without a login
 - [ ] **9. A multi-agent benchmark measuring total tokens and elapsed work**
       against a conventional workflow. Catalog compression is measured;
       end-to-end saving is not
@@ -328,7 +337,8 @@ it a solver for the parts that are mechanical.
 - [ ] Pathability check: flood-fill the walkable volume from a seed and report
       unreachable rooms, using the aperture data already present
 - [ ] `tessera repair --layout` — apply every `fix_transform` and re-validate,
-      iterating to a fixed point or reporting what it cannot fix
+      iterating to a fixed point or reporting what it cannot fix. A conservative
+      improving-only implementation is shipped; fixture-wide acceptance remains
 - [ ] A cost metric per layout: guesses avoided, corrections applied
 - [ ] **A checkable intent layer.** Regions declared as a layout overlay --
       `room`, `entrance`, `storage`, `cover`, `loot_zone`, `spawn_safe_area` --
@@ -339,8 +349,9 @@ it a solver for the parts that are mechanical.
       fill above, which is why it lives here rather than being half-shipped.
 - [ ] A layout patch format keyed on instance id, so a repair round trip costs
       hundreds of tokens rather than a whole layout
-- [ ] `--only <roles>` slicing for briefs, taking a 2,400-token digest under 800
-- [ ] Orthographic plan previews rendered from occupancy boxes -- for the *user*
+- [x] `--only <roles>` slicing for briefs, taking the current 3,300-token text
+      digest to about 830 tokens for walls alone
+- [x] Orthographic plan previews rendered from occupancy boxes -- for the *user*
       to glance at, not for an agent to interpret
 
 **Acceptance**

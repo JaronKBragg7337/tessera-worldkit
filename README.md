@@ -2,6 +2,8 @@
 
 **An AI-readable world-building framework and original asset pack.**
 
+[**Open the public Tessera Workshop →**](https://jaronkbragg7337.github.io/tessera-worldkit/)
+
 [![Code: 0BSD](https://img.shields.io/badge/code-0BSD-blue.svg)](LICENSE-CODE)
 [![Assets: CC0-1.0](https://img.shields.io/badge/assets-CC0--1.0-lightgrey.svg)](LICENSE-ASSETS)
 ![Assets](https://img.shields.io/badge/assets-22-informational)
@@ -96,14 +98,15 @@ library Python 3.10+.
 
 ## It also fits on a phone
 
-The full catalog is about 30,000 tokens for twelve assets, and it grows linearly
-with the kit. That is fine for a desktop agent with a filesystem and impossible
-for an assistant running inside a phone app, where the whole conversation may
-have less budget than one kit.
+The current full catalog is about 56,700 tokens for 22 assets, and it grows
+linearly with the kit. That is fine for a desktop agent with a filesystem and
+wasteful for an assistant running inside a phone app, where the whole
+conversation may have less budget than one kit.
 
 ```bash
-./tessera brief --format text     # ~1,800 tokens
-./tessera brief --format json     # ~2,400 tokens, 8% of the catalog
+./tessera brief --format text                 # ~3,300 tokens
+./tessera brief --only wall --format text     # ~830 tokens
+./tessera pack --target sandbox --out handoff.zip
 ```
 
 The brief is not a summary. It is the same facts with everything placement does
@@ -125,6 +128,14 @@ loudly instead of producing a building full of gaps that nothing reports. See
 
 None of this removes anything from an agent that *does* have a filesystem and an
 engine. It is the same contract at two budgets.
+
+The [public Workshop](https://jaronkbragg7337.github.io/tessera-worldkit/)
+turns that into an interface a phone can operate: choose an AI environment,
+slice the kit to the roles it needs, copy or download a fingerprinted handoff,
+preview a layout from its exact occupancy, and run a clearly labelled browser
+check. A downloadable sandbox pack adds the full zero-dependency Python
+validator and conservative repair. The site has no login, uploads or telemetry;
+the repository remains the product. See [`docs/workshop.md`](docs/workshop.md).
 
 ---
 
@@ -195,6 +206,11 @@ geometric field is measured at build time, so it cannot drift from the mesh.
 layout rules. Each diagnostic states what failed, where, why, the expected
 value, the actual value, a corrective action in words, and — where one exists —
 the correction as data.
+
+**Portable hands** (`src/tessera/handoff.py`, `src/tessera/repair.py`,
+[`workshop/`](workshop/)) that select only the relevant contract, package it for
+chat/browser/sandbox/desktop environments, preview layouts in a browser, and
+apply validator-supplied corrections only when revalidation proves they help.
 
 **A reachability solver** (`src/tessera/navigate.py`) that answers "can a
 character actually get there" by flooding the walkable volume over the exact

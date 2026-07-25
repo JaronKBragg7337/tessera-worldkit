@@ -1,0 +1,9 @@
+{
+  "name": "Tessera Workshop",
+  "short_name": "Tessera",
+  "description": "Deterministic hands and compact context for world-building AIs.",
+  "start_url": "./",
+  "display": "standalone",
+  "background_color": "#0b0e0c",
+  "theme_color": "#121713"
+}

@@ -79,7 +79,8 @@ A refusal you can act on beats a placement you have to check.
 ### 3.4 If your context is tight, use the brief
 
 ```bash
-./tessera brief --format text     # ~1,800 tokens instead of ~30,000
+./tessera brief --format text                 # ~3,300 tokens instead of ~56,700
+./tessera brief --only wall --format text     # ~830 tokens
 ```
 
 It carries everything needed to place an asset: sizes, grounding offsets, grid
@@ -89,6 +90,17 @@ not use, and its `legend.omitted` names exactly what it dropped.
 
 If you later need collision hulls or provenance, fetch `full_catalog`. The
 brief's `fingerprint` proves you received the matching one.
+
+If the next agent is in a different environment, package the hands it can use:
+
+```bash
+./tessera pack --target chat --only wall,wall_opening --out handoff.zip
+./tessera pack --target sandbox --layout layout.json --out handoff.zip
+```
+
+Targets are additive: `chat` is a compact specification, `browser` adds the
+public Workshop, `sandbox` adds the full zero-dependency validator and selected
+assets, and `desktop` keeps the complete repository and adapters.
 
 **Record that fingerprint in any layout you emit.** `Builder` does it for you. A
 layout composed against one catalog and executed against another produces a

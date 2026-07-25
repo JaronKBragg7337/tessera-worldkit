@@ -1,7 +1,7 @@
 {
   "schema": "tessera.provenance/1",
-  "generated_utc": "2026-07-25T20:13:21+00:00",
-  "git_commit": "3291c416e75772173fd026909cfa7946858cd6ba",
+  "generated_utc": "2026-07-25T21:01:49+00:00",
+  "git_commit": "c7bdcc63c0d4a6ba8788f5f5286716b3d7c92bb8",
   "declaration": "Every asset listed here was generated from scratch by the named function in this repository. No third-party mesh, texture, model, scan, photograph or asset library is read at any point in the generation pipeline. source_inputs is empty for every entry, and the validator fails any asset for which it is not.",
   "license": {
     "code_spdx": "0BSD",
@@ -927,7 +927,7 @@
     },
     {
       "path": "src/tessera/brief.py",
-      "sha256": "697942a578addc295820cfd7454555be60fa7cf94c71d3dc9cbf4ba00899294c"
+      "sha256": "3f822c59de5d1b2278925eae62f079c665fdb388f129200c250bbed81e3beff3"
     },
     {
       "path": "src/tessera/catalog.py",
@@ -935,11 +935,15 @@
     },
     {
       "path": "src/tessera/cli.py",
-      "sha256": "fb5fd206a7c18e3df9d053e6c3c297819703f759b6dc2656f14cdc373bab764d"
+      "sha256": "94c4904080eb956994180ff0694dd502f15dd58874df2f02f54a8b9fea0ab672"
     },
     {
       "path": "src/tessera/contract.py",
       "sha256": "0bcfdf14e43dbb53cb27766ea3ddde13c9843221f70958d81fc8d251e83c26ec"
+    },
+    {
+      "path": "src/tessera/handoff.py",
+      "sha256": "2243180aad014f20468d1a551dca997092f057f5f83fff3ab9f973071d8186f7"
     },
     {
       "path": "src/tessera/measure.py",
@@ -952,6 +956,10 @@
     {
       "path": "src/tessera/navigate.py",
       "sha256": "5a6ef06156e1a5a04c81e4f08ca252ab6e6ac4363ec1dec8c4e09a1e501b8368"
+    },
+    {
+      "path": "src/tessera/repair.py",
+      "sha256": "3d3b8bb9a220efcfc0364b245ec8995038f0f5ef00c8e054e3fdc99fe9652ad1"
     },
     {
       "path": "src/tessera/transform.py",
@@ -1004,6 +1012,10 @@
     {
       "path": "kits/shell_v1/parts.py",
       "sha256": "0a53253a65cf20d3cb11b1fd3d6e3dc12689882db1f83010e2f7436ca3babc97"
+    },
+    {
+      "path": "tools/build_workshop.py",
+      "sha256": "4e552d155c42934bfc74e387327ab5dc38713fc79a8fd3037fc843ced9ca48d4"
     },
     {
       "path": "tools/export_parity.py",
