@@ -112,6 +112,47 @@ engine. It is the same contract at two budgets.
 
 ---
 
+## It has been tested on a model that could not run anything
+
+DeepSeek was asked, from a phone chat with only this repository's URL, to build a
+two-storey survivor safe house. No checkout, no terminal, no Python, no engine,
+no connectors. It browsed GitHub as web pages and wrote a script.
+
+It found the correct asset namespace and every id, used `Builder`, `ground()`,
+`mate()` and `autoconnect()` correctly, and reproduced the shape of the worked
+example. It did not invent coordinates or hallucinate asset names. Then it
+claimed `Validation errors: 0` for a script it had just said it could not run.
+
+The script has been run unchanged and repaired using **only validator output —
+nothing was ever rendered or screenshotted**:
+
+| Round | | Errors |
+|---|---|---|
+| 1 | ran unchanged | crash, with the six valid connectors named |
+| 2 | one-line fix | **36** |
+| 3 | removed two duplicate walls, moved a partition onto the grid | 28 |
+| 4 | redesigned the second storey | 2 |
+| 5 | shifted a partition one grid step | **0** |
+
+Every structural defect a careful human reviewer found was caught, plus two the
+reviewer missed. Two new validator rules exist *because* of this run — a 4 × 4 m
+floor slab cantilevered off a single wall edge used to validate clean.
+
+And the most useful finding was not an agent error at all:
+
+> A second storey with interior access **cannot be built** from `shell_v1`. There
+> is no stair, no ladder, no beam and no floor piece with an opening.
+
+The stacked crates DeepSeek used as a staircase were a model routing around a
+missing asset, producing geometry the validator accepts and a player cannot
+climb. The repaired example builds what *is* expressible and says in its own
+docstring what it did not build and why.
+
+Full log, classification and reproduction:
+[`benchmarks/constrained_agent/`](benchmarks/constrained_agent/).
+
+---
+
 ## What is in the box
 
 **A geometry kernel** (`src/tessera/boxset.py`, `mesh.py`) that represents
@@ -186,6 +227,7 @@ skimming for a quickstart.
 | [`docs/placement-contract.md`](docs/placement-contract.md) | Every field, with the failure it prevents |
 | [`docs/conventions.md`](docs/conventions.md) | Units, axes, pivots, grid, naming |
 | [`docs/remote-agents.md`](docs/remote-agents.md) | Phone and server agents: budgets, the repair loop, catalog pinning, the intent layer |
+| [`benchmarks/constrained_agent/`](benchmarks/constrained_agent/) | A real low-tool model's draft, run, classified and repaired |
 | [`docs/engine-support.md`](docs/engine-support.md) | What is verified and what is not |
 | [`docs/provenance-policy.md`](docs/provenance-policy.md) | Why every byte here is safe to redistribute |
 | [`docs/characters.md`](docs/characters.md) | The original character pipeline, designed before it is built |

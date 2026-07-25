@@ -1,7 +1,7 @@
 {
   "schema": "tessera.provenance/1",
-  "generated_utc": "2026-07-25T02:03:23+00:00",
-  "git_commit": "9e3ea5725d489dc9e9fba75230ba9f04b65a3b5a",
+  "generated_utc": "2026-07-25T05:31:50+00:00",
+  "git_commit": "084cff7cc4c734e0d3ec90992ee511fb9a399192",
   "declaration": "Every asset listed here was generated from scratch by the named function in this repository. No third-party mesh, texture, model, scan, photograph or asset library is read at any point in the generation pipeline. source_inputs is empty for every entry, and the validator fails any asset for which it is not.",
   "license": {
     "code_spdx": "0BSD",
@@ -539,19 +539,23 @@
     },
     {
       "path": "src/tessera/assemble.py",
-      "sha256": "a3ef6ae5e506dd2c13c5f06734c9f085d1a619add3af2f56dc7063ed706107dd"
+      "sha256": "0adb74e4bd84c3f4eac7389f1f18c23b740551f77844509eb9ce4859fdf19f9e"
     },
     {
       "path": "src/tessera/boxset.py",
       "sha256": "9281c8a9878a7f4160e5f48ad451b5a70137310274a4e29138c690d9627463d4"
     },
     {
+      "path": "src/tessera/brief.py",
+      "sha256": "eef4d6cf3ab451ab79532b38fc6cfa10f2407dc8d78520ad1159a14ad43d8a9e"
+    },
+    {
       "path": "src/tessera/catalog.py",
-      "sha256": "401f8937e7179a790be04b62b877316e25e43d2fe12d7c2433b7a1e0f475de35"
+      "sha256": "a834fccd9a09cbd5bbe7d3dac4f95de43a0fccf82fdcde6db120b84af3c3b2ce"
     },
     {
       "path": "src/tessera/cli.py",
-      "sha256": "34932f2ffb3482fc5d9e38e74c07310331fdb2e54e920dba5e532f720043504c"
+      "sha256": "fb5fd206a7c18e3df9d053e6c3c297819703f759b6dc2656f14cdc373bab764d"
     },
     {
       "path": "src/tessera/contract.py",
@@ -587,7 +591,7 @@
     },
     {
       "path": "src/tessera/validate/layout.py",
-      "sha256": "8bab4f384046ef5d8719bab27987e89bcc38acde6654cac6a7bfd3600f5bc35e"
+      "sha256": "ebf572075e8c3418f9f42a42b14d1564d5d5f67c71fa7d7c5aafd2492c72941f"
     },
     {
       "path": "src/tessera/validate/report.py",

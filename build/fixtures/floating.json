@@ -8,7 +8,8 @@
       "id": "shell_v1",
       "version": "1.0.0"
     },
-    "contract_version": "1.0.0"
+    "contract_version": "1.0.0",
+    "fingerprint": "0e52a8027687785f4805a0bb2083c45b22b289366631afb1bf598149e7713319"
   },
   "space": {
     "convention": "tessera.space/1",

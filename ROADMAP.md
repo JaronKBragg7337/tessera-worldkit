@@ -76,13 +76,46 @@ and each promoted row names the command that proves it.
 
 ---
 
+## M2.5 — Constrained-agent benchmark ✅ complete
+
+A real draft from a model with no checkout, terminal, engine or renderer, run
+and repaired using only validator output. See
+[`benchmarks/constrained_agent/`](benchmarks/constrained_agent/).
+
+- [x] The draft preserved verbatim and pinned as a regression fixture
+- [x] Run unchanged, every failure classified as API misuse, geometric
+      invalidity, incomplete contract or missing semantic capability
+- [x] Repaired to zero errors in four rounds with nothing rendered
+- [x] `TSR_LAYOUT_UNBALANCED` and `TSR_LAYOUT_UNDERSUPPORTED` added, because a
+      4 x 4 m slab cantilevered off one wall edge used to validate clean
+- [x] Documented which mistakes `tessera brief` would have prevented
+
+**Acceptance, all met**
+
+| Test | Target | Actual |
+|---|---|---|
+| Structural defects caught that a human reviewer found | all | **all, plus 2 more** |
+| Repair rounds to a valid layout | < 6 | **4** |
+| Renders or screenshots needed | 0 | **0** |
+| New rules with regression tests, no false positives on known-good scenes | yes | **yes** |
+
+---
+
 ## M3 — Kit expansion, contract unchanged
 
 The contract should not need to change to describe more building. If it does,
 that is the finding.
 
-- [ ] Traversal: stairs (straight, L-turn, half-landing), ramp, ladder, railing,
-      each with apertures and clearance authored
+- [ ] **Traversal, now the highest priority in this milestone.** The benchmark
+      showed a second storey with interior access is not expressible today, so a
+      constrained agent asked for one has no honest option. Stairs (straight,
+      L-turn, half-landing), ramp, ladder, railing, each with apertures and
+      clearance authored.
+- [ ] **A floor slab with a stair opening**, and a beam, so a second storey can
+      span rather than only bear on a bay perimeter
+- [ ] **Interior corner and doorway pieces**, so an interior room can be closed
+      *and* entered. The L corner closes a perimeter without overlap but carries
+      no opening, which is why the benchmark repair could only build an alcove
 - [ ] Junctions: inner-corner trim, wall-to-floor trim, column caps — the pieces
       that stop assembled kits showing seams
 - [ ] Roof: hip corner, cross-gable valley, eave fascia, dormer

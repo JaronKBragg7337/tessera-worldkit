@@ -146,6 +146,18 @@ server:  {"status":"passed"}
 Under 4,000 tokens end to end for a validated building, with no image generated,
 transmitted or interpreted at any point.
 
+## This has been measured, not assumed
+
+A model with none of the tools above produced a repository-specific draft that
+was 36 validator errors away from correct, and four repair rounds away from
+validated — with nothing rendered at any stage. The full log, including the two
+mistakes the digest would have prevented outright and the two that needed assets
+that do not exist yet, is in
+[`benchmarks/constrained_agent/`](../benchmarks/constrained_agent/).
+
+The headline is that the composition phase already works. What was missing was
+the execution and repair half — which is precisely levels 2 and 3 above.
+
 ## What is still missing
 
 Honest list, in the order it would help most.

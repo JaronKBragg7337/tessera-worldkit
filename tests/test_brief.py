@@ -28,8 +28,12 @@ def test_brief_fits_a_constrained_context(brief, catalog):
     text = len(render_text(brief))
     assert compact < full * 0.15, "brief is %.1f%% of the catalog" % (100 * compact / full)
     assert text < compact, "the text rendering should be cheaper than JSON"
-    # roughly 3.6 characters per token
-    assert compact / 3.6 < 4000, "brief must fit a small context budget"
+    # Per asset, not absolute. This is a guardrail against the digest drifting
+    # back into being the catalog -- not a claim that any agent is limited to
+    # this much. An absolute cap would fire when the kit grows from 12 assets to
+    # 45 and report a successful expansion as a regression.
+    per_asset = (compact / 3.6) / brief["asset_count"]
+    assert per_asset < 260, "brief costs ~%.0f tokens per asset" % per_asset
 
 
 def test_brief_keeps_everything_placement_needs(brief):
