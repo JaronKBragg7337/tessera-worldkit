@@ -34,11 +34,12 @@ CLASH_VOLUME_EPSILON = 1e-6
 #: and the real judgement is made by the two rules below.
 SUPPORT_COVERAGE = 0.02
 
-#: Below this fraction of contact the support is real but implausible -- a floor
-#: slab balanced on a workbench. A warning, not an error, because a genuine
-#: second-storey floor bearing only on its perimeter walls sits around 20% and
-#: is perfectly correct.
-PLAUSIBLE_COVERAGE = 0.15
+#: Measured on the *hull* of the contacts, not their area. A one-way slab
+#: bearing on two opposite beams touches about 10% of its underside and is
+#: completely normal construction; the hull of those two strips still spans the
+#: whole slab. A slab balanced on a workbench has a hull the size of the
+#: workbench. Hull span is what separates "properly carried" from "perched on".
+PLAUSIBLE_HULL_COVERAGE = 0.35
 
 #: A support surface recessed by less than this still supports. Floor slabs have
 #: 3 cm decorative tile grooves and crates have a 2 cm lid recess; treating those
@@ -97,6 +98,18 @@ def _point_in_hull(point, hull, tolerance=1e-6):
         if (x1 - x0) * (point[1] - y0) - (y1 - y0) * (point[0] - x0) < -tolerance:
             return False
     return True
+
+
+def _polygon_area(hull):
+    """Shoelace area of a convex hull; zero for a degenerate one."""
+    if len(hull) < 3:
+        return 0.0
+    total = 0.0
+    for i in range(len(hull)):
+        x0, y0 = hull[i]
+        x1, y1 = hull[(i + 1) % len(hull)]
+        total += x0 * y1 - x1 * y0
+    return abs(total) / 2.0
 
 
 def _hull_distance(point, hull):
@@ -375,10 +388,16 @@ def validate_layout(layout: dict, catalog: dict,
 
         fp_area = sum((f[3] - f[0]) * (f[4] - f[1]) for f in footprint) or 1e-9
 
-        candidates = []
+        # Contact is summed per supporting instance and surface height, not per
+        # box. A beam is several boxes once its web is lightened, and a column is
+        # several once it has caps; thresholding each box separately meant a
+        # floor resting squarely on two beams saw six 1.3% contacts, discarded
+        # every one of them, and reported itself as floating two metres above a
+        # staircase. Any support with detailing on it hit this.
+        per_support = {}
         rests_on = support.get("rests_on") or []
         if "terrain" in rests_on:
-            candidates.append(("terrain", 0.0, fp_area))
+            per_support[("terrain", 0.0)] = fp_area
         for other in instances:
             if other is inst:
                 continue
@@ -391,8 +410,12 @@ def validate_layout(layout: dict, catalog: dict,
                 if ob[2] > datum_z + CONTACT_EPSILON:
                     continue
                 area = sum(_xy_overlap_area(f, ob) for f in footprint)
-                if area / fp_area >= SUPPORT_COVERAGE:
-                    candidates.append((other.id, ob[5], area))
+                if area <= 0.0:
+                    continue
+                key = (other.id, q(ob[5]))
+                per_support[key] = per_support.get(key, 0.0) + area
+        candidates = [(who, top, area) for (who, top), area in per_support.items()
+                      if area / fp_area >= SUPPORT_COVERAGE]
 
         if not candidates:
             c.error(code="TSR_LAYOUT_UNSUPPORTED", rule="layout.support",
@@ -608,7 +631,19 @@ def validate_layout(layout: dict, catalog: dict,
                 w = {"instance": inst.id, "asset": inst.asset_id,
                      "aperture": ap["id"], "other_instance": other.id,
                      "other_asset": other.asset_id}
-                if other.id in exempt:
+                if (ap.get("kind") == "passage"
+                        and other.record.get("semantic_role") == "stair"):
+                    c.info(code="TSR_LAYOUT_APERTURE_SERVED_BY_STAIR",
+                           rule="layout.aperture_clear",
+                           what="Stairwell is occupied by the stair that serves it.",
+                           where=w, expected="informational",
+                           actual="%.4f m3 of the opening is the flight itself" % blocked,
+                           why=("A stair passing through a stairwell is what the "
+                                "opening is for. It is only an obstruction if a "
+                                "character cannot use it, which the reachability "
+                                "rules test separately."),
+                           fix="none needed")
+                elif other.id in exempt:
                     c.info(code="TSR_LAYOUT_APERTURE_OCCUPIED_BY_LEAF",
                            rule="layout.aperture_clear",
                            what="Aperture is filled by its own leaf.", where=w,
@@ -660,8 +695,100 @@ def validate_layout(layout: dict, catalog: dict,
                             "here does not clash, but the asset stops working."),
                        fix="move %s clear of the volume" % other.id)
 
+    _check_reachability(c, layout, instances)
+
     c.connection_stats = connection_stats
     return c
+
+
+def _check_reachability(c, layout, instances):
+    """Can a character actually get there?
+
+    This exists because a benchmark draft stacked three crates where a staircase
+    belonged and wrote "two stories with interior access". The geometry
+    validated. Nothing could contradict it, because reachability was not a
+    property anything measured.
+
+    The grid is only built when there is something to ask, since it is the most
+    expensive check here by a wide margin.
+    """
+    claims = layout.get("reachability") or []
+    stairs = [i for i in instances
+              if i.record.get("semantic_role") in ("stair", "railing")
+              and i.record.get("semantic_role") == "stair"]
+    if not claims and not stairs:
+        return
+
+    from ..navigate import grid_from_instances
+    grid = grid_from_instances(instances)
+
+    c.check("layout.stair_usable")
+    for inst in stairs:
+        foot = inst.connectors.get("foot") or inst.connectors.get("base")
+        landing = inst.connectors.get("landing")
+        if not landing:
+            continue
+        # Probe the approach from just outside the foot, but the landing *at*
+        # its own connector rather than past it. Offsetting the goal walks off
+        # the top of the flight into whatever happens to be beyond -- for an
+        # entrance stoop that is the doorway, so a shut door made the stoop
+        # itself report as unusable. This rule is about whether the flight
+        # works, not about what is on the other side of it.
+        start = tuple(foot["position"][k] + foot["normal"][k] * 0.45
+                      for k in range(3)) if foot else None
+        goal = tuple(landing["position"])
+        if start is None:
+            continue
+        ok, detail = grid.route_exists(start, goal, tolerance=0.6)
+        if not ok:
+            c.error(code="TSR_LAYOUT_STAIR_UNUSABLE", rule="layout.stair_usable",
+                    what="A character cannot climb this stair.",
+                    where={"instance": inst.id, "asset": inst.asset_id,
+                           "position": list(inst.transform.position)},
+                    expected="a walkable route from the foot to the landing",
+                    actual=detail.get("reason"),
+                    why=("The flight exists as geometry, but something stops a "
+                         "character using it -- most often the floor above has "
+                         "no opening over it, the landing does not meet that "
+                         "floor, or the headroom runs out partway up. A stair "
+                         "nobody can climb looks completely correct."),
+                    fix=("check the stairwell opening covers the upper flight, "
+                         "and that the landing height matches the floor above"))
+
+    if not claims:
+        return
+
+    c.check("layout.reachability")
+    for claim in claims:
+        label = claim.get("label", "unnamed")
+        must = claim.get("must", True)
+        ok, detail = grid.route_exists(tuple(claim["from"]), tuple(claim["to"]),
+                                       tolerance=claim.get("tolerance", 0.35))
+        where = {"claim": label, "from": claim["from"], "to": claim["to"]}
+        if must and not ok:
+            c.error(code="TSR_LAYOUT_UNREACHABLE", rule="layout.reachability",
+                    what="A route this layout claims to provide does not exist.",
+                    where=where, expected="a walkable route (%s)" % label,
+                    actual=detail.get("reason"),
+                    why=(detail.get("hint")
+                         or "the flood fill from the start never reached the goal"),
+                    fix=("add or fix the connecting geometry, or drop the claim "
+                         "-- an unmet claim is worse than no claim"))
+        elif not must and ok:
+            c.error(code="TSR_LAYOUT_REACHABLE_BUT_SHOULD_NOT_BE",
+                    rule="layout.reachability",
+                    what="Somewhere this layout declares sealed can be walked into.",
+                    where=where, expected="no walkable route (%s)" % label,
+                    actual="route found after %d nodes" % detail.get("nodes_explored", 0),
+                    why="A containment claim that is false is a security bug in a game.",
+                    fix="close the route, or drop the claim")
+        else:
+            c.info(code="TSR_LAYOUT_REACHABILITY_PROVEN", rule="layout.reachability",
+                   what="Route proven: %s." % label, where=where,
+                   expected="reachable" if must else "not reachable",
+                   actual=detail.get("reason"),
+                   why="Checked by flood fill over the exact occupancy volumes.",
+                   fix="none needed")
 
 
 def _check_support_is_adequate(c, inst, instances, datum_z, footprint, fp_area,
@@ -737,17 +864,28 @@ def _check_support_is_adequate(c, inst, instances, datum_z, footprint, fp_area,
                      "instance so its centre sits over what is holding it"))
         return
 
-    coverage = supported_area / fp_area
-    if coverage < PLAUSIBLE_COVERAGE:
+    if not inst.transform.is_axis_aligned():
+        # Off-axis rotation makes occupancy a conservative bounding box, which
+        # inflates the footprint by up to 2x at 45 degrees. Any area ratio taken
+        # from that is meaningless, so the plausibility judgement is skipped
+        # rather than guessed. The balance test above still applies: inflation is
+        # symmetric, so the centroid is unaffected.
+        return
+
+    hull_area = _polygon_area(hull)
+    coverage = hull_area / fp_area
+    if coverage < PLAUSIBLE_HULL_COVERAGE:
         c.warn(code="TSR_LAYOUT_UNDERSUPPORTED", rule="layout.support.balance",
-               what="Instance is balanced, but barely touching what holds it up.",
+               what="Instance is balanced, but perched on something much smaller.",
                where=w,
-               expected="at least %.0f%% of the footprint in contact"
-                        % (PLAUSIBLE_COVERAGE * 100),
-               actual="%.1f%% (%.3f of %.3f m2) resting on %s"
-                      % (coverage * 100, supported_area, fp_area,
+               expected="supports spanning at least %.0f%% of the footprint"
+                        % (PLAUSIBLE_HULL_COVERAGE * 100),
+               actual="supports span %.1f%% (%.3f of %.3f m2); resting on %s"
+                      % (coverage * 100, hull_area, fp_area,
                          ", ".join(sorted(supports)[:3])),
                why=("It will not topple, so this is not a placement error -- but "
-                    "a large surface held up by a very small one is usually a "
-                    "sign the intended support was not the one it found."),
+                    "a large surface carried by a much smaller one is usually a "
+                    "sign the intended support was not the one it found. Bearing "
+                    "on opposite edges is fine; bearing on one small patch in "
+                    "the middle is not."),
                fix="check that this is resting on what you meant it to rest on")
