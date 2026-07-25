@@ -215,7 +215,7 @@ or a connector floating in space fails the build rather than reaching a scene.
 
 It has no opinion on what to build. Footprint, room programme, which wall gets a
 window, where the entrance faces, whether it looks finished — all yours. The kit
-is 21 structural parts and has no roads, terrain, fences, lighting or gameplay.
+is 22 structural parts and has no roads, terrain, fences, lighting or gameplay.
 
 If the thing you were asked for is not expressible, **say so and say why** rather
 than approximating it. A benchmark agent asked for "two storeys with interior

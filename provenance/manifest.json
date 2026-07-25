@@ -1,7 +1,7 @@
 {
   "schema": "tessera.provenance/1",
-  "generated_utc": "2026-07-25T18:12:44+00:00",
-  "git_commit": "eb963ffe674161b60e5ee0ce3305f503079b067e",
+  "generated_utc": "2026-07-25T20:13:21+00:00",
+  "git_commit": "3291c416e75772173fd026909cfa7946858cd6ba",
   "declaration": "Every asset listed here was generated from scratch by the named function in this repository. No third-party mesh, texture, model, scan, photograph or asset library is read at any point in the generation pipeline. source_inputs is empty for every entry, and the validator fails any asset for which it is not.",
   "license": {
     "code_spdx": "0BSD",
@@ -73,7 +73,7 @@
       "code_copied": "none - concepts only, reimplemented in Python and JS"
     }
   ],
-  "asset_count": 21,
+  "asset_count": 22,
   "assets": [
     {
       "asset": "tsr:shell/foundation.pad.4m",
@@ -872,6 +872,44 @@
           "bytes": 60
         }
       ]
+    },
+    {
+      "asset": "tsr:shell/wall.junction.trim.3m8",
+      "origin": "original-generated",
+      "generator": "tessera.catalog/wall_junction_trim",
+      "generator_version": "1.0.0+1.0.0",
+      "authored_by": "Jaron K Bragg",
+      "source_inputs": [],
+      "third_party_review": "none-required",
+      "geometry_sha256": "1ee16f1536732087320680be32667b418991df26a8c556fc02451d5dd2609183",
+      "license": {
+        "code_spdx": "0BSD",
+        "assets_spdx": "CC0-1.0",
+        "applies_to": "assets",
+        "attribution_required": false,
+        "commercial_use": true,
+        "redistribution": true
+      },
+      "files": [
+        {
+          "role": "glb",
+          "path": "build/meshes/wall.junction.trim.3m8.glb",
+          "sha256": "4c59ea6d7d63e4d7064b8f6e540f664e4e794548caf9ba3f9425fea2443065de",
+          "bytes": 15004
+        },
+        {
+          "role": "obj",
+          "path": "build/meshes/wall.junction.trim.3m8.obj",
+          "sha256": "9001c83a6a078c899cd0baee0463a95ffda00257a464692d55fb8c8e3677ff97",
+          "bytes": 3888
+        },
+        {
+          "role": "mtl",
+          "path": "build/meshes/wall.junction.trim.3m8.mtl",
+          "sha256": "b28cbd6ff492e27a9d9373266a19ed9221d3a1f0cd0e696cff8eb23d3f9ea6a9",
+          "bytes": 60
+        }
+      ]
     }
   ],
   "generators": [
@@ -901,7 +939,7 @@
     },
     {
       "path": "src/tessera/contract.py",
-      "sha256": "cbebc2ef83c46f14c39de81041086a0149520e83c0f33e4e063a1cdd36470d54"
+      "sha256": "0bcfdf14e43dbb53cb27766ea3ddde13c9843221f70958d81fc8d251e83c26ec"
     },
     {
       "path": "src/tessera/measure.py",
@@ -961,11 +999,11 @@
     },
     {
       "path": "kits/shell_v1/config.py",
-      "sha256": "9c62e9f79c159de51ccce2a8ab12e490d5c8a4916f3cd5ae146fe55b858d3e00"
+      "sha256": "3d4a1c3ec42aaef01a89feda20c8a54761a55703e23cae54fbe61ad68b338f73"
     },
     {
       "path": "kits/shell_v1/parts.py",
-      "sha256": "8731f2188e12dd1f62913b9a15cec8beda9157a2fddca278e0e51b7aa9ab619b"
+      "sha256": "0a53253a65cf20d3cb11b1fd3d6e3dc12689882db1f83010e2f7436ca3babc97"
     },
     {
       "path": "tools/export_parity.py",

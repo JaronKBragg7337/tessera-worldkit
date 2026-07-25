@@ -1,7 +1,7 @@
 {
   "schema": "tessera.report/1",
   "validator_version": "1.0.0",
-  "generated_utc": "2026-07-25T18:12:45+00:00",
+  "generated_utc": "2026-07-25T20:06:31+00:00",
   "subject": "Room Inside a Building",
   "subject_kind": "layout",
   "status": "passed",
@@ -93,8 +93,8 @@
         "asset": "tsr:shell/wall.interior.doorway.4m",
         "aperture": "door",
         "position": [
-          6.0,
-          2.0,
+          4.0,
+          7.8,
           0.5
         ]
       },
@@ -136,12 +136,12 @@
       "where": {
         "claim": "corridor into the room through the interior doorway",
         "from": [
-          8.0,
-          1.0,
+          6.0,
+          9.0,
           0.5
         ],
         "to": [
-          8.0,
+          6.0,
           6.0,
           0.5
         ]
@@ -160,12 +160,12 @@
       "where": {
         "claim": "back out of the room to the entrance",
         "from": [
-          12.0,
-          8.0,
+          10.0,
+          6.0,
           0.5
         ],
         "to": [
-          2.0,
+          6.0,
           1.0,
           0.5
         ]
@@ -179,7 +179,7 @@
     }
   ],
   "connections": {
-    "declared": 75,
-    "verified": 75
+    "declared": 74,
+    "verified": 74
   }
 }

@@ -124,3 +124,11 @@ the way around it, where no such junction exists anywhere.
 - The plinth's proud return on the *inside* face of an exterior wall is now
   known to be load-bearing on layout. Worth revisiting when the junction trim is
   designed, rather than changing now to suit one example.
+
+## Resolution
+
+The final gap above was closed by
+[`0010`](0010-wall-junction-bridges-to-the-bay-line.md). The free-standing
+example was replaced by a room that reuses two perimeter walls; the historical
+finding and rejected workarounds remain here because they are the reason the
+junction has its dedicated geometry and connector pair.

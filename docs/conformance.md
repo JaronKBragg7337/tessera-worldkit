@@ -85,7 +85,7 @@ demonstrates, against the real engine:
 - **a traversable aperture is void in the imported collision**
 - a layout's instances land at their declared transforms
 
-`tools/verify_blender.py` (81 checks, in CI) and `tools/verify_unreal.py` (94
+`tools/verify_blender.py` (97 checks, in CI) and `tools/verify_unreal.py` (114
 checks, local) are the reference implementations.
 
 This level exists because it was learned the hard way: the Unreal adapter

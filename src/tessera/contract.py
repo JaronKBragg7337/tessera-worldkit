@@ -63,6 +63,8 @@ CATEGORIES = ("structure", "opening", "roof", "prop", "ground", "traversal")
 #: World Printer Lab snap a roof panel to a wheel hub.
 CONNECTOR_KINDS = (
     "wall_edge",      # vertical seam between wall pieces
+    "wall_face",      # receiver on a wall face for a perpendicular junction
+    "wall_junction",  # rebated trim end that mates only with wall_face
     "wall_base",      # bottom of a wall, mates with floor_top / foundation_top
     "wall_top",       # top of a wall, mates with roof_bearing
     "floor_edge",     # horizontal seam between floor slabs
@@ -79,6 +81,8 @@ CONNECTOR_KINDS = (
 #: Explicit, symmetric compatibility table. Anything not listed does not mate.
 CONNECTOR_COMPATIBILITY = {
     "wall_edge": ("wall_edge",),
+    "wall_face": ("wall_junction",),
+    "wall_junction": ("wall_face",),
     "wall_base": ("floor_top", "foundation_top"),
     "floor_top": ("wall_base", "prop_base"),
     "foundation_top": ("wall_base", "floor_edge", "prop_base"),

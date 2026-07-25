@@ -54,7 +54,7 @@ def two_storey(root, catalog):
 
 @pytest.fixture(scope="module")
 def interior_rooms(root, catalog):
-    """The free-standing room, assembled against the fixture catalog."""
+    """The perimeter-connected room, assembled against the fixture catalog."""
     path = os.path.join(root, "examples", "interior_rooms", "build.py")
     spec = importlib.util.spec_from_file_location("interior_rooms_build", path)
     module = importlib.util.module_from_spec(spec)
@@ -66,9 +66,9 @@ def interior_rooms(root, catalog):
         {"label": "terrain up the stoop to the threshold",
          "from": [6.0, -1.6, 0.0], "to": [6.0, -0.15, ground], "must": True},
         {"label": "corridor into the room through the interior doorway",
-         "from": [8.0, 1.0, ground], "to": [8.0, 6.0, ground], "must": True},
+         "from": [6.0, 9.0, ground], "to": [6.0, 6.0, ground], "must": True},
         {"label": "back out of the room to the entrance",
-         "from": [12.0, 8.0, ground], "to": [2.0, 1.0, ground], "must": True},
+         "from": [10.0, 6.0, ground], "to": [6.0, 1.0, ground], "must": True},
     ]
     return layout
 
@@ -238,9 +238,9 @@ def test_the_interior_room_can_be_entered(catalog, interior_rooms):
     """Closed *and* enterable. The thing M3 existed to make expressible."""
     grid = _grid(catalog, interior_rooms)
     ground = catalog["derived"]["floor_top_z"]
-    ok, detail = grid.route_exists((8.0, 1.0, ground), (8.0, 6.0, ground))
+    ok, detail = grid.route_exists((6.0, 9.0, ground), (6.0, 6.0, ground))
     assert ok, detail
-    back, _ = grid.route_exists((12.0, 8.0, ground), (2.0, 1.0, ground))
+    back, _ = grid.route_exists((10.0, 6.0, ground), (6.0, 1.0, ground))
     assert back, "a room you cannot leave is a trap, not a room"
 
 
@@ -264,7 +264,7 @@ def test_swapping_the_doorway_for_a_wall_seals_the_room(catalog, interior_rooms)
 
     grid = _grid(catalog, sealed)
     ground = catalog["derived"]["floor_top_z"]
-    ok, _ = grid.route_exists((8.0, 1.0, ground), (8.0, 6.0, ground))
+    ok, _ = grid.route_exists((6.0, 9.0, ground), (6.0, 6.0, ground))
     assert not ok, ("the room is enterable with no opening in it, so the "
                     "doorway was never what was letting the character in")
 
@@ -272,6 +272,54 @@ def test_swapping_the_doorway_for_a_wall_seals_the_room(catalog, interior_rooms)
     codes = {d.code for d in result.diagnostics}
     assert "TSR_LAYOUT_UNREACHABLE" in codes
     assert not result.ok
+
+
+def test_junction_rebate_removes_the_exact_plinth_overlap(catalog, interior_rooms):
+    """The 0.00108 m3 defect that caused this asset to exist, falsified.
+
+    Put back the small box removed from the trim's lower perimeter end and it
+    overlaps the host plinth by exactly PLINTH_PROUD × partition thickness ×
+    PLINTH_HEIGHT. The shipped occupancy has zero overlap at the same mate.
+    """
+    from tessera.transform import Transform
+
+    index = {a["id"]: a for a in catalog["assets"]}
+    trim_id = "tsr:shell/wall.junction.trim.3m8"
+    trim = index[trim_id]
+    trims = [i for i in interior_rooms["instances"] if i["asset"] == trim_id]
+    assert len(trims) == 2
+
+    instances = {i["id"]: i for i in interior_rooms["instances"]}
+
+    def volume(a, b):
+        spans = [min(a[i + 3], b[i + 3]) - max(a[i], b[i])
+                 for i in range(3)]
+        return max(0.0, spans[0]) * max(0.0, spans[1]) * max(0.0, spans[2])
+
+    expected = (catalog["config"]["PLINTH_PROUD"]
+                * catalog["config"]["INTERIOR_WALL_THICKNESS"]
+                * catalog["config"]["PLINTH_HEIGHT"])
+
+    for inst in trims:
+        link = next(c for c in inst["connections"] if c["from"] == "perimeter")
+        host_inst = instances[link["to"]["instance"]]
+        host = index[host_inst["asset"]]
+        tt = Transform.from_dict(inst)
+        ht = Transform.from_dict(host_inst)
+
+        host_boxes = ht.boxes(host["occupancy"]["boxes"])
+        actual_boxes = tt.boxes(trim["occupancy"]["boxes"])
+        actual = sum(volume(a, b) for a in actual_boxes for b in host_boxes)
+        assert actual == pytest.approx(0.0, abs=1e-9)
+
+        removed = tt.box((
+            0.0, 0.0, 0.0,
+            catalog["config"]["PLINTH_PROUD"],
+            catalog["config"]["INTERIOR_WALL_THICKNESS"],
+            catalog["config"]["PLINTH_HEIGHT"],
+        ))
+        hypothetical = sum(volume(removed, b) for b in host_boxes)
+        assert hypothetical == pytest.approx(expected, abs=1e-9)
 
 
 def test_the_interior_corner_carries_no_opening(catalog):

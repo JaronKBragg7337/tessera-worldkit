@@ -4,16 +4,14 @@ SPDX-License-Identifier: CC0-1.0
 
 ## Where this is right now
 
-**Done and verified.** The placement contract, the exact geometry kernel, 21
+**Done and verified.** The placement contract, the exact geometry kernel, 22
 original parts, 41 validation rules with agent-readable diagnostics, the
 reachability solver, the context-budgeted brief, four validated example
 buildings, and four verified targets — core, three.js and Blender in CI, Unreal
 against a real 5.6.1 install.
 
-**Next, in order.** A wall-to-wall junction comes first, so the new interior
-pieces can terminate against a perimeter wall instead of requiring a corridor
-around a free-standing room. Then the gable end wall and second-storey walls,
-which the renders exposed. Then the intent layer, which is the largest remaining
+**Next, in order.** The gable end wall and second-storey walls come next, which
+the renders exposed. Then the intent layer, which is the largest remaining
 reduction in agent reasoning but benefits from having more to reason about.
 
 **Read first if you are new here.** [`AGENTS.md`](AGENTS.md) if you are an
@@ -77,23 +75,25 @@ that table read `verified-locally` or better.
 
 - [x] **Blender — done, and `verified-in-ci`.** `pip install bpy` gives a
       headless Blender as a Python module, so `tools/verify_blender.py` runs on
-      every commit with no display and no manual step. 81 checks against Blender
-      5.0.1: bounds to ~1e-8 m on all 21 assets, triangle counts, hull counts, a
+      every commit with no display and no manual step. 97 checks against Blender
+      5.0.1 in CI: bounds to ~1e-8 m on all 22 assets, triangle counts, hull counts, a
       doorway's collision void where its aperture is, a 37-instance layout at
       its declared transforms, and FBX export preserving `UCX_<mesh>_##`.
 - [x] **Unreal 5 — done, `verified-locally`.** `tools/verify_unreal.py` runs
-      headless against Unreal 5.6.1: 109 checks, 0 failed. Bounds to 0.0000 cm on
-      all 21 assets, hull counts matching `collision.hull_count`, a 37-instance
+      headless against Unreal 5.6.1: 114 checks, 0 failed. Bounds to 0.0000 cm on
+      all 22 assets, hull counts matching `collision.hull_count`, a 37-instance
       layout at its declared transforms, and the doorway aperture void where
       Unreal's own auto-collision would have sealed it. Not in CI because the
       engine is a licensed multi-gigabyte install.
 - [ ] Unreal: a `PlayerStart` outside the building pathing through the doorway
       to a point inside, so the aperture is proven at runtime and not only in
       the collision data.
-- [ ] **Unity — blocked on a licence, not on work.** Unity 6000.4.11f1 is
+- [ ] **Unity — blocked on a licence and a missing verification harness.** Unity 6000.4.11f1 is
       installed on the verification machine and batch mode refuses to start with
       "Found 0 entitlement groups and 0 free entitlements". One interactive sign
-      in to Unity Hub unblocks it; see `docs/engine-support.md`. Then: all 21
+      in to Unity Hub clears that external block, but the documented
+      `Tessera.TesseraVerify.Run` entry point is not yet in the repository; see
+      `docs/engine-support.md`. Then: all 22
       GLBs import as prefabs, `BuildLayout` instantiates every instance, a
       `CharacterController` of the reference dimensions walks through the
       doorway in play mode, and no convex `MeshCollider` exists in the scene.
@@ -177,21 +177,22 @@ that is the finding.
 - [x] **Interior wall, doorway and corner pieces**, so an interior room can be
       closed *and* entered. The L corner closes a perimeter without overlap but
       carries no opening, which is why the benchmark repair could only build an
-      alcove. `examples/interior_rooms/` is the room it could not be: 58
+      alcove. `examples/interior_rooms/` is the room it could not be: 56
       instances, 0 manual corrections, 0 errors, 0 warnings, three routes proven
       by flood fill, and a control test that swaps the doorway for a solid wall
       and requires `TSR_LAYOUT_UNREACHABLE`. Decisions in
       [`docs/decisions/0009-interior-pieces.md`](docs/decisions/0009-interior-pieces.md)
-- [ ] **A wall-to-wall junction, so a partition can meet a perimeter wall.**
+- [x] **A wall-to-wall junction, so a partition can meet a perimeter wall.**
       Found while building the above. A perimeter wall's innermost surface is
       its plinth, at `WALL_THICKNESS + PLINTH_PROUD` = 0.23 m from the bay
       line, and 0.23 is not a whole number of `GRID_XY` units — so a
       module-length partition on the grid cannot finish flush against one. It
-      overlaps by 0.0011 m³, which is small enough to look like noise, or it
-      leaves a 0.17 m slot. Published as `derived.perimeter_inner_face_inset`
-      and `derived.perimeter_inset_is_on_grid`. Until it exists, an interior
-      room must stand clear of the perimeter, which is why the example has a
-      corridor all the way round rather than a room in a corner
+      overlaps by 0.00108 m³, which is small enough to look like noise, or it
+      leaves a 0.17 m slot. `wall.junction.trim.3m8` rebates only that lower
+      overlap, mates through a dedicated connector pair, and finishes on the
+      next bay line. The interior-room example now reuses two perimeter walls.
+      Decision in
+      [`docs/decisions/0010`](docs/decisions/0010-wall-junction-bridges-to-the-bay-line.md)
 - [ ] A shorter beam, so a stairwell can be trimmed without a beam crossing the
       flight — the two-storey example is shaped around not having one
 - [ ] **A gable end wall.** Rendering the workshop showed daylight straight
@@ -305,7 +306,7 @@ assets are ranked by how much agent guesswork they remove, not by count. Forty
 assets an agent places correctly on the first attempt are worth more than two
 hundred it has to be corrected on. The initial eighteen were chosen to prove the
 contract end to end rather than to look like a library; the kit has since grown
-to twenty-one. Growth is also not the only route — under
+to twenty-two. Growth is also not the only route — under
 [`decisions/0008`](docs/decisions/0008-scope-and-replaceable-layers.md) anyone
 can supply their own kit and keep everything else.
 

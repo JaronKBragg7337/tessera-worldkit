@@ -1,7 +1,7 @@
 {
   "schema": "tessera.layout/1",
   "name": "Room Inside a Building",
-  "description": "A 16 x 12 m shell with a free-standing 12 x 8 m room inside it: four interior corners and one interior wall close it, one interior doorway opens it, and a corridor runs all the way around. The room is the first thing in this kit that is both closed and enterable.",
+  "description": "A 16 x 12 m shell with a room partitioned from its south-west corner. The room reuses two perimeter walls; two rebated junction trims, one interior doorway and one interior corner close the other sides without overlapping the perimeter plinth.",
   "generator": "tessera.assemble.Builder",
   "catalog": {
     "kit": {
@@ -9,7 +9,7 @@
       "version": "1.0.0"
     },
     "contract_version": "1.0.0",
-    "fingerprint": "58102ca826808059740353ed6927fe3d84bbcd5bb0cb2b3095cf6fcbc137726d"
+    "fingerprint": "b3089508434fb16a423ad1176c82cf0d5f5c5df22232d2e29ecbafe25bcc06a2"
   },
   "space": {
     "convention": "tessera.space/1",
@@ -28,7 +28,7 @@
       6.3306
     ]
   },
-  "instance_count": 58,
+  "instance_count": 56,
   "assets_used": [
     "tsr:shell/door.leaf.1m2",
     "tsr:shell/floor.slab.4m",
@@ -40,16 +40,16 @@
     "tsr:shell/stair.stoop.1m2",
     "tsr:shell/wall.corner.4m",
     "tsr:shell/wall.doorway.4m",
-    "tsr:shell/wall.interior.4m",
     "tsr:shell/wall.interior.corner.4m",
     "tsr:shell/wall.interior.doorway.4m",
+    "tsr:shell/wall.junction.trim.3m8",
     "tsr:shell/wall.straight.4m",
     "tsr:shell/wall.window.4m",
     "tsr:shell/window.leaf.1m8"
   ],
   "placement_method": {
     "explicit": 1,
-    "solved_from_contract": 57
+    "solved_from_contract": 55
   },
   "instances": [
     {
@@ -1004,42 +1004,11 @@
       "scale": 1.0
     },
     {
-      "id": "wall_interior_corner_4m_01",
-      "asset": "tsr:shell/wall.interior.corner.4m",
+      "id": "wall_junction_trim_3m8_01",
+      "asset": "tsr:shell/wall.junction.trim.3m8",
       "position": [
-        2.0,
-        2.0,
-        0.5
-      ],
-      "rotation_degrees": [
-        0.0,
-        0.0,
-        0.0
-      ],
-      "scale": 1.0,
-      "connections": [
-        {
-          "from": "edge_pos_x",
-          "to": {
-            "instance": "wall_interior_doorway_4m_01",
-            "connector": "edge_neg_x"
-          }
-        },
-        {
-          "from": "edge_pos_y",
-          "to": {
-            "instance": "wall_interior_corner_4m_04",
-            "connector": "edge_pos_x"
-          }
-        }
-      ]
-    },
-    {
-      "id": "wall_interior_corner_4m_02",
-      "asset": "tsr:shell/wall.interior.corner.4m",
-      "position": [
-        14.0,
-        2.0,
+        12.0,
+        0.19999999999999998,
         0.5
       ],
       "rotation_degrees": [
@@ -1050,65 +1019,41 @@
       "scale": 1.0,
       "connections": [
         {
-          "from": "edge_pos_x",
+          "from": "perimeter",
           "to": {
-            "instance": "wall_interior_corner_4m_03",
-            "connector": "edge_pos_y"
+            "instance": "wall_straight_4m_01",
+            "connector": "partition_pos_x_pos_y"
           }
         },
         {
-          "from": "edge_pos_y",
+          "from": "partition",
           "to": {
-            "instance": "wall_interior_doorway_4m_01",
-            "connector": "edge_pos_x"
+            "instance": "wall_interior_corner_4m_01",
+            "connector": "edge_pos_y"
           }
         }
       ]
     },
     {
-      "id": "wall_interior_corner_4m_03",
-      "asset": "tsr:shell/wall.interior.corner.4m",
+      "id": "wall_junction_trim_3m8_02",
+      "asset": "tsr:shell/wall.junction.trim.3m8",
       "position": [
-        14.0,
-        10.0,
+        0.19999999999999998,
+        7.8,
         0.5
       ],
       "rotation_degrees": [
-        180.0,
+        0.0,
         0.0,
         0.0
       ],
       "scale": 1.0,
       "connections": [
         {
-          "from": "edge_pos_x",
+          "from": "perimeter",
           "to": {
-            "instance": "wall_interior_4m_01",
-            "connector": "edge_neg_x"
-          }
-        }
-      ]
-    },
-    {
-      "id": "wall_interior_corner_4m_04",
-      "asset": "tsr:shell/wall.interior.corner.4m",
-      "position": [
-        2.0,
-        10.0,
-        0.5
-      ],
-      "rotation_degrees": [
-        270.0,
-        0.0,
-        0.0
-      ],
-      "scale": 1.0,
-      "connections": [
-        {
-          "from": "edge_pos_y",
-          "to": {
-            "instance": "wall_interior_4m_01",
-            "connector": "edge_pos_x"
+            "instance": "wall_straight_4m_03",
+            "connector": "partition_pos_x_neg_y"
           }
         }
       ]
@@ -1117,8 +1062,8 @@
       "id": "wall_interior_doorway_4m_01",
       "asset": "tsr:shell/wall.interior.doorway.4m",
       "position": [
-        6.0,
-        2.0,
+        4.0,
+        7.8,
         0.5
       ],
       "rotation_degrees": [
@@ -1126,14 +1071,23 @@
         0.0,
         0.0
       ],
-      "scale": 1.0
+      "scale": 1.0,
+      "connections": [
+        {
+          "from": "edge_neg_x",
+          "to": {
+            "instance": "wall_junction_trim_3m8_02",
+            "connector": "partition"
+          }
+        }
+      ]
     },
     {
-      "id": "wall_interior_4m_01",
-      "asset": "tsr:shell/wall.interior.4m",
+      "id": "wall_interior_corner_4m_01",
+      "asset": "tsr:shell/wall.interior.corner.4m",
       "position": [
-        10.0,
-        10.0,
+        12.0,
+        8.0,
         0.5
       ],
       "rotation_degrees": [
@@ -1141,14 +1095,23 @@
         0.0,
         0.0
       ],
-      "scale": 1.0
+      "scale": 1.0,
+      "connections": [
+        {
+          "from": "edge_pos_x",
+          "to": {
+            "instance": "wall_interior_doorway_4m_01",
+            "connector": "edge_pos_x"
+          }
+        }
+      ]
     },
     {
       "id": "prop_workbench_01",
       "asset": "tsr:shell/prop.workbench",
       "position": [
         5.0,
-        9.0,
+        5.8,
         0.5
       ],
       "rotation_degrees": [
@@ -1162,8 +1125,8 @@
       "id": "prop_crate_small_01",
       "asset": "tsr:shell/prop.crate.small",
       "position": [
-        11.5,
-        8.5,
+        10.5,
+        6.5,
         0.5
       ],
       "rotation_degrees": [
@@ -1540,7 +1503,7 @@
       ]
     }
   ],
-  "discovered_connections": 69,
+  "discovered_connections": 64,
   "reachability": [
     {
       "label": "terrain up the stoop to the threshold",
@@ -1559,12 +1522,12 @@
     {
       "label": "corridor into the room through the interior doorway",
       "from": [
-        8.0,
-        1.0,
+        6.0,
+        9.0,
         0.5
       ],
       "to": [
-        8.0,
+        6.0,
         6.0,
         0.5
       ],
@@ -1573,12 +1536,12 @@
     {
       "label": "back out of the room to the entrance",
       "from": [
-        12.0,
-        8.0,
+        10.0,
+        6.0,
         0.5
       ],
       "to": [
-        2.0,
+        6.0,
         1.0,
         0.5
       ],

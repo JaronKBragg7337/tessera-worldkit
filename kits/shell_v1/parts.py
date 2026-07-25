@@ -127,7 +127,33 @@ def skirting(solid, a0, a1, axis=0, thickness=IT):
     return solid
 
 
-def wall_connectors(length=M, height=H, thickness=T, extra=()):
+def wall_junction_receivers(length=M, height=H, thickness=T):
+    """Receivers for a rebated partition trim on either face of a wall.
+
+    A perimeter wall has no intrinsic inside: the same part is rotated around
+    all four sides of a building, and older examples do not use one consistent
+    winding. Receivers therefore exist on both faces, near both bay ends. Their
+    along-wall offset is chosen in config so mating the trim places its pivot
+    exactly on GRID_XY.
+    """
+    o = cfg.WALL_JUNCTION_RECEIVER_OFFSET
+    out = []
+    for end, x in (("neg_x", o), ("pos_x", length - o)):
+        out.extend([
+            conn("partition_%s_neg_y" % end, "wall_face",
+                 (x, 0, height / 2), (0, -1, 0), (0, 0, 1),
+                 role="junction_receiver",
+                 notes="receives the rebated end of a partition junction trim"),
+            conn("partition_%s_pos_y" % end, "wall_face",
+                 (x, thickness, height / 2), (0, 1, 0), (0, 0, 1),
+                 role="junction_receiver",
+                 notes="receives the rebated end of a partition junction trim"),
+        ])
+    return out
+
+
+def wall_connectors(length=M, height=H, thickness=T, extra=(),
+                    receive_partitions=False):
     c = [
         conn("base", "wall_base", (length / 2, thickness / 2, 0), (0, 0, -1),
              (1, 0, 0), mode="surface", extent_half=(length / 2, thickness / 2),
@@ -141,6 +167,8 @@ def wall_connectors(length=M, height=H, thickness=T, extra=()):
         conn("edge_pos_x", "wall_edge", (length, thickness / 2, height / 2),
              (1, 0, 0), (0, 0, 1), role="seam"),
     ]
+    if receive_partitions:
+        c.extend(wall_junction_receivers(length, height, thickness))
     c.extend(extra)
     return c
 
@@ -229,7 +257,7 @@ def wall_straight():
         tags=["modular", "perimeter"],
         solid=s, mesh=surface_from_boxset(s, "M_Concrete"),
         materials=slots("M_Concrete"),
-        connectors=wall_connectors(),
+        connectors=wall_connectors(receive_partitions=True),
         pivot_convention="bay_min_corner_on_base",
         support=dict(requires_support=True, rests_on=["floor_top", "foundation_top"],
                      support_axis="z", may_float=False),
@@ -300,7 +328,7 @@ def wall_doorway():
         tags=["modular", "perimeter", "traversable"],
         solid=s, mesh=surface_from_boxset(s, "M_Concrete"),
         materials=slots("M_Concrete"),
-        connectors=wall_connectors(extra=[
+        connectors=wall_connectors(receive_partitions=True, extra=[
             conn("jamb_neg_y", "opening_jamb", (M / 2, T / 2, cfg.DOOR_HEIGHT / 2),
                  (0, -1, 0), (1, 0, 0), role="hinge_receiver",
                  notes="mid-reveal mount point; a leaf mated here sits centred "
@@ -376,7 +404,7 @@ def wall_window():
         tags=["modular", "perimeter", "glazed"],
         solid=s, mesh=surface_from_boxset(s, "M_Concrete"),
         materials=slots("M_Concrete"),
-        connectors=wall_connectors(extra=[
+        connectors=wall_connectors(receive_partitions=True, extra=[
             conn("jamb_neg_y", "opening_jamb", (M / 2, T / 2, (z0 + z1) / 2),
                  (0, -1, 0), (1, 0, 0), role="glazing_receiver"),
             conn("jamb_pos_y", "opening_jamb", (M / 2, T / 2, (z0 + z1) / 2),
@@ -1040,11 +1068,10 @@ def wall_interior():
         support=INTERIOR_SUPPORT,
         clearance_boxes=[],
         notes=("Runs the full bay along +X, %0.2f m thick along +Y. Seams to "
-               "other partitions on the bay grid. It cannot terminate flush "
-               "against a *perimeter* wall: that wall's innermost surface is "
-               "its plinth, at derived.perimeter_inner_face_inset from the bay "
-               "line, which is not a whole number of grid units -- see "
-               "derived.perimeter_inset_is_on_grid." % IT),
+               "other partitions on the bay grid. Do not start it directly at "
+               "a perimeter wall: mate wall.junction.trim.3m8 to that wall and "
+               "continue this piece from the trim's 'partition' connector."
+               % IT),
     )
 
 
@@ -1155,10 +1182,60 @@ def wall_interior_corner():
     )
 
 
+# =================================================== 22 wall junction trim
+def wall_junction_trim():
+    """From a perimeter wall face to an ordinary partition on a bay line.
+
+    The perimeter plinth projects farther into the room than the wall body. A
+    full-height partition started at the body face therefore intersects the
+    plinth at floor level. This trim removes exactly that lower projection from
+    its perimeter end: below PLINTH_HEIGHT it starts at PLINTH_PROUD; above it
+    starts at zero. Its far end is a normal wall_edge on the next MODULE line,
+    so every existing interior wall and doorway continues from it unchanged.
+    """
+    length = cfg.WALL_JUNCTION_TRIM_LENGTH
+    s = partition_shell(length=length)
+    s.subtract((-0.001, -0.001, -0.001),
+               (cfg.PLINTH_PROUD, IT + 0.001, cfg.PLINTH_HEIGHT))
+    skirting(s, 0, length, axis=0)
+    return dict(
+        asset_id="tsr:shell/wall.junction.trim.3m8",
+        name="Wall Junction Trim 3.8 m",
+        category="structure", semantic_role="wall",
+        tags=["modular", "interior", "partition", "junction", "trim"],
+        solid=s, mesh=surface_from_boxset(s, "M_Plaster"),
+        materials=slots("M_Plaster"),
+        connectors=[
+            conn("base", "wall_base", (length / 2, IT / 2, 0), (0, 0, -1),
+                 (1, 0, 0), mode="surface",
+                 extent_half=(length / 2, IT / 2), role="support",
+                 required=True),
+            conn("top", "wall_top", (length / 2, IT / 2, H), (0, 0, 1),
+                 (1, 0, 0), mode="surface",
+                 extent_half=(length / 2, IT / 2), role="bearing"),
+            conn("perimeter", "wall_junction", (0, IT / 2, H / 2),
+                 (-1, 0, 0), (0, 0, 1), role="junction",
+                 notes="rebated end; mates only to a perimeter wall_face receiver"),
+            conn("partition", "wall_edge", (length, IT / 2, H / 2),
+                 (1, 0, 0), (0, 0, 1), role="seam",
+                 notes="ordinary partition end on the next bay line"),
+        ],
+        pivot_convention="bay_min_corner_on_base",
+        support=INTERIOR_SUPPORT,
+        clearance_boxes=[],
+        notes=("Mates its rebated end to a perimeter wall and bridges %.2f m "
+               "to the next bay line. The lower %.2f m starts %.2f m late to "
+               "clear the perimeter plinth; above it the trim meets the wall "
+               "body directly. Continue only from connector 'partition'."
+               % (length, cfg.PLINTH_HEIGHT, cfg.PLINTH_PROUD)),
+    )
+
+
 PARTS = [
     foundation_pad, floor_slab, wall_straight, wall_corner, wall_doorway,
     door_leaf, wall_window, window_leaf, roof_panel, roof_ridge,
     prop_crate, prop_workbench,
     stair_straight, floor_opening, beam, railing, column, stair_stoop,
     wall_interior, wall_interior_doorway, wall_interior_corner,
+    wall_junction_trim,
 ]

@@ -1,7 +1,7 @@
 {
   "engine": "5.6.1-44394996+++UE5+Release-5.6",
-  "fingerprint": "58102ca826808059740353ed6927fe3d84bbcd5bb0cb2b3095cf6fcbc137726d",
-  "checks": 109,
+  "fingerprint": "b3089508434fb16a423ad1176c82cf0d5f5c5df22232d2e29ecbafe25bcc06a2",
+  "checks": 114,
   "failed": 0,
   "auto_generated_hulls_before_replacement": {
     "foundation.pad.4m": 1,
@@ -24,7 +24,8 @@
     "stair.stoop.1m2": 1,
     "wall.interior.4m": 1,
     "wall.interior.doorway.4m": 1,
-    "wall.interior.corner.4m": 1
+    "wall.interior.corner.4m": 1,
+    "wall.junction.trim.3m8": 1
   },
   "results": [
     {
@@ -551,6 +552,31 @@
       "name": "wall.interior.corner.4m box collision persisted",
       "ok": true,
       "detail": "12 box(es) stored"
+    },
+    {
+      "name": "wall.junction.trim.3m8 imports",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "name": "wall.junction.trim.3m8 bounds match the contract",
+      "ok": true,
+      "detail": "worst axis error 0.0000 cm"
+    },
+    {
+      "name": "wall.junction.trim.3m8 collision rebuilt from the contract",
+      "ok": true,
+      "detail": "6 of 6 hulls"
+    },
+    {
+      "name": "wall.junction.trim.3m8 auto-generated collision removed",
+      "ok": true,
+      "detail": "0 convex hull(s) left"
+    },
+    {
+      "name": "wall.junction.trim.3m8 box collision persisted",
+      "ok": true,
+      "detail": "6 box(es) stored"
     },
     {
       "name": "doorway collision leaves the aperture void",
