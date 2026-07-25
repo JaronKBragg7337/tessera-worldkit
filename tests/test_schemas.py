@@ -48,6 +48,14 @@ def test_layout_validates(root, layout):
     assert not errors, errors[0].message
 
 
+def test_brief_validates(root, catalog):
+    from tessera.brief import build_brief
+    schema = _load(root, "brief.schema.json")
+    validator = jsonschema.Draft202012Validator(schema)
+    errors = sorted(validator.iter_errors(build_brief(catalog)), key=lambda e: e.path)
+    assert not errors, errors[0].message
+
+
 def test_report_validates(root, catalog, layout):
     from tessera.validate import build_report, validate_layout
     schema = _load(root, "report.schema.json")

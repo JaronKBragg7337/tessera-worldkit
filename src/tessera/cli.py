@@ -18,6 +18,7 @@ import os
 import sys
 
 from .assemble import Builder
+from .brief import build_brief, render_text, write_brief
 from .catalog import build_catalog, load_catalog, write_catalog
 from .validate import (
     Collector, build_report, render_terminal, validate_asset, validate_layout,
@@ -145,6 +146,35 @@ def cmd_assemble(args):
     return EXIT_OK
 
 
+def cmd_brief(args):
+    """Emit the context-budgeted digest a remote or mobile agent can afford."""
+    catalog = load_catalog(args.catalog)
+    brief = build_brief(catalog, include_notes=args.notes)
+    if args.out:
+        write_brief(brief, args.out)
+    if args.format == "text":
+        text = render_text(brief)
+        print(text)
+    elif getattr(args, "json", False) or args.format == "json":
+        text = json.dumps(brief, separators=(",", ":"))
+        print(text)
+    if args.stats:
+        full = len(json.dumps(catalog, separators=(",", ":")))
+        compact = len(json.dumps(brief, separators=(",", ":")))
+        rendered = len(render_text(brief))
+        print(json.dumps({
+            "full_catalog_chars": full,
+            "brief_json_chars": compact,
+            "brief_text_chars": rendered,
+            "ratio_json": round(compact / full, 4),
+            "ratio_text": round(rendered / full, 4),
+            "approx_tokens_full": round(full / 3.6),
+            "approx_tokens_brief_json": round(compact / 3.6),
+            "approx_tokens_brief_text": round(rendered / 3.6),
+        }, indent=2), file=sys.stderr)
+    return EXIT_OK
+
+
 def cmd_doctor(args):
     """Answer 'is this environment able to run Tessera at all'."""
     import platform
@@ -209,6 +239,17 @@ def main(argv=None):
     a.add_argument("--catalog", default="build/catalog.json")
     a.add_argument("--out", default="layout.json")
     a.set_defaults(func=cmd_assemble)
+
+    br = sub.add_parser("brief", parents=[common],
+                        help="context-budgeted digest for a phone or remote agent")
+    br.add_argument("--catalog", default="build/catalog.json")
+    br.add_argument("--format", choices=["json", "text"], default="text")
+    br.add_argument("--out", help="also write the JSON brief here")
+    br.add_argument("--notes", action="store_true",
+                    help="include per-asset prose notes (costs budget)")
+    br.add_argument("--stats", action="store_true",
+                    help="print size comparison to stderr")
+    br.set_defaults(func=cmd_brief)
 
     doc = sub.add_parser("doctor", parents=[common], help="report what this environment can do")
     doc.set_defaults(func=cmd_doctor)
