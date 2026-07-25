@@ -280,7 +280,11 @@ def fingerprint(catalog) -> str:
 
 def write_catalog(catalog, path):
     text = json.dumps(catalog, indent=2, sort_keys=False) + "\n"
-    with open(path, "w", encoding="utf-8") as fh:
+    # newline="\n" is not cosmetic. Without it Python translates to CRLF on
+    # Windows, the build stops being byte-identical across platforms, and a
+    # Windows contributor fails the "committed output is current" check for
+    # reasons nothing on screen explains. Found by building on Windows.
+    with open(path, "w", encoding="utf-8", newline="\n") as fh:
         fh.write(text)
     return hashlib.sha256(text.encode()).hexdigest()
 

@@ -10,13 +10,13 @@ import os
 
 def write_obj(path, mesh, materials, name="asset"):
     mtl_path = os.path.splitext(path)[0] + ".mtl"
-    with open(mtl_path, "w", encoding="utf-8") as fh:
+    with open(mtl_path, "w", encoding="utf-8", newline="\n") as fh:
         for m in materials:
             fh.write("newmtl %s\n" % m.name)
             fh.write("Kd %.4f %.4f %.4f\n" % tuple(m.base_color[:3]))
             fh.write("d %.4f\n" % m.base_color[3])
             fh.write("Ns %.2f\n\n" % max(1.0, (1.0 - m.roughness) * 400))
-    with open(path, "w", encoding="utf-8") as fh:
+    with open(path, "w", encoding="utf-8", newline="\n") as fh:
         fh.write("# Tessera %s\n" % name)
         fh.write("mtllib %s\n" % os.path.basename(mtl_path))
         fh.write("o %s\n" % name)

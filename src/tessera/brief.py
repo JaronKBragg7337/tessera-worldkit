@@ -316,6 +316,6 @@ def render_text(brief) -> str:
 
 
 def write_brief(brief, path):
-    with open(path, "w", encoding="utf-8") as fh:
+    with open(path, "w", encoding="utf-8", newline="\n") as fh:
         json.dump(brief, fh, separators=(",", ":"), sort_keys=False)
     return path

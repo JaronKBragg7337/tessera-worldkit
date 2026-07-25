@@ -40,7 +40,7 @@ def build_report(collector, subject, subject_kind="layout", extra=None):
 
 
 def write_report(report, path):
-    with open(path, "w", encoding="utf-8") as fh:
+    with open(path, "w", encoding="utf-8", newline="\n") as fh:
         json.dump(report, fh, indent=2)
     return path
 

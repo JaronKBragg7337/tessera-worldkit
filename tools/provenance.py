@@ -151,7 +151,7 @@ def main():
 
     out = os.path.join(ROOT, "provenance", "manifest.json")
     os.makedirs(os.path.dirname(out), exist_ok=True)
-    with open(out, "w", encoding="utf-8") as fh:
+    with open(out, "w", encoding="utf-8", newline="\n") as fh:
         json.dump(manifest, fh, indent=2)
     print("wrote %s (%d assets, %d generator files)"
           % (out, len(entries), len(generators)))

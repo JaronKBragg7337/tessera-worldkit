@@ -25,8 +25,32 @@ Each adapter has a verification status, and the status is the honest one:
 | **JavaScript / three.js** | `adapters/three/` | `verified-in-ci` | 4 Node tests: the JS validator reaches the same verdict as Python on the known-good layout and on all 15 broken fixtures; transform conversions match the Python reference exactly; the grounding solver reproduces every assembled height |
 | **glTF / GLB output** | `src/tessera/export/glb.py` | `verified-in-ci` | every exported mesh is re-loaded by an independent third-party parser and confirmed watertight, winding-consistent, and of exactly the expected volume and extents |
 | **Blender** | `adapters/blender/tessera_blender.py` | `verified-in-ci` | 81 checks against **Blender 5.0.1** on every commit: all 18 assets import with bounds matching the contract to ~1e-8 m, triangle counts survive, collision hulls are built one per declared hull, a doorway's collision is void where its aperture is, a 37-instance layout lands at its declared transforms to 1.9e-7 m, and FBX export keeps the `UCX_<mesh>_##` names Unreal binds collision by |
-| **Unreal Engine 5** | `adapters/unreal/tessera_unreal.py` | `script-provided-unverified` | parses, imports without `unreal`, and its coordinate conversions are unit-tested; the import path has not been run against an editor. Needs a licensed engine install, so it cannot follow Blender's route |
+| **Unreal Engine 5** | `adapters/unreal/tessera_unreal.py` | `verified-locally` | 94 checks against **Unreal Engine 5.6.1**, headless: all 18 assets import with bounds matching the contract to **0.0000 cm**, collision is rebuilt one hull per declared hull and persists, a 37-instance layout spawns at its declared transforms to **0.0000 cm**, and a doorway's collision is void where its aperture is. Not in CI: Unreal needs a licensed multi-gigabyte install, so it cannot follow Blender's pip route |
 | **Unity** | `adapters/unity/Editor/TesseraImporter.cs` | `script-provided-unverified` | reviewed and structurally checked; not compiled against a Unity install |
+
+### What Unreal actually does with collision
+
+Worth stating plainly, because it is the founding claim of this repository and
+it now has an engine behind it rather than an argument:
+
+```
+VERIFY ok  doorway collision leaves the aperture void   0 hull(s) in the opening
+VERIFY ok  Unreal would have sealed it without us       auto-generated 1 convex hull(s)
+```
+
+Unreal puts a single 18-DOP convex hull over a doorway wall on import. That hull
+seals the doorway. Tessera replaces it with the 17 hulls of the carved solid and
+the opening stays open.
+
+Setting the mesh pipeline's `collision` property to `False` **does not prevent
+this** — it generated a hull either way in 5.6. So the adapter no longer tries to
+prevent it: it imports, removes whatever arrived, and rebuilds from the contract.
+
+Two further things that only running it revealed. The imported asset path cannot
+be constructed, because Interchange nests the result at
+`<dest>/<file stem>/StaticMeshes/<name>`; ask the task what it produced. And
+`FKBoxElem` X/Y/Z are *full* extents rather than half, which was confirmed by
+asking Unreal to fit a box to a known mesh and reading back what it stored.
 
 ### How Blender is verified without a Blender install
 
@@ -94,14 +118,19 @@ each is unit-tested for round-trip fidelity.
 |---|---|---|---|---|---|---|
 | Tessera (canonical) | +Z | +Y | right | m | identity | — |
 | Blender | +Z | +Y | right | m | identity | unchanged |
-| Unreal | +Z | +X | left | cm | `(x,y,z) -> (y*100, x*100, z*100)` | reversed |
+| Unreal | +Z | +X | left | cm | `(x,y,z) -> (x*100, -y*100, z*100)` | handled by the importer |
 | Unity | +Y | +Z | left | m | `(x,y,z) -> (x, z, y)` | reversed |
 | glTF / three.js | +Y | −Z | right | m | `(x,y,z) -> (x, z, -y)` | unchanged |
 
 Two notes that cause most real bugs:
 
-- **Unreal's X/Y swap is the handedness flip.** Do not apply an extra mirror on
-  top of it. Winding is reversed so normals stay outward.
+- **Unreal negates Y; it does not swap X and Y.** This adapter documented a swap
+  for weeks and it was wrong. Both a swap and a Y-negation are valid
+  right-to-left handedness flips, which is exactly why the mistake survives
+  inspection — but they differ by a 90-degree rotation, so every layout instance
+  would have been placed rotated and mirrored relative to its own geometry. The
+  mapping now in the table was *measured*: a 4.00 x 0.26 x 3.00 m wall imports
+  to X 0..400, Y -23..3, Z 0..300.
 - **The shipped `.glb` files are already in glTF space.** Blender's importer
   applies its own Y-up-to-Z-up conversion, which lands the mesh back in
   canonical space. That is correct — but it means you must not convert again.

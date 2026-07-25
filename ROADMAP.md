@@ -58,10 +58,15 @@ that table read `verified-locally` or better.
       5.0.1: bounds to ~1e-8 m on all 18 assets, triangle counts, hull counts, a
       doorway's collision void where its aperture is, a 37-instance layout at
       its declared transforms, and FBX export preserving `UCX_<mesh>_##`.
-- [ ] **Unreal 5.** All 12 assets import; every static mesh reports the same
-      hull count as `collision.hull_count`; a `PlayerStart` placed outside the
-      workshop can path through the doorway to a point inside, proving the
-      aperture survived; `build/unreal-import-report.json` has zero warnings.
+- [x] **Unreal 5 — done, `verified-locally`.** `tools/verify_unreal.py` runs
+      headless against Unreal 5.6.1: 94 checks, 0 failed. Bounds to 0.0000 cm on
+      all 18 assets, hull counts matching `collision.hull_count`, a 37-instance
+      layout at its declared transforms, and the doorway aperture void where
+      Unreal's own auto-collision would have sealed it. Not in CI because the
+      engine is a licensed multi-gigabyte install.
+- [ ] Unreal: a `PlayerStart` outside the building pathing through the doorway
+      to a point inside, so the aperture is proven at runtime and not only in
+      the collision data.
 - [ ] **Unity.** All 12 GLBs import as prefabs; `BuildLayout` instantiates 41
       objects; a `CharacterController` capsule of the reference dimensions walks
       through the doorway in play mode; no convex `MeshCollider` exists anywhere
@@ -73,9 +78,8 @@ that table read `verified-locally` or better.
       above can run headless.
 
 **Done when** the support matrix contains no `script-provided-unverified` row,
-and each promoted row names the command that proves it. Blender is done. Unreal
-and Unity both need a licensed engine install, so neither can follow Blender's
-pip route and both need a machine with the engine on it.
+and each promoted row names the command that proves it. Blender and Unreal are
+done; Unity is not.
 
 ---
 

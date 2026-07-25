@@ -142,7 +142,7 @@ def main():
     ]
 
     out = os.path.join(HERE, "layout.json")
-    with open(out, "w", encoding="utf-8") as fh:
+    with open(out, "w", encoding="utf-8", newline="\n") as fh:
         json.dump(layout, fh, indent=2)
     print("wrote %s" % out)
     print("  instances                %d" % layout["instance_count"])

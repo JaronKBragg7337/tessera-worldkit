@@ -111,3 +111,49 @@ def test_json_flag_works_on_either_side_of_the_subcommand(argv, capsys):
         assert json.loads(out)["blender_required"] is False
     else:
         assert "blender_required" in out
+
+
+def test_every_text_output_uses_lf(tmp_path, catalog):
+    """Byte-identical builds have to survive Windows too.
+
+    Python's text mode translates newlines to CRLF on Windows, so without an
+    explicit newline="\\n" the OBJ, MTL, catalog, report and brief writers all
+    produce different bytes on a different operating system -- and a Windows
+    contributor fails the "committed output is current" check for reasons
+    nothing on screen explains. Found by actually building on Windows.
+    """
+    import json
+    from tessera.brief import build_brief, write_brief
+    from tessera.catalog import write_catalog
+    from tessera.export.obj import write_obj
+    from tessera.validate import build_report, validate_asset, Collector
+    from tessera.boxset import BoxSet
+    from tessera.mesh import surface_from_boxset
+    from tessera.contract import MaterialSlot
+
+    mesh = surface_from_boxset(BoxSet.from_box((0, 0, 0), (1, 1, 1)), "M")
+    slot = MaterialSlot(0, "M", "structure")
+
+    outputs = []
+    obj = tmp_path / "probe.obj"
+    write_obj(str(obj), mesh, [slot], "probe")
+    outputs += [obj, tmp_path / "probe.mtl"]
+
+    cat = tmp_path / "catalog.json"
+    write_catalog(catalog, str(cat))
+    outputs.append(cat)
+
+    collector = Collector()
+    validate_asset(catalog["assets"][0], collector)
+    rep = tmp_path / "report.json"
+    with open(rep, "w", encoding="utf-8", newline="\n") as fh:
+        json.dump(build_report(collector, "probe", "asset"), fh, indent=2)
+    outputs.append(rep)
+
+    brief = tmp_path / "brief.json"
+    write_brief(build_brief(catalog), str(brief))
+    outputs.append(brief)
+
+    for path in outputs:
+        raw = path.read_bytes()
+        assert b"\r\n" not in raw, "%s contains CRLF" % path.name

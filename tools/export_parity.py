@@ -42,7 +42,8 @@ def main():
     cases = {}
     for name, (mutate, code) in sorted(CASES.items()):
         broken = mutate(layout)
-        with open(os.path.join(out_dir, name + ".json"), "w", encoding="utf-8") as fh:
+        with open(os.path.join(out_dir, name + ".json"), "w", encoding="utf-8",
+                  newline="\n") as fh:
             json.dump(broken, fh, indent=2)
         collector = validate_layout(broken, catalog)
         cases[name] = {
@@ -94,7 +95,7 @@ def main():
         "grounding": grounding[:20],
     }
     path = os.path.join(ROOT, "build", "parity-expected.json")
-    with open(path, "w", encoding="utf-8") as fh:
+    with open(path, "w", encoding="utf-8", newline="\n") as fh:
         json.dump(payload, fh, indent=2)
     print("wrote %s (%d fixtures, %d transforms, %d grounding cases)"
           % (path, len(cases), len(transforms), len(payload["grounding"])))

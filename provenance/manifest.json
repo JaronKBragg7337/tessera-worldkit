@@ -1,7 +1,7 @@
 {
   "schema": "tessera.provenance/1",
-  "generated_utc": "2026-07-25T11:27:20+00:00",
-  "git_commit": "a555681cef5d4cc70c8151ebe5029554829521db",
+  "generated_utc": "2026-07-25T12:33:50+00:00",
+  "git_commit": "b6e6a691618997aae145998c7bd9fcee27635c00",
   "declaration": "Every asset listed here was generated from scratch by the named function in this repository. No third-party mesh, texture, model, scan, photograph or asset library is read at any point in the generation pipeline. source_inputs is empty for every entry, and the validator fails any asset for which it is not.",
   "license": {
     "code_spdx": "0BSD",
@@ -775,11 +775,11 @@
     },
     {
       "path": "src/tessera/brief.py",
-      "sha256": "052f5c66755b9b73c468500ff503f2492fc51cb3e5b269f428b20d9e28cbf443"
+      "sha256": "697942a578addc295820cfd7454555be60fa7cf94c71d3dc9cbf4ba00899294c"
     },
     {
       "path": "src/tessera/catalog.py",
-      "sha256": "a834fccd9a09cbd5bbe7d3dac4f95de43a0fccf82fdcde6db120b84af3c3b2ce"
+      "sha256": "6d4dd7fd5911194b5c10ef30c6be1b98da89e925b3a56fda377a0a409abb5783"
     },
     {
       "path": "src/tessera/cli.py",
@@ -827,7 +827,7 @@
     },
     {
       "path": "src/tessera/validate/report.py",
-      "sha256": "eb703bde83221cb22df89733dc2c61521d0891c1dc81fc98dc92a7ebb6527500"
+      "sha256": "fe03fc34ed8eda020c2d4a6cdeb473f3e1ac67b17292b5f362a7401cb3fd9038"
     },
     {
       "path": "src/tessera/export/__init__.py",
@@ -839,7 +839,7 @@
     },
     {
       "path": "src/tessera/export/obj.py",
-      "sha256": "c2607434f9d37e0f2e6fac845b02592612b24da6b1e5e3a44573d1245ba045a8"
+      "sha256": "b498eca4e42524fb83ada84b79502abdd02dd7089dba6eef1f35f817f0a082b2"
     },
     {
       "path": "src/tessera/export/uv.py",
@@ -855,15 +855,27 @@
     },
     {
       "path": "tools/export_parity.py",
-      "sha256": "30767132c67adb76d8a4659b01b0af879d2a45cf56b81f31fe7a85d5dac43fb5"
+      "sha256": "fcb9c6c540e329b3451b4114c6b889cdb1fdaf43b814080886e74cd49971f59e"
     },
     {
       "path": "tools/provenance.py",
-      "sha256": "20a33a028e0ddbb78bb7e07469fe3726ccf1f9b9fa292f33a4789837d438cfa4"
+      "sha256": "5ccab75d17a76698affb524bbaaafe6afceecd5f9420e456ab3e37b7eba8105e"
+    },
+    {
+      "path": "tools/render_previews.py",
+      "sha256": "ecd3ec68f34168b425604fca110f7d13e0337768701910ba7162f4049d9361b2"
+    },
+    {
+      "path": "tools/verify_blender.py",
+      "sha256": "d0f8c95687bbf786f589115b9ae9b57398d709cd6336e6d6f9857f826b2e31dd"
     },
     {
       "path": "tools/verify_meshes.py",
       "sha256": "d1135f7a22187fda292cb976e0fa953bf0d55da61bbdea1b6a0f58b9c2c5ec59"
+    },
+    {
+      "path": "tools/verify_unreal.py",
+      "sha256": "22b9039595fd7d8213887dc5c65018a0741759195681ad49ba6b0d30cc49320b"
     }
   ]
 }
