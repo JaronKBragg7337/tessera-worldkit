@@ -21,12 +21,12 @@ Each adapter has a verification status, and the status is the honest one:
 
 | Target | Adapter | Status | What is actually proven |
 |---|---|---|---|
-| **Engine-neutral core** | `src/tessera/` | `verified-in-ci` | 59 tests: kernel invariants, contract coherence, 15 layout rules, 12 asset rules, schema conformance, deterministic builds |
+| **Engine-neutral core** | `src/tessera/` | `verified-in-ci` | 98 tests: kernel invariants, contract coherence, layout and asset rules, navigation, schema conformance, deterministic builds |
 | **JavaScript / three.js** | `adapters/three/` | `verified-in-ci` | 4 Node tests: the JS validator reaches the same verdict as Python on the known-good layout and on all 15 broken fixtures; transform conversions match the Python reference exactly; the grounding solver reproduces every assembled height |
 | **glTF / GLB output** | `src/tessera/export/glb.py` | `verified-in-ci` | every exported mesh is re-loaded by an independent third-party parser and confirmed watertight, winding-consistent, and of exactly the expected volume and extents |
-| **Blender** | `adapters/blender/tessera_blender.py` | `verified-in-ci` | 81 checks against **Blender 5.0.1** on every commit: all 21 assets import with bounds matching the contract to ~1e-8 m, triangle counts survive, collision hulls are built one per declared hull, a doorway's collision is void where its aperture is, a 37-instance layout lands at its declared transforms to 1.9e-7 m, and FBX export keeps the `UCX_<mesh>_##` names Unreal binds collision by |
-| **Unreal Engine 5** | `adapters/unreal/tessera_unreal.py` | `verified-locally` | 109 checks against **Unreal Engine 5.6.1**, headless: all 21 assets import with bounds matching the contract to **0.0000 cm**, collision is rebuilt one hull per declared hull and persists, a 37-instance layout spawns at its declared transforms to **0.0000 cm**, and a doorway's collision is void where its aperture is. Not in CI: Unreal needs a licensed multi-gigabyte install, so it cannot follow Blender's pip route |
-| **Unity** | `adapters/unity/Editor/TesseraImporter.cs` | `script-provided-unverified` | reviewed and structurally checked. Unity 6000.4.11f1 **is** installed on the verification machine, and batch mode refuses to start: no licence is activated. See below — this is one interactive step away from being verifiable |
+| **Blender** | `adapters/blender/tessera_blender.py` | `verified-in-ci` | 97 checks against **Blender 5.0.1** on every commit (also reproduced locally on 5.1.2): all 22 assets import with bounds matching the contract to ~1e-8 m, triangle counts survive, collision hulls are built one per declared hull, a doorway's collision is void where its aperture is, a 37-instance layout lands at its declared transforms to 1.9e-7 m, and FBX export keeps the `UCX_<mesh>_##` names Unreal binds collision by |
+| **Unreal Engine 5** | `adapters/unreal/tessera_unreal.py` | `verified-locally` | 114 checks against **Unreal Engine 5.6.1**, headless: all 22 assets import with bounds matching the contract to **0.0000 cm**, collision is rebuilt one hull per declared hull and persists, a 37-instance layout spawns at its declared transforms to **0.0000 cm**, and a doorway's collision is void where its aperture is. Not in CI: Unreal needs a licensed multi-gigabyte install, so it cannot follow Blender's pip route |
+| **Unity** | `adapters/unity/Editor/TesseraImporter.cs` | `script-provided-unverified` | reviewed and structurally checked. Unity 6000.4.11f1 **is** installed on the verification machine, but batch mode cannot start without a licence and the repository does not yet contain its documented verification entry point. See below |
 
 ### Why Unity is still unverified
 
@@ -44,22 +44,18 @@ No licence is activated. Unlike Blender's pip route or Unreal's offline install,
 Unity requires signing in to a Unity account, which is a person's credentials and
 an interactive step — so it is not something to automate around.
 
-**The unblock is one action:** open Unity Hub, sign in once, and a Personal
-licence is issued. After that:
-
-```
-Unity.exe -batchmode -nographics -quit ^
-    -projectPath C:\path\TesseraUnity ^
-    -executeMethod Tessera.TesseraVerify.Run ^
-    -logFile unity-verify.log
-```
+Signing in to Unity Hub and activating a Personal licence clears the external
+block. It is **not the only remaining step**: the repository currently contains
+the importer but not the previously documented `Tessera.TesseraVerify.Run`
+method or a self-contained Unity verification project. That command was
+aspirational, not executable, and has been removed until its entry point exists.
 
 Until that happens the row above stays `script-provided-unverified`, because a
 Unity adapter that has never been compiled is exactly as unproven as one that
 has never been written — and Unreal has now demonstrated that unverified
 adapters carry real, invisible coordinate bugs.
 
-> **Both engines have now been run against all 21 assets.** The three M3 interior
+> **Both engines have now been run against all 22 assets.** The three M3 interior
 > pieces — `wall.interior.4m`, `wall.interior.doorway.4m`,
 > `wall.interior.corner.4m` — were authored on a machine without `bpy` and were
 > not put through Unreal at the time, so the counts were deliberately left stale
@@ -67,12 +63,13 @@ adapters carry real, invisible coordinate bugs.
 > it is worth keeping the shape of it: a number an engine has not actually
 > produced is exactly what this table exists to prevent.
 >
-> They have since been run. Unreal 5.6.1: **109 checks, 0 failed**, and the new
+> They have since been run. Unreal 5.6.1: **114 checks, 0 failed**, and the new
 > pieces behave like the rest — bounds to 0.0000 cm, collision rebuilt one hull
 > per declared hull, and Unreal's own auto-generated convex hull removed in
 > every case. The interior doorway is the one that mattered: an interior door
 > sealed by auto-collision is the same defect as an exterior one, and just as
-> invisible.
+> invisible. The wall-junction trim added afterward is covered by the same run:
+> exact bounds and all six contract collision boxes persisted.
 
 ### What Unreal actually does with collision
 

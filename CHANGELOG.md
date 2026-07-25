@@ -8,18 +8,20 @@ a breaking contract change is a new schema id, never a silent edit.
 
 ## [Unreleased]
 
-Interior rooms. A room inside a building can now be closed *and* entered, which
-is the pair the L corner alone could never satisfy.
+Interior rooms, including the wall-to-wall junction. A room can now be closed,
+entered, and partitioned directly from a building perimeter without overlapping
+the perimeter plinth.
 
 ### Added
 
-- **Three interior parts** — `wall.interior.4m`, `wall.interior.doorway.4m`,
-  `wall.interior.corner.4m`. 21 assets, all passing the same 19 asset rules
+- **Four interior parts** — `wall.interior.4m`, `wall.interior.doorway.4m`,
+  `wall.interior.corner.4m`, `wall.junction.trim.3m8`. 22 assets, all passing
+  the same 19 asset rules
   unchanged. The interior aperture is the identical `DOOR_WIDTH × DOOR_HEIGHT`,
   so `door.leaf.1m2` hangs in either without a second leaf asset.
-- **`examples/interior_rooms`** — a free-standing 12 × 8 m room inside a
-  16 × 12 m shell. 58 instances, 0 manual corrections, 0 errors, 0 warnings,
-  three routes proven by flood fill.
+- **`examples/interior_rooms`** — a room partitioned from a corner of a
+  16 × 12 m shell, reusing two perimeter walls. 56 instances, 0 errors,
+  0 warnings, three routes proven by flood fill.
 - **A control test** that swaps the one interior doorway for a solid interior
   wall and requires `TSR_LAYOUT_UNREACHABLE`. Without it, "the room can be
   entered" would only be evidence that a flood fill can find *some* route.
@@ -28,18 +30,24 @@ is the pair the L corner alone could never satisfy.
 - **Four `config.validate()` checks** behind the new constants:
   `CFG_INTERIOR_THICKNESS_OFF_GRID`, `CFG_INTERIOR_GROOVE_TOO_DEEP`,
   `CFG_INTERIOR_SKIRT_TOO_TALL`, `CFG_INTERIOR_DOOR_PIER_TOO_NARROW`.
+- **Five junction configuration checks** keep the trim length, rebate, receiver,
+  and bay-line endpoints derived from the kit grid rather than encoded in
+  geometry.
 - **[`docs/decisions/0009-interior-pieces.md`](docs/decisions/0009-interior-pieces.md)**.
+- **[`docs/decisions/0010-wall-junction-bridges-to-the-bay-line.md`](docs/decisions/0010-wall-junction-bridges-to-the-bay-line.md)**.
 
-### Known
+### Fixed
 
-- **A partition cannot terminate flush against a perimeter wall.** A perimeter
+- **A partition could not terminate flush against a perimeter wall.** A perimeter
   wall's innermost surface is its plinth, `WALL_THICKNESS + PLINTH_PROUD` =
   0.23 m in from the bay line, and 0.23 is not a whole number of `GRID_XY`
-  units. A module-length partition on the grid overlaps it by 0.0011 m³ — small
-  enough to read as noise — or stops short and leaves a 0.17 m slot. Found by
-  building the corner-room version of the example first. It needs a junction
-  piece, which is on the M3 list; until then an interior room must stand clear
-  of the perimeter.
+  units. A module-length partition on the grid overlapped it by 0.00108 m³ —
+  small enough to read as noise — or stopped short and left a 0.17 m slot. The
+  dedicated 3.8 m junction now clears the lower plinth, solves its orientation
+  from connectors, and ends on the next bay line.
+- **Unity verification was described as one sign-in away when the repository
+  did not contain the documented batch-mode entry point.** The adapter remains
+  unverified until both the licence and the verification harness exist.
 
 ## [0.2.0] — 2026-07-25
 

@@ -59,6 +59,17 @@ INTERIOR_WALL_THICKNESS = WALL_THICKNESS
 INTERIOR_SKIRT_HEIGHT = 0.10
 INTERIOR_SKIRT_GROOVE = 0.02
 
+# A partition cannot meet a perimeter wall directly because the perimeter
+# plinth stands PLINTH_PROUD past the wall face. The junction trim starts at the
+# inner wall face and ends on the next MODULE line, so its length is one bay
+# less the wall-face offset. It rebates only its bottom PLINTH_HEIGHT by
+# PLINTH_PROUD: above the plinth it touches the wall body; below it touches the
+# plinth face. The receiver sits half a partition thickness from the end of a
+# perimeter module, inside the flat panel border, and mating it puts the trim's
+# bay-min pivot exactly one wall thickness from the perimeter bay line.
+WALL_JUNCTION_TRIM_LENGTH = MODULE - GRID_XY
+WALL_JUNCTION_RECEIVER_OFFSET = INTERIOR_WALL_THICKNESS / 2
+
 # --------------------------------------------------------------- detailing
 PANEL_INSET = 0.25        # border between the wall edge and the recessed bay
 PANEL_DEPTH = 0.04
@@ -176,13 +187,19 @@ def derived() -> dict:
         # 0.001 m3 -- small enough to look like noise and real enough to
         # z-fight), or it stops a grid step short and leaves a slot.
         #
-        # Until the M3 junction pieces exist, keep partition runs clear of
-        # perimeter walls; see docs/decisions/0009-interior-pieces.md.
+        # A regular partition still may not start here directly. Use
+        # wall.junction.trim.3m8, whose lower end is rebated to this inset and
+        # whose far end lands on the next module line. See decision 0010.
         "perimeter_inner_face_inset": WALL_THICKNESS + PLINTH_PROUD,
         "perimeter_inset_is_on_grid": abs(
             (WALL_THICKNESS + PLINTH_PROUD) / GRID_XY
             - round((WALL_THICKNESS + PLINTH_PROUD) / GRID_XY)) < 1e-9,
         "partition_thickness": INTERIOR_WALL_THICKNESS,
+        "wall_junction_trim_length": WALL_JUNCTION_TRIM_LENGTH,
+        "wall_junction_rebate": PLINTH_PROUD,
+        "wall_junction_origin_inset": (
+            WALL_JUNCTION_RECEIVER_OFFSET + INTERIOR_WALL_THICKNESS / 2
+        ),
         "storey_height": STOREY_HEIGHT,
         "second_floor_top_z": floor_top + STOREY_HEIGHT,
         "stair_steps": round(STOREY_HEIGHT / STAIR_RISE),
@@ -261,6 +278,36 @@ def validate() -> list:
             "the skirting groove runs off the top of the partition",
             "INTERIOR_SKIRT_HEIGHT + INTERIOR_SKIRT_GROOVE < %.2f" % WALL_HEIGHT,
             INTERIOR_SKIRT_HEIGHT + INTERIOR_SKIRT_GROOVE)
+    if (abs(WALL_JUNCTION_TRIM_LENGTH / GRID_XY
+            - round(WALL_JUNCTION_TRIM_LENGTH / GRID_XY)) > 1e-9):
+        bad("CFG_WALL_JUNCTION_LENGTH_OFF_GRID",
+            "wall junction trim length is not a whole number of grid steps",
+            "WALL_JUNCTION_TRIM_LENGTH / %.3f to be an integer" % GRID_XY,
+            WALL_JUNCTION_TRIM_LENGTH / GRID_XY)
+    if WALL_JUNCTION_TRIM_LENGTH <= PLINTH_PROUD:
+        bad("CFG_WALL_JUNCTION_CONSUMED_BY_REBATE",
+            "the plinth rebate consumes the whole junction trim",
+            "> %.3f" % PLINTH_PROUD, WALL_JUNCTION_TRIM_LENGTH)
+    junction_origin = (
+        WALL_JUNCTION_RECEIVER_OFFSET + INTERIOR_WALL_THICKNESS / 2
+    )
+    if abs(junction_origin / GRID_XY - round(junction_origin / GRID_XY)) > 1e-9:
+        bad("CFG_WALL_JUNCTION_ORIGIN_OFF_GRID",
+            "mating a junction trim would put its pivot off the XY grid",
+            "(WALL_JUNCTION_RECEIVER_OFFSET + "
+            "INTERIOR_WALL_THICKNESS / 2) / %.3f to be an integer" % GRID_XY,
+            junction_origin / GRID_XY)
+    junction_far = junction_origin + WALL_JUNCTION_TRIM_LENGTH
+    if abs(junction_far / MODULE - round(junction_far / MODULE)) > 1e-9:
+        bad("CFG_WALL_JUNCTION_END_OFF_MODULE",
+            "the far end of a mated junction trim misses the next bay line",
+            "(junction origin + WALL_JUNCTION_TRIM_LENGTH) / MODULE "
+            "to be an integer",
+            junction_far / MODULE)
+    if WALL_JUNCTION_RECEIVER_OFFSET >= MODULE / 2:
+        bad("CFG_WALL_JUNCTION_RECEIVER_OUTSIDE_BAY",
+            "the pair of junction receivers do not fit inside one wall bay",
+            "< %.3f" % (MODULE / 2), WALL_JUNCTION_RECEIVER_OFFSET)
     # An interior doorway carves the same aperture as an exterior one out of a
     # module-long partition, leaving a pier each side. A pier thinner than the
     # wall it is part of is a modelling error, not a slim design: it reads as a

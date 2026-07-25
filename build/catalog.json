@@ -5,7 +5,7 @@
     "id": "shell_v1",
     "version": "1.0.0"
   },
-  "generated_utc": "2026-07-25T18:12:41+00:00",
+  "generated_utc": "2026-07-25T20:12:32+00:00",
   "space": {
     "convention": "tessera.space/1",
     "linear_unit": "metre",
@@ -85,6 +85,8 @@
     "TILE_GROOVE": 0.05,
     "TILE_GROOVE_DEPTH": 0.03,
     "WALL_HEIGHT": 3.0,
+    "WALL_JUNCTION_RECEIVER_OFFSET": 0.1,
+    "WALL_JUNCTION_TRIM_LENGTH": 3.8,
     "WALL_THICKNESS": 0.2,
     "WINDOW_HEIGHT": 1.2,
     "WINDOW_SILL": 1.0,
@@ -107,16 +109,19 @@
     "perimeter_inner_face_inset": 0.23,
     "perimeter_inset_is_on_grid": false,
     "partition_thickness": 0.2,
+    "wall_junction_trim_length": 3.8,
+    "wall_junction_rebate": 0.03,
+    "wall_junction_origin_inset": 0.2,
     "storey_height": 3.2,
     "second_floor_top_z": 3.7,
     "stair_steps": 16,
     "stair_run": 4.0,
     "stair_angle_degrees": 38.66
   },
-  "asset_count": 21,
+  "asset_count": 22,
   "totals": {
-    "triangles": 4912,
-    "vertices": 2482
+    "triangles": 5016,
+    "vertices": 2536
   },
   "assets": [
     {
@@ -317,6 +322,8 @@
             "roof_edge",
             "roof_ridge",
             "wall_edge",
+            "wall_face",
+            "wall_junction",
             "wall_top"
           ],
           "tolerance": {
@@ -363,6 +370,8 @@
             "roof_ridge",
             "wall_base",
             "wall_edge",
+            "wall_face",
+            "wall_junction",
             "wall_top"
           ],
           "tolerance": {
@@ -409,6 +418,8 @@
             "roof_ridge",
             "wall_base",
             "wall_edge",
+            "wall_face",
+            "wall_junction",
             "wall_top"
           ],
           "tolerance": {
@@ -455,6 +466,8 @@
             "roof_ridge",
             "wall_base",
             "wall_edge",
+            "wall_face",
+            "wall_junction",
             "wall_top"
           ],
           "tolerance": {
@@ -501,6 +514,8 @@
             "roof_ridge",
             "wall_base",
             "wall_edge",
+            "wall_face",
+            "wall_junction",
             "wall_top"
           ],
           "tolerance": {
@@ -683,7 +698,7 @@
       "provenance": {
         "generator": "tessera.catalog/foundation_pad",
         "generator_version": "1.0.0+1.0.0",
-        "created_utc": "2026-07-25T18:12:41+00:00",
+        "created_utc": "2026-07-25T20:12:32+00:00",
         "authored_by": "Jaron K Bragg",
         "origin": "original-generated",
         "source_inputs": [],
@@ -952,6 +967,8 @@
             "roof_edge",
             "roof_ridge",
             "wall_edge",
+            "wall_face",
+            "wall_junction",
             "wall_top"
           ],
           "tolerance": {
@@ -998,6 +1015,8 @@
             "roof_ridge",
             "wall_base",
             "wall_edge",
+            "wall_face",
+            "wall_junction",
             "wall_top"
           ],
           "tolerance": {
@@ -1044,6 +1063,8 @@
             "roof_ridge",
             "wall_base",
             "wall_edge",
+            "wall_face",
+            "wall_junction",
             "wall_top"
           ],
           "tolerance": {
@@ -1090,6 +1111,8 @@
             "roof_ridge",
             "wall_base",
             "wall_edge",
+            "wall_face",
+            "wall_junction",
             "wall_top"
           ],
           "tolerance": {
@@ -1136,6 +1159,8 @@
             "roof_ridge",
             "wall_base",
             "wall_edge",
+            "wall_face",
+            "wall_junction",
             "wall_top"
           ],
           "tolerance": {
@@ -1350,7 +1375,7 @@
       "provenance": {
         "generator": "tessera.catalog/floor_slab",
         "generator_version": "1.0.0+1.0.0",
-        "created_utc": "2026-07-25T18:12:41+00:00",
+        "created_utc": "2026-07-25T20:12:32+00:00",
         "authored_by": "Jaron K Bragg",
         "origin": "original-generated",
         "source_inputs": [],
@@ -1583,6 +1608,8 @@
             "roof_ridge",
             "wall_base",
             "wall_edge",
+            "wall_face",
+            "wall_junction",
             "wall_top"
           ],
           "tolerance": {
@@ -1632,6 +1659,8 @@
             "roof_ridge",
             "wall_base",
             "wall_edge",
+            "wall_face",
+            "wall_junction",
             "wall_top"
           ],
           "tolerance": {
@@ -1678,6 +1707,8 @@
             "roof_edge",
             "roof_ridge",
             "wall_base",
+            "wall_face",
+            "wall_junction",
             "wall_top"
           ],
           "tolerance": {
@@ -1724,6 +1755,8 @@
             "roof_edge",
             "roof_ridge",
             "wall_base",
+            "wall_face",
+            "wall_junction",
             "wall_top"
           ],
           "tolerance": {
@@ -1733,6 +1766,198 @@
           },
           "required": false,
           "notes": ""
+        },
+        {
+          "id": "partition_neg_x_neg_y",
+          "kind": "wall_face",
+          "position": [
+            0.1,
+            0.0,
+            1.5
+          ],
+          "normal": [
+            0.0,
+            -1.0,
+            0.0
+          ],
+          "tangent": [
+            0.0,
+            0.0,
+            1.0
+          ],
+          "mating_mode": "point",
+          "extent_half": null,
+          "role": "junction_receiver",
+          "scale_class": "standard",
+          "compatible_kinds": [
+            "wall_junction"
+          ],
+          "incompatible_kinds": [
+            "floor_edge",
+            "floor_top",
+            "foundation_top",
+            "leaf_hinge",
+            "opening_jamb",
+            "prop_base",
+            "roof_bearing",
+            "roof_edge",
+            "roof_ridge",
+            "wall_base",
+            "wall_edge",
+            "wall_face",
+            "wall_top"
+          ],
+          "tolerance": {
+            "position_metres": 0.001,
+            "angle_degrees": 1.0,
+            "roll_degrees": 1.0
+          },
+          "required": false,
+          "notes": "receives the rebated end of a partition junction trim"
+        },
+        {
+          "id": "partition_neg_x_pos_y",
+          "kind": "wall_face",
+          "position": [
+            0.1,
+            0.2,
+            1.5
+          ],
+          "normal": [
+            0.0,
+            1.0,
+            0.0
+          ],
+          "tangent": [
+            0.0,
+            0.0,
+            1.0
+          ],
+          "mating_mode": "point",
+          "extent_half": null,
+          "role": "junction_receiver",
+          "scale_class": "standard",
+          "compatible_kinds": [
+            "wall_junction"
+          ],
+          "incompatible_kinds": [
+            "floor_edge",
+            "floor_top",
+            "foundation_top",
+            "leaf_hinge",
+            "opening_jamb",
+            "prop_base",
+            "roof_bearing",
+            "roof_edge",
+            "roof_ridge",
+            "wall_base",
+            "wall_edge",
+            "wall_face",
+            "wall_top"
+          ],
+          "tolerance": {
+            "position_metres": 0.001,
+            "angle_degrees": 1.0,
+            "roll_degrees": 1.0
+          },
+          "required": false,
+          "notes": "receives the rebated end of a partition junction trim"
+        },
+        {
+          "id": "partition_pos_x_neg_y",
+          "kind": "wall_face",
+          "position": [
+            3.9,
+            0.0,
+            1.5
+          ],
+          "normal": [
+            0.0,
+            -1.0,
+            0.0
+          ],
+          "tangent": [
+            0.0,
+            0.0,
+            1.0
+          ],
+          "mating_mode": "point",
+          "extent_half": null,
+          "role": "junction_receiver",
+          "scale_class": "standard",
+          "compatible_kinds": [
+            "wall_junction"
+          ],
+          "incompatible_kinds": [
+            "floor_edge",
+            "floor_top",
+            "foundation_top",
+            "leaf_hinge",
+            "opening_jamb",
+            "prop_base",
+            "roof_bearing",
+            "roof_edge",
+            "roof_ridge",
+            "wall_base",
+            "wall_edge",
+            "wall_face",
+            "wall_top"
+          ],
+          "tolerance": {
+            "position_metres": 0.001,
+            "angle_degrees": 1.0,
+            "roll_degrees": 1.0
+          },
+          "required": false,
+          "notes": "receives the rebated end of a partition junction trim"
+        },
+        {
+          "id": "partition_pos_x_pos_y",
+          "kind": "wall_face",
+          "position": [
+            3.9,
+            0.2,
+            1.5
+          ],
+          "normal": [
+            0.0,
+            1.0,
+            0.0
+          ],
+          "tangent": [
+            0.0,
+            0.0,
+            1.0
+          ],
+          "mating_mode": "point",
+          "extent_half": null,
+          "role": "junction_receiver",
+          "scale_class": "standard",
+          "compatible_kinds": [
+            "wall_junction"
+          ],
+          "incompatible_kinds": [
+            "floor_edge",
+            "floor_top",
+            "foundation_top",
+            "leaf_hinge",
+            "opening_jamb",
+            "prop_base",
+            "roof_bearing",
+            "roof_edge",
+            "roof_ridge",
+            "wall_base",
+            "wall_edge",
+            "wall_face",
+            "wall_top"
+          ],
+          "tolerance": {
+            "position_metres": 0.001,
+            "angle_degrees": 1.0,
+            "roll_degrees": 1.0
+          },
+          "required": false,
+          "notes": "receives the rebated end of a partition junction trim"
         }
       ],
       "occupancy": {
@@ -1954,7 +2179,7 @@
       "provenance": {
         "generator": "tessera.catalog/wall_straight",
         "generator_version": "1.0.0+1.0.0",
-        "created_utc": "2026-07-25T18:12:41+00:00",
+        "created_utc": "2026-07-25T20:12:32+00:00",
         "authored_by": "Jaron K Bragg",
         "origin": "original-generated",
         "source_inputs": [],
@@ -2200,6 +2425,8 @@
             "roof_ridge",
             "wall_base",
             "wall_edge",
+            "wall_face",
+            "wall_junction",
             "wall_top"
           ],
           "tolerance": {
@@ -2249,6 +2476,8 @@
             "roof_ridge",
             "wall_base",
             "wall_edge",
+            "wall_face",
+            "wall_junction",
             "wall_top"
           ],
           "tolerance": {
@@ -2298,6 +2527,8 @@
             "roof_ridge",
             "wall_base",
             "wall_edge",
+            "wall_face",
+            "wall_junction",
             "wall_top"
           ],
           "tolerance": {
@@ -2347,6 +2578,8 @@
             "roof_ridge",
             "wall_base",
             "wall_edge",
+            "wall_face",
+            "wall_junction",
             "wall_top"
           ],
           "tolerance": {
@@ -2393,6 +2626,8 @@
             "roof_edge",
             "roof_ridge",
             "wall_base",
+            "wall_face",
+            "wall_junction",
             "wall_top"
           ],
           "tolerance": {
@@ -2439,6 +2674,8 @@
             "roof_edge",
             "roof_ridge",
             "wall_base",
+            "wall_face",
+            "wall_junction",
             "wall_top"
           ],
           "tolerance": {
@@ -2733,7 +2970,7 @@
       "provenance": {
         "generator": "tessera.catalog/wall_corner",
         "generator_version": "1.0.0+1.0.0",
-        "created_utc": "2026-07-25T18:12:41+00:00",
+        "created_utc": "2026-07-25T20:12:32+00:00",
         "authored_by": "Jaron K Bragg",
         "origin": "original-generated",
         "source_inputs": [],
@@ -2973,6 +3210,8 @@
             "roof_ridge",
             "wall_base",
             "wall_edge",
+            "wall_face",
+            "wall_junction",
             "wall_top"
           ],
           "tolerance": {
@@ -3022,6 +3261,8 @@
             "roof_ridge",
             "wall_base",
             "wall_edge",
+            "wall_face",
+            "wall_junction",
             "wall_top"
           ],
           "tolerance": {
@@ -3068,6 +3309,8 @@
             "roof_edge",
             "roof_ridge",
             "wall_base",
+            "wall_face",
+            "wall_junction",
             "wall_top"
           ],
           "tolerance": {
@@ -3114,6 +3357,8 @@
             "roof_edge",
             "roof_ridge",
             "wall_base",
+            "wall_face",
+            "wall_junction",
             "wall_top"
           ],
           "tolerance": {
@@ -3123,6 +3368,198 @@
           },
           "required": false,
           "notes": ""
+        },
+        {
+          "id": "partition_neg_x_neg_y",
+          "kind": "wall_face",
+          "position": [
+            0.1,
+            0.0,
+            1.5
+          ],
+          "normal": [
+            0.0,
+            -1.0,
+            0.0
+          ],
+          "tangent": [
+            0.0,
+            0.0,
+            1.0
+          ],
+          "mating_mode": "point",
+          "extent_half": null,
+          "role": "junction_receiver",
+          "scale_class": "standard",
+          "compatible_kinds": [
+            "wall_junction"
+          ],
+          "incompatible_kinds": [
+            "floor_edge",
+            "floor_top",
+            "foundation_top",
+            "leaf_hinge",
+            "opening_jamb",
+            "prop_base",
+            "roof_bearing",
+            "roof_edge",
+            "roof_ridge",
+            "wall_base",
+            "wall_edge",
+            "wall_face",
+            "wall_top"
+          ],
+          "tolerance": {
+            "position_metres": 0.001,
+            "angle_degrees": 1.0,
+            "roll_degrees": 1.0
+          },
+          "required": false,
+          "notes": "receives the rebated end of a partition junction trim"
+        },
+        {
+          "id": "partition_neg_x_pos_y",
+          "kind": "wall_face",
+          "position": [
+            0.1,
+            0.2,
+            1.5
+          ],
+          "normal": [
+            0.0,
+            1.0,
+            0.0
+          ],
+          "tangent": [
+            0.0,
+            0.0,
+            1.0
+          ],
+          "mating_mode": "point",
+          "extent_half": null,
+          "role": "junction_receiver",
+          "scale_class": "standard",
+          "compatible_kinds": [
+            "wall_junction"
+          ],
+          "incompatible_kinds": [
+            "floor_edge",
+            "floor_top",
+            "foundation_top",
+            "leaf_hinge",
+            "opening_jamb",
+            "prop_base",
+            "roof_bearing",
+            "roof_edge",
+            "roof_ridge",
+            "wall_base",
+            "wall_edge",
+            "wall_face",
+            "wall_top"
+          ],
+          "tolerance": {
+            "position_metres": 0.001,
+            "angle_degrees": 1.0,
+            "roll_degrees": 1.0
+          },
+          "required": false,
+          "notes": "receives the rebated end of a partition junction trim"
+        },
+        {
+          "id": "partition_pos_x_neg_y",
+          "kind": "wall_face",
+          "position": [
+            3.9,
+            0.0,
+            1.5
+          ],
+          "normal": [
+            0.0,
+            -1.0,
+            0.0
+          ],
+          "tangent": [
+            0.0,
+            0.0,
+            1.0
+          ],
+          "mating_mode": "point",
+          "extent_half": null,
+          "role": "junction_receiver",
+          "scale_class": "standard",
+          "compatible_kinds": [
+            "wall_junction"
+          ],
+          "incompatible_kinds": [
+            "floor_edge",
+            "floor_top",
+            "foundation_top",
+            "leaf_hinge",
+            "opening_jamb",
+            "prop_base",
+            "roof_bearing",
+            "roof_edge",
+            "roof_ridge",
+            "wall_base",
+            "wall_edge",
+            "wall_face",
+            "wall_top"
+          ],
+          "tolerance": {
+            "position_metres": 0.001,
+            "angle_degrees": 1.0,
+            "roll_degrees": 1.0
+          },
+          "required": false,
+          "notes": "receives the rebated end of a partition junction trim"
+        },
+        {
+          "id": "partition_pos_x_pos_y",
+          "kind": "wall_face",
+          "position": [
+            3.9,
+            0.2,
+            1.5
+          ],
+          "normal": [
+            0.0,
+            1.0,
+            0.0
+          ],
+          "tangent": [
+            0.0,
+            0.0,
+            1.0
+          ],
+          "mating_mode": "point",
+          "extent_half": null,
+          "role": "junction_receiver",
+          "scale_class": "standard",
+          "compatible_kinds": [
+            "wall_junction"
+          ],
+          "incompatible_kinds": [
+            "floor_edge",
+            "floor_top",
+            "foundation_top",
+            "leaf_hinge",
+            "opening_jamb",
+            "prop_base",
+            "roof_bearing",
+            "roof_edge",
+            "roof_ridge",
+            "wall_base",
+            "wall_edge",
+            "wall_face",
+            "wall_top"
+          ],
+          "tolerance": {
+            "position_metres": 0.001,
+            "angle_degrees": 1.0,
+            "roll_degrees": 1.0
+          },
+          "required": false,
+          "notes": "receives the rebated end of a partition junction trim"
         },
         {
           "id": "jamb_neg_y",
@@ -3160,6 +3597,8 @@
             "roof_ridge",
             "wall_base",
             "wall_edge",
+            "wall_face",
+            "wall_junction",
             "wall_top"
           ],
           "tolerance": {
@@ -3206,6 +3645,8 @@
             "roof_ridge",
             "wall_base",
             "wall_edge",
+            "wall_face",
+            "wall_junction",
             "wall_top"
           ],
           "tolerance": {
@@ -3627,7 +4068,7 @@
       "provenance": {
         "generator": "tessera.catalog/wall_doorway",
         "generator_version": "1.0.0+1.0.0",
-        "created_utc": "2026-07-25T18:12:41+00:00",
+        "created_utc": "2026-07-25T20:12:32+00:00",
         "authored_by": "Jaron K Bragg",
         "origin": "original-generated",
         "source_inputs": [],
@@ -3881,6 +4322,8 @@
             "roof_ridge",
             "wall_base",
             "wall_edge",
+            "wall_face",
+            "wall_junction",
             "wall_top"
           ],
           "tolerance": {
@@ -3927,6 +4370,8 @@
             "roof_ridge",
             "wall_base",
             "wall_edge",
+            "wall_face",
+            "wall_junction",
             "wall_top"
           ],
           "tolerance": {
@@ -4182,7 +4627,7 @@
       "provenance": {
         "generator": "tessera.catalog/door_leaf",
         "generator_version": "1.0.0+1.0.0",
-        "created_utc": "2026-07-25T18:12:41+00:00",
+        "created_utc": "2026-07-25T20:12:32+00:00",
         "authored_by": "Jaron K Bragg",
         "origin": "original-generated",
         "source_inputs": [],
@@ -4416,6 +4861,8 @@
             "roof_ridge",
             "wall_base",
             "wall_edge",
+            "wall_face",
+            "wall_junction",
             "wall_top"
           ],
           "tolerance": {
@@ -4465,6 +4912,8 @@
             "roof_ridge",
             "wall_base",
             "wall_edge",
+            "wall_face",
+            "wall_junction",
             "wall_top"
           ],
           "tolerance": {
@@ -4511,6 +4960,8 @@
             "roof_edge",
             "roof_ridge",
             "wall_base",
+            "wall_face",
+            "wall_junction",
             "wall_top"
           ],
           "tolerance": {
@@ -4557,6 +5008,8 @@
             "roof_edge",
             "roof_ridge",
             "wall_base",
+            "wall_face",
+            "wall_junction",
             "wall_top"
           ],
           "tolerance": {
@@ -4566,6 +5019,198 @@
           },
           "required": false,
           "notes": ""
+        },
+        {
+          "id": "partition_neg_x_neg_y",
+          "kind": "wall_face",
+          "position": [
+            0.1,
+            0.0,
+            1.5
+          ],
+          "normal": [
+            0.0,
+            -1.0,
+            0.0
+          ],
+          "tangent": [
+            0.0,
+            0.0,
+            1.0
+          ],
+          "mating_mode": "point",
+          "extent_half": null,
+          "role": "junction_receiver",
+          "scale_class": "standard",
+          "compatible_kinds": [
+            "wall_junction"
+          ],
+          "incompatible_kinds": [
+            "floor_edge",
+            "floor_top",
+            "foundation_top",
+            "leaf_hinge",
+            "opening_jamb",
+            "prop_base",
+            "roof_bearing",
+            "roof_edge",
+            "roof_ridge",
+            "wall_base",
+            "wall_edge",
+            "wall_face",
+            "wall_top"
+          ],
+          "tolerance": {
+            "position_metres": 0.001,
+            "angle_degrees": 1.0,
+            "roll_degrees": 1.0
+          },
+          "required": false,
+          "notes": "receives the rebated end of a partition junction trim"
+        },
+        {
+          "id": "partition_neg_x_pos_y",
+          "kind": "wall_face",
+          "position": [
+            0.1,
+            0.2,
+            1.5
+          ],
+          "normal": [
+            0.0,
+            1.0,
+            0.0
+          ],
+          "tangent": [
+            0.0,
+            0.0,
+            1.0
+          ],
+          "mating_mode": "point",
+          "extent_half": null,
+          "role": "junction_receiver",
+          "scale_class": "standard",
+          "compatible_kinds": [
+            "wall_junction"
+          ],
+          "incompatible_kinds": [
+            "floor_edge",
+            "floor_top",
+            "foundation_top",
+            "leaf_hinge",
+            "opening_jamb",
+            "prop_base",
+            "roof_bearing",
+            "roof_edge",
+            "roof_ridge",
+            "wall_base",
+            "wall_edge",
+            "wall_face",
+            "wall_top"
+          ],
+          "tolerance": {
+            "position_metres": 0.001,
+            "angle_degrees": 1.0,
+            "roll_degrees": 1.0
+          },
+          "required": false,
+          "notes": "receives the rebated end of a partition junction trim"
+        },
+        {
+          "id": "partition_pos_x_neg_y",
+          "kind": "wall_face",
+          "position": [
+            3.9,
+            0.0,
+            1.5
+          ],
+          "normal": [
+            0.0,
+            -1.0,
+            0.0
+          ],
+          "tangent": [
+            0.0,
+            0.0,
+            1.0
+          ],
+          "mating_mode": "point",
+          "extent_half": null,
+          "role": "junction_receiver",
+          "scale_class": "standard",
+          "compatible_kinds": [
+            "wall_junction"
+          ],
+          "incompatible_kinds": [
+            "floor_edge",
+            "floor_top",
+            "foundation_top",
+            "leaf_hinge",
+            "opening_jamb",
+            "prop_base",
+            "roof_bearing",
+            "roof_edge",
+            "roof_ridge",
+            "wall_base",
+            "wall_edge",
+            "wall_face",
+            "wall_top"
+          ],
+          "tolerance": {
+            "position_metres": 0.001,
+            "angle_degrees": 1.0,
+            "roll_degrees": 1.0
+          },
+          "required": false,
+          "notes": "receives the rebated end of a partition junction trim"
+        },
+        {
+          "id": "partition_pos_x_pos_y",
+          "kind": "wall_face",
+          "position": [
+            3.9,
+            0.2,
+            1.5
+          ],
+          "normal": [
+            0.0,
+            1.0,
+            0.0
+          ],
+          "tangent": [
+            0.0,
+            0.0,
+            1.0
+          ],
+          "mating_mode": "point",
+          "extent_half": null,
+          "role": "junction_receiver",
+          "scale_class": "standard",
+          "compatible_kinds": [
+            "wall_junction"
+          ],
+          "incompatible_kinds": [
+            "floor_edge",
+            "floor_top",
+            "foundation_top",
+            "leaf_hinge",
+            "opening_jamb",
+            "prop_base",
+            "roof_bearing",
+            "roof_edge",
+            "roof_ridge",
+            "wall_base",
+            "wall_edge",
+            "wall_face",
+            "wall_top"
+          ],
+          "tolerance": {
+            "position_metres": 0.001,
+            "angle_degrees": 1.0,
+            "roll_degrees": 1.0
+          },
+          "required": false,
+          "notes": "receives the rebated end of a partition junction trim"
         },
         {
           "id": "jamb_neg_y",
@@ -4603,6 +5248,8 @@
             "roof_ridge",
             "wall_base",
             "wall_edge",
+            "wall_face",
+            "wall_junction",
             "wall_top"
           ],
           "tolerance": {
@@ -4649,6 +5296,8 @@
             "roof_ridge",
             "wall_base",
             "wall_edge",
+            "wall_face",
+            "wall_junction",
             "wall_top"
           ],
           "tolerance": {
@@ -5053,7 +5702,7 @@
       "provenance": {
         "generator": "tessera.catalog/wall_window",
         "generator_version": "1.0.0+1.0.0",
-        "created_utc": "2026-07-25T18:12:41+00:00",
+        "created_utc": "2026-07-25T20:12:32+00:00",
         "authored_by": "Jaron K Bragg",
         "origin": "original-generated",
         "source_inputs": [],
@@ -5391,6 +6040,8 @@
             "roof_ridge",
             "wall_base",
             "wall_edge",
+            "wall_face",
+            "wall_junction",
             "wall_top"
           ],
           "tolerance": {
@@ -5437,6 +6088,8 @@
             "roof_ridge",
             "wall_base",
             "wall_edge",
+            "wall_face",
+            "wall_junction",
             "wall_top"
           ],
           "tolerance": {
@@ -6048,7 +6701,7 @@
       "provenance": {
         "generator": "tessera.catalog/window_leaf",
         "generator_version": "1.0.0+1.0.0",
-        "created_utc": "2026-07-25T18:12:41+00:00",
+        "created_utc": "2026-07-25T20:12:32+00:00",
         "authored_by": "Jaron K Bragg",
         "origin": "original-generated",
         "source_inputs": [],
@@ -6282,7 +6935,9 @@
             "roof_edge",
             "roof_ridge",
             "wall_base",
-            "wall_edge"
+            "wall_edge",
+            "wall_face",
+            "wall_junction"
           ],
           "tolerance": {
             "position_metres": 0.002,
@@ -6328,6 +6983,8 @@
             "roof_edge",
             "wall_base",
             "wall_edge",
+            "wall_face",
+            "wall_junction",
             "wall_top"
           ],
           "tolerance": {
@@ -6374,6 +7031,8 @@
             "roof_edge",
             "wall_base",
             "wall_edge",
+            "wall_face",
+            "wall_junction",
             "wall_top"
           ],
           "tolerance": {
@@ -6420,6 +7079,8 @@
             "roof_ridge",
             "wall_base",
             "wall_edge",
+            "wall_face",
+            "wall_junction",
             "wall_top"
           ],
           "tolerance": {
@@ -6466,6 +7127,8 @@
             "roof_ridge",
             "wall_base",
             "wall_edge",
+            "wall_face",
+            "wall_junction",
             "wall_top"
           ],
           "tolerance": {
@@ -7592,7 +8255,7 @@
       "provenance": {
         "generator": "tessera.catalog/roof_panel",
         "generator_version": "1.0.0+1.0.0",
-        "created_utc": "2026-07-25T18:12:41+00:00",
+        "created_utc": "2026-07-25T20:12:32+00:00",
         "authored_by": "Jaron K Bragg",
         "origin": "original-generated",
         "source_inputs": [],
@@ -7828,6 +8491,8 @@
             "roof_edge",
             "wall_base",
             "wall_edge",
+            "wall_face",
+            "wall_junction",
             "wall_top"
           ],
           "tolerance": {
@@ -7874,6 +8539,8 @@
             "roof_ridge",
             "wall_base",
             "wall_edge",
+            "wall_face",
+            "wall_junction",
             "wall_top"
           ],
           "tolerance": {
@@ -7920,6 +8587,8 @@
             "roof_ridge",
             "wall_base",
             "wall_edge",
+            "wall_face",
+            "wall_junction",
             "wall_top"
           ],
           "tolerance": {
@@ -8150,7 +8819,7 @@
       "provenance": {
         "generator": "tessera.catalog/roof_ridge",
         "generator_version": "1.0.0+1.0.0",
-        "created_utc": "2026-07-25T18:12:41+00:00",
+        "created_utc": "2026-07-25T20:12:32+00:00",
         "authored_by": "Jaron K Bragg",
         "origin": "original-generated",
         "source_inputs": [],
@@ -8449,6 +9118,8 @@
             "roof_ridge",
             "wall_base",
             "wall_edge",
+            "wall_face",
+            "wall_junction",
             "wall_top"
           ],
           "tolerance": {
@@ -8498,6 +9169,8 @@
             "roof_edge",
             "roof_ridge",
             "wall_edge",
+            "wall_face",
+            "wall_junction",
             "wall_top"
           ],
           "tolerance": {
@@ -8872,7 +9545,7 @@
       "provenance": {
         "generator": "tessera.catalog/prop_crate",
         "generator_version": "1.0.0+1.0.0",
-        "created_utc": "2026-07-25T18:12:41+00:00",
+        "created_utc": "2026-07-25T20:12:32+00:00",
         "authored_by": "Jaron K Bragg",
         "origin": "original-generated",
         "source_inputs": [],
@@ -9117,6 +9790,8 @@
             "roof_ridge",
             "wall_base",
             "wall_edge",
+            "wall_face",
+            "wall_junction",
             "wall_top"
           ],
           "tolerance": {
@@ -9166,6 +9841,8 @@
             "roof_edge",
             "roof_ridge",
             "wall_edge",
+            "wall_face",
+            "wall_junction",
             "wall_top"
           ],
           "tolerance": {
@@ -9453,7 +10130,7 @@
       "provenance": {
         "generator": "tessera.catalog/prop_workbench",
         "generator_version": "1.0.0+1.0.0",
-        "created_utc": "2026-07-25T18:12:41+00:00",
+        "created_utc": "2026-07-25T20:12:32+00:00",
         "authored_by": "Jaron K Bragg",
         "origin": "original-generated",
         "source_inputs": [],
@@ -9789,6 +10466,8 @@
             "roof_ridge",
             "wall_base",
             "wall_edge",
+            "wall_face",
+            "wall_junction",
             "wall_top"
           ],
           "tolerance": {
@@ -9835,6 +10514,8 @@
             "roof_ridge",
             "wall_base",
             "wall_edge",
+            "wall_face",
+            "wall_junction",
             "wall_top"
           ],
           "tolerance": {
@@ -9881,6 +10562,8 @@
             "roof_ridge",
             "wall_base",
             "wall_edge",
+            "wall_face",
+            "wall_junction",
             "wall_top"
           ],
           "tolerance": {
@@ -10400,7 +11083,7 @@
       "provenance": {
         "generator": "tessera.catalog/stair_straight",
         "generator_version": "1.0.0+1.0.0",
-        "created_utc": "2026-07-25T18:12:41+00:00",
+        "created_utc": "2026-07-25T20:12:32+00:00",
         "authored_by": "Jaron K Bragg",
         "origin": "original-generated",
         "source_inputs": [],
@@ -10695,6 +11378,8 @@
             "roof_edge",
             "roof_ridge",
             "wall_edge",
+            "wall_face",
+            "wall_junction",
             "wall_top"
           ],
           "tolerance": {
@@ -10741,6 +11426,8 @@
             "roof_ridge",
             "wall_base",
             "wall_edge",
+            "wall_face",
+            "wall_junction",
             "wall_top"
           ],
           "tolerance": {
@@ -10787,6 +11474,8 @@
             "roof_ridge",
             "wall_base",
             "wall_edge",
+            "wall_face",
+            "wall_junction",
             "wall_top"
           ],
           "tolerance": {
@@ -10833,6 +11522,8 @@
             "roof_ridge",
             "wall_base",
             "wall_edge",
+            "wall_face",
+            "wall_junction",
             "wall_top"
           ],
           "tolerance": {
@@ -10879,6 +11570,8 @@
             "roof_ridge",
             "wall_base",
             "wall_edge",
+            "wall_face",
+            "wall_junction",
             "wall_top"
           ],
           "tolerance": {
@@ -11187,7 +11880,7 @@
       "provenance": {
         "generator": "tessera.catalog/floor_opening",
         "generator_version": "1.0.0+1.0.0",
-        "created_utc": "2026-07-25T18:12:41+00:00",
+        "created_utc": "2026-07-25T20:12:32+00:00",
         "authored_by": "Jaron K Bragg",
         "origin": "original-generated",
         "source_inputs": [],
@@ -11493,7 +12186,9 @@
             "roof_edge",
             "roof_ridge",
             "wall_base",
-            "wall_edge"
+            "wall_edge",
+            "wall_face",
+            "wall_junction"
           ],
           "tolerance": {
             "position_metres": 0.001,
@@ -11542,6 +12237,8 @@
             "roof_edge",
             "roof_ridge",
             "wall_edge",
+            "wall_face",
+            "wall_junction",
             "wall_top"
           ],
           "tolerance": {
@@ -11588,6 +12285,8 @@
             "roof_edge",
             "roof_ridge",
             "wall_base",
+            "wall_face",
+            "wall_junction",
             "wall_top"
           ],
           "tolerance": {
@@ -11634,6 +12333,8 @@
             "roof_edge",
             "roof_ridge",
             "wall_base",
+            "wall_face",
+            "wall_junction",
             "wall_top"
           ],
           "tolerance": {
@@ -12040,7 +12741,7 @@
       "provenance": {
         "generator": "tessera.catalog/beam",
         "generator_version": "1.0.0+1.0.0",
-        "created_utc": "2026-07-25T18:12:41+00:00",
+        "created_utc": "2026-07-25T20:12:32+00:00",
         "authored_by": "Jaron K Bragg",
         "origin": "original-generated",
         "source_inputs": [],
@@ -12357,6 +13058,8 @@
             "roof_ridge",
             "wall_base",
             "wall_edge",
+            "wall_face",
+            "wall_junction",
             "wall_top"
           ],
           "tolerance": {
@@ -12403,6 +13106,8 @@
             "roof_edge",
             "roof_ridge",
             "wall_base",
+            "wall_face",
+            "wall_junction",
             "wall_top"
           ],
           "tolerance": {
@@ -12449,6 +13154,8 @@
             "roof_edge",
             "roof_ridge",
             "wall_base",
+            "wall_face",
+            "wall_junction",
             "wall_top"
           ],
           "tolerance": {
@@ -12903,7 +13610,7 @@
       "provenance": {
         "generator": "tessera.catalog/railing",
         "generator_version": "1.0.0+1.0.0",
-        "created_utc": "2026-07-25T18:12:41+00:00",
+        "created_utc": "2026-07-25T20:12:32+00:00",
         "authored_by": "Jaron K Bragg",
         "origin": "original-generated",
         "source_inputs": [],
@@ -13136,6 +13843,8 @@
             "roof_ridge",
             "wall_base",
             "wall_edge",
+            "wall_face",
+            "wall_junction",
             "wall_top"
           ],
           "tolerance": {
@@ -13185,6 +13894,8 @@
             "roof_ridge",
             "wall_base",
             "wall_edge",
+            "wall_face",
+            "wall_junction",
             "wall_top"
           ],
           "tolerance": {
@@ -13463,7 +14174,7 @@
       "provenance": {
         "generator": "tessera.catalog/column",
         "generator_version": "1.0.0+1.0.0",
-        "created_utc": "2026-07-25T18:12:41+00:00",
+        "created_utc": "2026-07-25T20:12:32+00:00",
         "authored_by": "Jaron K Bragg",
         "origin": "original-generated",
         "source_inputs": [],
@@ -13714,6 +14425,8 @@
             "roof_ridge",
             "wall_base",
             "wall_edge",
+            "wall_face",
+            "wall_junction",
             "wall_top"
           ],
           "tolerance": {
@@ -13760,6 +14473,8 @@
             "roof_ridge",
             "wall_base",
             "wall_edge",
+            "wall_face",
+            "wall_junction",
             "wall_top"
           ],
           "tolerance": {
@@ -13806,6 +14521,8 @@
             "roof_ridge",
             "wall_base",
             "wall_edge",
+            "wall_face",
+            "wall_junction",
             "wall_top"
           ],
           "tolerance": {
@@ -13981,7 +14698,7 @@
       "provenance": {
         "generator": "tessera.catalog/stair_stoop",
         "generator_version": "1.0.0+1.0.0",
-        "created_utc": "2026-07-25T18:12:41+00:00",
+        "created_utc": "2026-07-25T20:12:32+00:00",
         "authored_by": "Jaron K Bragg",
         "origin": "original-generated",
         "source_inputs": [],
@@ -14226,6 +14943,8 @@
             "roof_ridge",
             "wall_base",
             "wall_edge",
+            "wall_face",
+            "wall_junction",
             "wall_top"
           ],
           "tolerance": {
@@ -14275,6 +14994,8 @@
             "roof_ridge",
             "wall_base",
             "wall_edge",
+            "wall_face",
+            "wall_junction",
             "wall_top"
           ],
           "tolerance": {
@@ -14321,6 +15042,8 @@
             "roof_edge",
             "roof_ridge",
             "wall_base",
+            "wall_face",
+            "wall_junction",
             "wall_top"
           ],
           "tolerance": {
@@ -14367,6 +15090,8 @@
             "roof_edge",
             "roof_ridge",
             "wall_base",
+            "wall_face",
+            "wall_junction",
             "wall_top"
           ],
           "tolerance": {
@@ -14549,7 +15274,7 @@
       "provenance": {
         "generator": "tessera.catalog/wall_interior",
         "generator_version": "1.0.0+1.0.0",
-        "created_utc": "2026-07-25T18:12:41+00:00",
+        "created_utc": "2026-07-25T20:12:32+00:00",
         "authored_by": "Jaron K Bragg",
         "origin": "original-generated",
         "source_inputs": [],
@@ -14578,7 +15303,7 @@
         "checks_failed": [],
         "coverage": {}
       },
-      "notes": "Runs the full bay along +X, 0.20 m thick along +Y. Seams to other partitions on the bay grid. It cannot terminate flush against a *perimeter* wall: that wall's innermost surface is its plinth, at derived.perimeter_inner_face_inset from the bay line, which is not a whole number of grid units -- see derived.perimeter_inset_is_on_grid.",
+      "notes": "Runs the full bay along +X, 0.20 m thick along +Y. Seams to other partitions on the bay grid. Do not start it directly at a perimeter wall: mate wall.junction.trim.3m8 to that wall and continue this piece from the trim's 'partition' connector.",
       "kit": {
         "id": "shell_v1",
         "version": "1.0.0"
@@ -14813,6 +15538,8 @@
             "roof_ridge",
             "wall_base",
             "wall_edge",
+            "wall_face",
+            "wall_junction",
             "wall_top"
           ],
           "tolerance": {
@@ -14862,6 +15589,8 @@
             "roof_ridge",
             "wall_base",
             "wall_edge",
+            "wall_face",
+            "wall_junction",
             "wall_top"
           ],
           "tolerance": {
@@ -14908,6 +15637,8 @@
             "roof_edge",
             "roof_ridge",
             "wall_base",
+            "wall_face",
+            "wall_junction",
             "wall_top"
           ],
           "tolerance": {
@@ -14954,6 +15685,8 @@
             "roof_edge",
             "roof_ridge",
             "wall_base",
+            "wall_face",
+            "wall_junction",
             "wall_top"
           ],
           "tolerance": {
@@ -15000,6 +15733,8 @@
             "roof_ridge",
             "wall_base",
             "wall_edge",
+            "wall_face",
+            "wall_junction",
             "wall_top"
           ],
           "tolerance": {
@@ -15046,6 +15781,8 @@
             "roof_ridge",
             "wall_base",
             "wall_edge",
+            "wall_face",
+            "wall_junction",
             "wall_top"
           ],
           "tolerance": {
@@ -15371,7 +16108,7 @@
       "provenance": {
         "generator": "tessera.catalog/wall_interior_doorway",
         "generator_version": "1.0.0+1.0.0",
-        "created_utc": "2026-07-25T18:12:41+00:00",
+        "created_utc": "2026-07-25T20:12:32+00:00",
         "authored_by": "Jaron K Bragg",
         "origin": "original-generated",
         "source_inputs": [],
@@ -15647,6 +16384,8 @@
             "roof_ridge",
             "wall_base",
             "wall_edge",
+            "wall_face",
+            "wall_junction",
             "wall_top"
           ],
           "tolerance": {
@@ -15696,6 +16435,8 @@
             "roof_ridge",
             "wall_base",
             "wall_edge",
+            "wall_face",
+            "wall_junction",
             "wall_top"
           ],
           "tolerance": {
@@ -15745,6 +16486,8 @@
             "roof_ridge",
             "wall_base",
             "wall_edge",
+            "wall_face",
+            "wall_junction",
             "wall_top"
           ],
           "tolerance": {
@@ -15794,6 +16537,8 @@
             "roof_ridge",
             "wall_base",
             "wall_edge",
+            "wall_face",
+            "wall_junction",
             "wall_top"
           ],
           "tolerance": {
@@ -15840,6 +16585,8 @@
             "roof_edge",
             "roof_ridge",
             "wall_base",
+            "wall_face",
+            "wall_junction",
             "wall_top"
           ],
           "tolerance": {
@@ -15886,6 +16633,8 @@
             "roof_edge",
             "roof_ridge",
             "wall_base",
+            "wall_face",
+            "wall_junction",
             "wall_top"
           ],
           "tolerance": {
@@ -16180,7 +16929,7 @@
       "provenance": {
         "generator": "tessera.catalog/wall_interior_corner",
         "generator_version": "1.0.0+1.0.0",
-        "created_utc": "2026-07-25T18:12:41+00:00",
+        "created_utc": "2026-07-25T20:12:32+00:00",
         "authored_by": "Jaron K Bragg",
         "origin": "original-generated",
         "source_inputs": [],
@@ -16214,7 +16963,601 @@
         "id": "shell_v1",
         "version": "1.0.0"
       }
+    },
+    {
+      "schema": "tessera.asset/1",
+      "contract_version": "1.0.0",
+      "id": "tsr:shell/wall.junction.trim.3m8",
+      "name": "Wall Junction Trim 3.8 m",
+      "category": "structure",
+      "semantic_role": "wall",
+      "tags": [
+        "interior",
+        "junction",
+        "modular",
+        "partition",
+        "trim"
+      ],
+      "scale_class": "standard",
+      "scale_factor": 1.0,
+      "space": {
+        "convention": "tessera.space/1",
+        "handedness": "right",
+        "up": [
+          0.0,
+          0.0,
+          1.0
+        ],
+        "forward": [
+          0.0,
+          1.0,
+          0.0
+        ],
+        "right": [
+          1.0,
+          0.0,
+          0.0
+        ],
+        "linear_unit": "metre",
+        "angle_unit": "degree",
+        "rotation_order": "ZYX-intrinsic"
+      },
+      "dimensions": {
+        "bounds": {
+          "min": [
+            0.0,
+            0.0,
+            0.0
+          ],
+          "max": [
+            3.8,
+            0.2,
+            3.0
+          ]
+        },
+        "size": [
+          3.8,
+          0.19999999999999998,
+          3.0
+        ],
+        "grounded_bounds": {
+          "min": [
+            0.0,
+            0.0,
+            0.0
+          ],
+          "max": [
+            3.8,
+            0.2,
+            3.0
+          ]
+        },
+        "is_authored_grounded": true,
+        "base_z_local": 0.0,
+        "top_z_local": 3.0
+      },
+      "pivot": {
+        "origin_local": [
+          0.0,
+          0.0,
+          0.0
+        ],
+        "convention": "bay_min_corner_on_base",
+        "rationale": "Origin at the minimum corner of the bay, on the asset's own base. One rule for every modular piece means an agent never has to branch: put the origin on the supporting surface at a grid corner and the piece is correctly placed. base_offset_z is 0 by construction.",
+        "offset_from_bounds_min": [
+          0.0,
+          0.0,
+          0.0
+        ],
+        "offset_from_footprint_centre": [
+          -1.9,
+          -0.09999999999999999,
+          0.0
+        ],
+        "base_offset_z": 0.0
+      },
+      "axes": {
+        "forward": [
+          0.0,
+          1.0,
+          0.0
+        ],
+        "up": [
+          0.0,
+          0.0,
+          1.0
+        ],
+        "right": [
+          1.0,
+          0.0,
+          0.0
+        ],
+        "ground_plane": "z=0",
+        "intended_ground_normal": [
+          0.0,
+          0.0,
+          1.0
+        ]
+      },
+      "placement": {
+        "grid": {
+          "module": 4.0,
+          "snap_xy": 0.2,
+          "snap_z": 0.05,
+          "yaw_step_degrees": 90.0,
+          "policy": "module",
+          "rationale": "Modular pieces seam only on the bay grid they were authored on."
+        },
+        "allowed_rotations": [
+          0.0,
+          90.0,
+          180.0,
+          270.0
+        ],
+        "allowed_scaling": {
+          "uniform_only": true,
+          "min": 1.0,
+          "max": 1.0,
+          "rationale": "Modular pieces are a dimensional standard. Scaling one moves its connectors off the grid and stops it seaming with every other piece in the kit."
+        },
+        "prohibited_scaling": [
+          "non-uniform",
+          "any scale other than 1.0"
+        ],
+        "constraints": [],
+        "support": {
+          "requires_support": true,
+          "rests_on": [
+            "floor_top"
+          ],
+          "support_axis": "z",
+          "may_float": false
+        },
+        "footprint_rects": [
+          [
+            0.03,
+            0.02,
+            3.8,
+            0.18
+          ],
+          [
+            0.03,
+            0.18,
+            3.8,
+            0.19999999999999998
+          ],
+          [
+            0.03,
+            0.0,
+            3.8,
+            0.02
+          ]
+        ],
+        "footprint_area": 0.754,
+        "allow_pitch_roll": false
+      },
+      "connectors": [
+        {
+          "id": "base",
+          "kind": "wall_base",
+          "position": [
+            1.9,
+            0.1,
+            0.0
+          ],
+          "normal": [
+            0.0,
+            0.0,
+            -1.0
+          ],
+          "tangent": [
+            1.0,
+            0.0,
+            0.0
+          ],
+          "mating_mode": "surface",
+          "extent_half": [
+            1.9,
+            0.1
+          ],
+          "role": "support",
+          "scale_class": "standard",
+          "compatible_kinds": [
+            "floor_top",
+            "foundation_top"
+          ],
+          "incompatible_kinds": [
+            "floor_edge",
+            "leaf_hinge",
+            "opening_jamb",
+            "prop_base",
+            "roof_bearing",
+            "roof_edge",
+            "roof_ridge",
+            "wall_base",
+            "wall_edge",
+            "wall_face",
+            "wall_junction",
+            "wall_top"
+          ],
+          "tolerance": {
+            "position_metres": 0.001,
+            "angle_degrees": 1.0,
+            "roll_degrees": 1.0
+          },
+          "required": true,
+          "notes": ""
+        },
+        {
+          "id": "top",
+          "kind": "wall_top",
+          "position": [
+            1.9,
+            0.1,
+            3.0
+          ],
+          "normal": [
+            0.0,
+            0.0,
+            1.0
+          ],
+          "tangent": [
+            1.0,
+            0.0,
+            0.0
+          ],
+          "mating_mode": "surface",
+          "extent_half": [
+            1.9,
+            0.1
+          ],
+          "role": "bearing",
+          "scale_class": "standard",
+          "compatible_kinds": [
+            "roof_bearing"
+          ],
+          "incompatible_kinds": [
+            "floor_edge",
+            "floor_top",
+            "foundation_top",
+            "leaf_hinge",
+            "opening_jamb",
+            "prop_base",
+            "roof_edge",
+            "roof_ridge",
+            "wall_base",
+            "wall_edge",
+            "wall_face",
+            "wall_junction",
+            "wall_top"
+          ],
+          "tolerance": {
+            "position_metres": 0.001,
+            "angle_degrees": 1.0,
+            "roll_degrees": 1.0
+          },
+          "required": false,
+          "notes": ""
+        },
+        {
+          "id": "perimeter",
+          "kind": "wall_junction",
+          "position": [
+            0.0,
+            0.1,
+            1.5
+          ],
+          "normal": [
+            -1.0,
+            0.0,
+            0.0
+          ],
+          "tangent": [
+            0.0,
+            0.0,
+            1.0
+          ],
+          "mating_mode": "point",
+          "extent_half": null,
+          "role": "junction",
+          "scale_class": "standard",
+          "compatible_kinds": [
+            "wall_face"
+          ],
+          "incompatible_kinds": [
+            "floor_edge",
+            "floor_top",
+            "foundation_top",
+            "leaf_hinge",
+            "opening_jamb",
+            "prop_base",
+            "roof_bearing",
+            "roof_edge",
+            "roof_ridge",
+            "wall_base",
+            "wall_edge",
+            "wall_junction",
+            "wall_top"
+          ],
+          "tolerance": {
+            "position_metres": 0.001,
+            "angle_degrees": 1.0,
+            "roll_degrees": 1.0
+          },
+          "required": false,
+          "notes": "rebated end; mates only to a perimeter wall_face receiver"
+        },
+        {
+          "id": "partition",
+          "kind": "wall_edge",
+          "position": [
+            3.8,
+            0.1,
+            1.5
+          ],
+          "normal": [
+            1.0,
+            0.0,
+            0.0
+          ],
+          "tangent": [
+            0.0,
+            0.0,
+            1.0
+          ],
+          "mating_mode": "point",
+          "extent_half": null,
+          "role": "seam",
+          "scale_class": "standard",
+          "compatible_kinds": [
+            "wall_edge"
+          ],
+          "incompatible_kinds": [
+            "floor_edge",
+            "floor_top",
+            "foundation_top",
+            "leaf_hinge",
+            "opening_jamb",
+            "prop_base",
+            "roof_bearing",
+            "roof_edge",
+            "roof_ridge",
+            "wall_base",
+            "wall_face",
+            "wall_junction",
+            "wall_top"
+          ],
+          "tolerance": {
+            "position_metres": 0.001,
+            "angle_degrees": 1.0,
+            "roll_degrees": 1.0
+          },
+          "required": false,
+          "notes": "ordinary partition end on the next bay line"
+        }
+      ],
+      "occupancy": {
+        "representation": "axis_aligned_box_set",
+        "exact": true,
+        "box_count": 6,
+        "volume": 2.2759039999999997,
+        "boxes": [
+          [
+            0.03,
+            0.02,
+            0.0,
+            3.8,
+            0.18,
+            3.0
+          ],
+          [
+            0.03,
+            0.18,
+            0.0,
+            3.8,
+            0.19999999999999998,
+            0.09999999999999999
+          ],
+          [
+            0.03,
+            0.18,
+            0.12,
+            3.8,
+            0.19999999999999998,
+            3.0
+          ],
+          [
+            0.03,
+            0.0,
+            0.0,
+            3.8,
+            0.02,
+            0.09999999999999999
+          ],
+          [
+            0.03,
+            0.0,
+            0.12,
+            3.8,
+            0.02,
+            3.0
+          ],
+          [
+            0.0,
+            0.0,
+            0.18,
+            0.03,
+            0.19999999999999998,
+            3.0
+          ]
+        ],
+        "disjoint": true,
+        "approximation_tolerance": 0.0
+      },
+      "clearance": {
+        "representation": "axis_aligned_box_set",
+        "box_count": 0,
+        "boxes": [],
+        "purpose": "volumes that must remain free for the asset to function"
+      },
+      "apertures": [],
+      "collision": {
+        "mode": "convex_decomposition",
+        "source": "occupancy_box_set",
+        "exact": true,
+        "hull_count": 6,
+        "hulls": [
+          [
+            0.03,
+            0.02,
+            0.0,
+            3.8,
+            0.18,
+            3.0
+          ],
+          [
+            0.03,
+            0.18,
+            0.0,
+            3.8,
+            0.19999999999999998,
+            0.09999999999999999
+          ],
+          [
+            0.03,
+            0.18,
+            0.12,
+            3.8,
+            0.19999999999999998,
+            3.0
+          ],
+          [
+            0.03,
+            0.0,
+            0.0,
+            3.8,
+            0.02,
+            0.09999999999999999
+          ],
+          [
+            0.03,
+            0.0,
+            0.12,
+            3.8,
+            0.02,
+            3.0
+          ],
+          [
+            0.0,
+            0.0,
+            0.18,
+            0.03,
+            0.19999999999999998,
+            3.0
+          ]
+        ],
+        "preserves_apertures": true,
+        "auto_convex_would_seal_apertures": false,
+        "engine_hint": "import as convex hulls; do NOT let the engine auto-generate"
+      },
+      "materials": [
+        {
+          "slot": 0,
+          "name": "M_Plaster",
+          "role": "interior",
+          "base_color": [
+            0.78,
+            0.76,
+            0.72,
+            1.0
+          ],
+          "metallic": 0.0,
+          "roughness": 0.9
+        }
+      ],
+      "lods": [],
+      "geometry": {
+        "triangles": 104,
+        "vertices": 54,
+        "surface_area": 25.8092,
+        "signed_volume": 2.2759039999999997,
+        "watertight": true,
+        "non_manifold_edges": 0,
+        "boundary_edges": 0,
+        "outward_winding": true,
+        "sha256": "1ee16f1536732087320680be32667b418991df26a8c556fc02451d5dd2609183"
+      },
+      "files": {
+        "glb": "meshes/wall.junction.trim.3m8.glb",
+        "obj": "meshes/wall.junction.trim.3m8.obj",
+        "mtl": "meshes/wall.junction.trim.3m8.mtl"
+      },
+      "engine": {
+        "unreal": {
+          "import_uniform_scale": 1.0,
+          "unit_conversion": "1 metre -> 100 uu (applied by the adapter)",
+          "combine_meshes": false,
+          "generate_lightmap_uvs": false,
+          "import_normals": "Import Normals and Tangents",
+          "auto_generate_collision": false,
+          "collision_source": "UCX_ hulls from occupancy",
+          "note": "auto collision seals apertures; use the shipped hulls"
+        },
+        "unity": {
+          "scale_factor": 1.0,
+          "convert_units": true,
+          "normals": "Import",
+          "generate_colliders": false,
+          "collision_source": "compound BoxCollider set from occupancy"
+        },
+        "three": {
+          "format": "glb",
+          "up_axis": "+Y",
+          "conversion": "canonical Z-up right-handed -> glTF Y-up right-handed"
+        },
+        "blender": {
+          "format": "glb",
+          "conversion": "identity"
+        }
+      },
+      "provenance": {
+        "generator": "tessera.catalog/wall_junction_trim",
+        "generator_version": "1.0.0+1.0.0",
+        "created_utc": "2026-07-25T20:12:32+00:00",
+        "authored_by": "Jaron K Bragg",
+        "origin": "original-generated",
+        "source_inputs": [],
+        "generated_files": [
+          "meshes/wall.junction.trim.3m8.glb",
+          "meshes/wall.junction.trim.3m8.mtl",
+          "meshes/wall.junction.trim.3m8.obj"
+        ],
+        "derived_from": [],
+        "third_party_review": "none-required",
+        "notes": "Generated from scratch by the named function using only the Tessera geometry kernel. No third-party mesh, texture or model file is read at any point in this pipeline."
+      },
+      "license": {
+        "code_spdx": "0BSD",
+        "assets_spdx": "CC0-1.0",
+        "applies_to": "assets",
+        "attribution_required": false,
+        "commercial_use": true,
+        "redistribution": true
+      },
+      "validation": {
+        "status": "unvalidated",
+        "validator_version": "",
+        "checked_utc": "",
+        "checks_passed": [],
+        "checks_failed": [],
+        "coverage": {}
+      },
+      "notes": "Mates its rebated end to a perimeter wall and bridges 3.80 m to the next bay line. The lower 0.18 m starts 0.03 m late to clear the perimeter plinth; above it the trim meets the wall body directly. Continue only from connector 'partition'.",
+      "kit": {
+        "id": "shell_v1",
+        "version": "1.0.0"
+      }
     }
   ],
-  "fingerprint": "58102ca826808059740353ed6927fe3d84bbcd5bb0cb2b3095cf6fcbc137726d"
+  "fingerprint": "b3089508434fb16a423ad1176c82cf0d5f5c5df22232d2e29ecbafe25bcc06a2"
 }

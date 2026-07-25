@@ -1,43 +1,22 @@
-"""A room inside a building -- closed by interior corners, entered by a door.
+"""A room partitioned from a building corner, closed and entered.
 
 SPDX-License-Identifier: 0BSD
 
-``examples/safehouse`` partitions a storage alcove and says, in a comment, why
-it is an alcove and not a room:
+The first M3 interior example had to stand free of the perimeter. A regular
+partition beginning at a perimeter wall's body face drove its lower 0.03 m
+through the proud plinth, while stopping on the next grid step left a slot.
 
-    Deliberately an alcove, open to the west, rather than a sealed room. The
-    L corner piece exists so a rectangular *perimeter* closes without overlap;
-    it carries no opening, so using two of them to box in an interior room
-    would produce a room with no way in.
+``wall.junction.trim.3m8`` closes that gap. Its rebated end mates to a dedicated
+receiver on either face of a perimeter wall, clearing the plinth at floor level,
+and its other end lands on the next 4 m bay line. An ordinary interior doorway
+and corner continue from there without handed variants.
 
-This is that room, built from the M3 interior pieces. A 16 x 12 m shell with a
-free-standing 12 x 8 m room inside it and a circulation corridor all the way
-around. The room is closed by four ``wall.interior.corner.4m`` and one
-``wall.interior.4m``, and entered through one
-``wall.interior.doorway.4m``. Whether it is really closed and really enterable
-is not asserted here -- the validator floods the walkable volume and prints::
-
-    INFO TSR_LAYOUT_REACHABILITY_PROVEN  Route proven: corridor into the room.
-
-Why the room does not touch the perimeter
------------------------------------------
-It would be more natural to partition a corner off the shell and reuse two of
-its perimeter walls. That does not work yet, and the reason is worth knowing
-before you try it.
-
-A perimeter wall's innermost surface is not its face -- it is its plinth, which
-stands ``PLINTH_PROUD`` past the face on *both* sides. So the first solid a
-partition meets is ``derived.perimeter_inner_face_inset`` = 0.23 m in from the
-bay line, and 0.23 is not a whole number of ``GRID_XY`` units. A module-length
-partition on the grid therefore cannot finish flush against a perimeter wall: it
-either stops at 0.20 and drives its bottom ``PLINTH_HEIGHT`` through the plinth
--- about 0.001 m3 of ``TSR_LAYOUT_INTERSECTION``, small enough to read as noise
-and real enough to z-fight -- or it stops a grid step short and leaves a slot.
-
-That was found by building the corner-room version first and reading the four
-errors it produced. It is a missing junction piece, not a missing partition, and
-it is on the M3 list. Until then a room built entirely from interior pieces has
-no such junction anywhere, which is what this file does.
+This scene reuses the south and west perimeter walls as two sides of a room.
+Two junction trims, one interior doorway and one interior corner form the other
+two sides. Three reachability claims prove that the character can get in and
+back out. ``tests/test_navigation.py`` swaps the interior doorway for a solid
+wall and requires ``TSR_LAYOUT_UNREACHABLE`` -- the control that proves the
+route is through the door rather than around an unclosed junction.
 
 Run:  python3 examples/interior_rooms/build.py
 """
@@ -63,21 +42,9 @@ BAY = 4.0
 BAYS_X, BAYS_Y = 4, 3
 SPAN_X, SPAN_Y = BAY * BAYS_X, BAY * BAYS_Y
 
-#: The room, as a rectangle of whole modules. Three modules on the long side is
-#: the minimum that can be entered: a corner consumes one module of each side it
-#: turns, so a two-module side is all corner and has nowhere to put a door. That
-#: is the consequence recorded in docs/decisions/0006, restated for partitions.
-#: Placed so the corridor around it is wider than the perimeter plinth on every
-#: side -- see the module docstring for why that clearance is not optional.
-ROOM = dict(x0=2.0, y0=2.0, mods_x=3, mods_y=2)
-
-
 def build(catalog):
     b = Builder(catalog, name="Room Inside a Building")
-
-    x0, y0 = ROOM["x0"], ROOM["y0"]
-    x1 = x0 + ROOM["mods_x"] * BAY                  # 14.0
-    y1 = y0 + ROOM["mods_y"] * BAY                  # 10.0
+    wall_t = catalog["config"]["WALL_THICKNESS"]
 
     # ------------------------------------------------------------- ground
     pads = {(gx, gy): b.ground(A + "foundation.pad.4m", gx * BAY, gy * BAY)
@@ -101,12 +68,14 @@ def build(catalog):
         "nw": b.ground(A + "wall.corner.4m", 0.0, SPAN_Y, yaw=270.0, on=floors[(0, 2)]),
     }
     entrance = b.ground(A + "wall.doorway.4m", BAY, 0.0, yaw=0.0, on=floors[(1, 0)])
-    b.ground(A + "wall.straight.4m", 2 * BAY, 0.0, yaw=0.0, on=floors[(2, 0)])
+    south_junction_host = b.ground(
+        A + "wall.straight.4m", 2 * BAY, 0.0, yaw=0.0, on=floors[(2, 0)])
     window = b.ground(A + "wall.window.4m", 3 * BAY, SPAN_Y, yaw=180.0,
                       on=floors[(2, 2)])
     b.ground(A + "wall.straight.4m", 2 * BAY, SPAN_Y, yaw=180.0, on=floors[(1, 2)])
-    b.ground(A + "wall.straight.4m", 0.2, BAY, yaw=90.0, on=floors[(0, 1)])
-    b.ground(A + "wall.straight.4m", SPAN_X - 0.2, 2 * BAY, yaw=270.0,
+    west_junction_host = b.ground(
+        A + "wall.straight.4m", wall_t, BAY, yaw=90.0, on=floors[(0, 1)])
+    b.ground(A + "wall.straight.4m", SPAN_X - wall_t, 2 * BAY, yaw=270.0,
              on=floors[(3, 1)])
 
     b.mate(A + "door.leaf.1m2", "hinge", entrance, "jamb_neg_y")
@@ -118,29 +87,25 @@ def build(catalog):
     b.place(A + "stair.stoop.1m2", (5.4, -0.60, 0.0), yaw=0.0)
 
     # ---------------------------------------------------------- the room
-    # Four L corners turn the four corners of the room without overlapping, for
-    # the same reason the perimeter uses them. Each corner consumes one module
-    # of each side it turns:
-    #
-    #     south  x 2..6  (SW leg)   x 6..10  DOORWAY   x 10..14 (SE leg)
-    #     north  x 2..6  (NW leg)   x 6..10  wall      x 10..14 (NE leg)
-    #     west   y 2..6  (SW leg)   y 6..10  (NW leg)
-    #     east   y 2..6  (SE leg)   y 6..10  (NE leg)
-    #
-    # The two-module sides are entirely corner, which is why the door has to go
-    # in a three-module side. Every seam lands on a module boundary.
-    b.ground(A + "wall.interior.corner.4m", x0, y0, yaw=0.0, on=slab(x0, y0))
-    b.ground(A + "wall.interior.corner.4m", x1, y0, yaw=90.0, on=slab(x1 - 1, y0))
-    b.ground(A + "wall.interior.corner.4m", x1, y1, yaw=180.0, on=slab(x1 - 1, y1 - 1))
-    b.ground(A + "wall.interior.corner.4m", x0, y1, yaw=270.0, on=slab(x0, y1 - 1))
+    # The south and west perimeter walls are two room sides. The transforms
+    # below, including which end carries the rebate, are solved from the
+    # dedicated wall_face / wall_junction connector pair.
+    south_trim = b.mate(
+        A + "wall.junction.trim.3m8", "perimeter",
+        south_junction_host, "partition_pos_x_pos_y")
+    west_trim = b.mate(
+        A + "wall.junction.trim.3m8", "perimeter",
+        west_junction_host, "partition_pos_x_neg_y")
 
-    # The one opening. Without it the five pieces above are a sealed box, which
-    # is precisely the state this milestone existed to get out of.
-    b.ground(A + "wall.interior.doorway.4m", x0 + BAY, y0, yaw=0.0,
-             on=slab(x0 + BAY, y0))
-    # ...and the module opposite it, closing the north side.
-    b.ground(A + "wall.interior.4m", x1 - BAY, y1, yaw=180.0,
-             on=slab(x1 - BAY - 1, y1 - 1))
+    # The north side continues from the west trim with the one opening. The
+    # corner is then solved from the doorway's far seam, and its return leg
+    # meets the south trim automatically to close the east side.
+    interior_doorway = b.mate(
+        A + "wall.interior.doorway.4m", "edge_neg_x",
+        west_trim, "partition")
+    b.mate(
+        A + "wall.interior.corner.4m", "edge_pos_x",
+        interior_doorway, "edge_pos_x")
 
     # No leaf is hung in the interior doorway. The front door has one because a
     # house is entered through a door that shuts; a shut leaf here would turn
@@ -152,8 +117,8 @@ def build(catalog):
     # carries a 0.70 m working clearance on its -Y face. Both are in the
     # catalog; placing one 0.9 m from a wall because a wall is 4 m long is how
     # you get TSR_LAYOUT_BURIED from something that looked fine in plan.
-    b.ground(A + "prop.workbench", 5.0, 9.0, yaw=0.0, on=slab(5.0, 9.0))
-    b.ground(A + "prop.crate.small", 11.5, 8.5, yaw=12.0, on=slab(11.5, 8.5))
+    b.ground(A + "prop.workbench", 5.0, 5.8, yaw=0.0, on=slab(5.0, 5.8))
+    b.ground(A + "prop.crate.small", 10.5, 6.5, yaw=12.0, on=slab(10.5, 6.5))
     # ...and one in the corridor, where a guard post would go.
     b.ground(A + "prop.crate.small", 14.9, 1.2, yaw=-18.0, on=slab(14.9, 1.2))
 
@@ -180,10 +145,10 @@ def main():
     ground = catalog["derived"]["floor_top_z"]
 
     layout = b.to_layout(
-        "A 16 x 12 m shell with a free-standing 12 x 8 m room inside it: four "
-        "interior corners and one interior wall close it, one interior doorway "
-        "opens it, and a corridor runs all the way around. The room is the "
-        "first thing in this kit that is both closed and enterable."
+        "A 16 x 12 m shell with a room partitioned from its south-west corner. "
+        "The room reuses two perimeter walls; two rebated junction trims, one "
+        "interior doorway and one interior corner close the other sides without "
+        "overlapping the perimeter plinth."
     )
     layout["discovered_connections"] = b.discovered_connections
 
@@ -195,9 +160,9 @@ def main():
         {"label": "terrain up the stoop to the threshold",
          "from": [6.0, -1.6, 0.0], "to": [6.0, -0.15, ground], "must": True},
         {"label": "corridor into the room through the interior doorway",
-         "from": [8.0, 1.0, ground], "to": [8.0, 6.0, ground], "must": True},
+         "from": [6.0, 9.0, ground], "to": [6.0, 6.0, ground], "must": True},
         {"label": "back out of the room to the entrance",
-         "from": [12.0, 8.0, ground], "to": [2.0, 1.0, ground], "must": True},
+         "from": [10.0, 6.0, ground], "to": [6.0, 1.0, ground], "must": True},
     ]
 
     out = os.path.join(HERE, "layout.json")
