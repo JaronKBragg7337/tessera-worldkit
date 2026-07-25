@@ -247,7 +247,35 @@ def build_catalog(parts, out_dir, kit_id, kit_version, config_module,
         },
         "assets": records,
     }
+    catalog["fingerprint"] = fingerprint(catalog)
     return catalog
+
+
+#: Fields that change between two otherwise identical builds. Excluded from the
+#: fingerprint so a rebuild does not invalidate every layout ever composed
+#: against it, while any real change to geometry or contract does.
+VOLATILE_FIELDS = ("generated_utc", "created_utc", "checked_utc")
+
+
+def fingerprint(catalog) -> str:
+    """A stable hash of everything in a catalog that a consumer can depend on.
+
+    A split architecture -- one agent composing a layout, a different system
+    executing it -- fails silently when the two hold different catalogs. A wall
+    that was 4.00 m when the layout was composed and 4.20 m when it was executed
+    produces a building with gaps and no error anywhere. The fingerprint turns
+    that into a refusal.
+    """
+    def strip(node):
+        if isinstance(node, dict):
+            return {k: strip(v) for k, v in node.items()
+                    if k not in VOLATILE_FIELDS}
+        if isinstance(node, list):
+            return [strip(v) for v in node]
+        return node
+
+    payload = json.dumps(strip(catalog), sort_keys=True, separators=(",", ":"))
+    return hashlib.sha256(payload.encode()).hexdigest()
 
 
 def write_catalog(catalog, path):

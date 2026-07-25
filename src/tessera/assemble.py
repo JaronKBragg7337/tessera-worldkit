@@ -270,8 +270,16 @@ class Builder:
             "name": self.name,
             "description": description,
             "generator": "tessera.assemble.Builder",
-            "catalog": {"kit": self.catalog["kit"],
-                        "contract_version": self.catalog["contract_version"]},
+            "catalog": {
+                "kit": self.catalog["kit"],
+                "contract_version": self.catalog["contract_version"],
+                # Pin the exact catalog this layout was composed against. In a
+                # split architecture -- one agent composing, another executing --
+                # a mismatch here is otherwise silent, and a wall that was 4.00 m
+                # at compose time and 4.20 m at execute time produces a building
+                # full of gaps with no error anywhere.
+                "fingerprint": self.catalog.get("fingerprint"),
+            },
             "space": {"convention": CANONICAL_SPACE,
                       "linear_unit": LINEAR_UNIT,
                       "angle_unit": ANGLE_UNIT},
@@ -286,12 +294,24 @@ class Builder:
         }
 
     def _bounds(self):
+        """Scene extent, for information only.
+
+        Falls back to declared bounds when occupancy is absent, because a
+        builder driven from a context-budgeted brief has dimensions but not the
+        box decomposition -- and scene extent is a summary field, not something
+        placement depends on. Refusing to assemble for want of a summary would
+        be exactly the wrong trade.
+        """
         lo = [float("inf")] * 3
         hi = [float("-inf")] * 3
         for inst in self.instances:
             rec = self._record(inst["asset"])
             t = Transform.from_dict(inst)
-            for b in rec["occupancy"]["boxes"]:
+            boxes = rec.get("occupancy", {}).get("boxes")
+            if not boxes:
+                d = rec["dimensions"]["bounds"]
+                boxes = [tuple(d["min"]) + tuple(d["max"])]
+            for b in boxes:
                 wb = t.box(tuple(b))
                 for i in range(3):
                     lo[i] = min(lo[i], wb[i])

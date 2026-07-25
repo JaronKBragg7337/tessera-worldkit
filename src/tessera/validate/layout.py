@@ -110,6 +110,29 @@ def validate_layout(layout: dict, catalog: dict,
                 why="Placing metre assets into a centimetre layout is a 100x scale bug.",
                 fix="convert the layout")
 
+    c.check("layout.catalog_pinned")
+    declared = (layout.get("catalog") or {}).get("fingerprint")
+    actual = catalog.get("fingerprint")
+    if declared and actual and declared != actual:
+        c.error(code="TSR_LAYOUT_CATALOG_MISMATCH", rule="layout.catalog_pinned",
+                what="Layout was composed against a different catalog.",
+                where={"declared": declared[:12], "loaded": actual[:12]},
+                expected=declared, actual=actual,
+                why=("Every coordinate in this layout was solved from asset "
+                     "dimensions that may since have changed. Validating it "
+                     "against a different catalog would report success on a "
+                     "scene that no longer fits together -- the exact failure "
+                     "mode of composing on one device and executing on another."),
+                fix=("rebuild the layout against the loaded catalog, or load the "
+                     "catalog with fingerprint %s" % declared[:12]))
+    elif not declared:
+        c.warn(code="TSR_LAYOUT_CATALOG_UNPINNED", rule="layout.catalog_pinned",
+               what="Layout does not say which catalog it was composed against.",
+               where={}, expected="catalog.fingerprint", actual=None,
+               why=("Without a pin, a later catalog change silently invalidates "
+                    "this layout instead of failing loudly."),
+               fix="regenerate the layout with a current Tessera version")
+
     index = {a["id"]: a for a in catalog.get("assets", [])}
 
     # -------------------------------------------------------- 2 resolvable
