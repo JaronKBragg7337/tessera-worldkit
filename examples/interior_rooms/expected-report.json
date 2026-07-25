@@ -2,7 +2,7 @@
   "schema": "tessera.report/1",
   "validator_version": "1.0.0",
   "generated_utc": "2026-07-25T18:12:45+00:00",
-  "subject": "Survivor Safe House, Two Storey",
+  "subject": "Room Inside a Building",
   "subject_kind": "layout",
   "status": "passed",
   "counts": {
@@ -40,7 +40,8 @@
   "by_code": {
     "TSR_LAYOUT_APERTURE_OCCUPIED_BY_LEAF": 1,
     "TSR_LAYOUT_APERTURE_CLOSED": 1,
-    "TSR_LAYOUT_REACHABILITY_PROVEN": 4
+    "TSR_LAYOUT_APERTURE_PASSABLE": 1,
+    "TSR_LAYOUT_REACHABILITY_PROVEN": 3
   },
   "diagnostics": [
     {
@@ -84,6 +85,27 @@
       "rule": "layout.aperture_passable"
     },
     {
+      "code": "TSR_LAYOUT_APERTURE_PASSABLE",
+      "severity": "info",
+      "what": "Opening audited: a character can pass through it.",
+      "where": {
+        "instance": "wall_interior_doorway_4m_01",
+        "asset": "tsr:shell/wall.interior.doorway.4m",
+        "aperture": "door",
+        "position": [
+          6.0,
+          2.0,
+          0.5
+        ]
+      },
+      "why": "Checked by flood fill from one side to the other.",
+      "expected": "passable",
+      "actual": "route_found",
+      "fix": "none needed",
+      "fix_transform": null,
+      "rule": "layout.aperture_passable"
+    },
+    {
       "code": "TSR_LAYOUT_REACHABILITY_PROVEN",
       "severity": "info",
       "what": "Route proven: terrain up the stoop to the threshold.",
@@ -110,41 +132,17 @@
     {
       "code": "TSR_LAYOUT_REACHABILITY_PROVEN",
       "severity": "info",
-      "what": "Route proven: ground floor to mezzanine.",
+      "what": "Route proven: corridor into the room through the interior doorway.",
       "where": {
-        "claim": "ground floor to mezzanine",
+        "claim": "corridor into the room through the interior doorway",
         "from": [
-          6.0,
-          2.0,
+          8.0,
+          1.0,
           0.5
         ],
         "to": [
+          8.0,
           6.0,
-          10.0,
-          3.7
-        ]
-      },
-      "why": "Checked by flood fill over the exact occupancy volumes.",
-      "expected": "reachable",
-      "actual": "route_found",
-      "fix": "none needed",
-      "fix_transform": null,
-      "rule": "layout.reachability"
-    },
-    {
-      "code": "TSR_LAYOUT_REACHABILITY_PROVEN",
-      "severity": "info",
-      "what": "Route proven: mezzanine back down to the ground floor.",
-      "where": {
-        "claim": "mezzanine back down to the ground floor",
-        "from": [
-          6.0,
-          10.0,
-          3.7
-        ],
-        "to": [
-          2.0,
-          2.0,
           0.5
         ]
       },
@@ -158,30 +156,30 @@
     {
       "code": "TSR_LAYOUT_REACHABILITY_PROVEN",
       "severity": "info",
-      "what": "Route proven: outside cannot reach the mezzanine except through the house.",
+      "what": "Route proven: back out of the room to the entrance.",
       "where": {
-        "claim": "outside cannot reach the mezzanine except through the house",
+        "claim": "back out of the room to the entrance",
         "from": [
-          14.0,
-          14.0,
-          0.0
+          12.0,
+          8.0,
+          0.5
         ],
         "to": [
-          6.0,
-          10.0,
-          3.7
+          2.0,
+          1.0,
+          0.5
         ]
       },
       "why": "Checked by flood fill over the exact occupancy volumes.",
-      "expected": "not reachable",
-      "actual": "no_route",
+      "expected": "reachable",
+      "actual": "route_found",
       "fix": "none needed",
       "fix_transform": null,
       "rule": "layout.reachability"
     }
   ],
   "connections": {
-    "declared": 36,
-    "verified": 36
+    "declared": 75,
+    "verified": 75
   }
 }

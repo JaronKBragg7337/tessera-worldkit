@@ -15,17 +15,23 @@
       "js_should_detect": true,
       "python_codes": [
         "TSR_LAYOUT_APERTURE_BLOCKED",
+        "TSR_LAYOUT_APERTURE_CLOSED",
         "TSR_LAYOUT_APERTURE_OCCUPIED_BY_LEAF",
         "TSR_LAYOUT_CLEARANCE_VIOLATED",
-        "TSR_LAYOUT_INTERSECTION"
+        "TSR_LAYOUT_INTERSECTION",
+        "TSR_LAYOUT_REACHABILITY_PROVEN",
+        "TSR_LAYOUT_STAIR_UNUSABLE",
+        "TSR_LAYOUT_UNREACHABLE"
       ],
-      "python_errors": 2
+      "python_errors": 4
     },
     "bad_schema": {
       "code": "TSR_LAYOUT_SCHEMA_MISMATCH",
       "js_should_detect": false,
       "python_codes": [
+        "TSR_LAYOUT_APERTURE_CLOSED",
         "TSR_LAYOUT_APERTURE_OCCUPIED_BY_LEAF",
+        "TSR_LAYOUT_REACHABILITY_PROVEN",
         "TSR_LAYOUT_SCHEMA_MISMATCH"
       ],
       "python_errors": 1
@@ -35,26 +41,30 @@
       "js_should_detect": true,
       "python_codes": [
         "TSR_LAYOUT_APERTURE_BLOCKED",
+        "TSR_LAYOUT_APERTURE_CLOSED",
         "TSR_LAYOUT_APERTURE_OCCUPIED_BY_LEAF",
         "TSR_LAYOUT_BURIED",
         "TSR_LAYOUT_CLEARANCE_VIOLATED",
         "TSR_LAYOUT_CONNECTOR_GAP",
         "TSR_LAYOUT_FLOATING",
         "TSR_LAYOUT_INTERSECTION",
-        "TSR_LAYOUT_OFF_GRID_Z"
+        "TSR_LAYOUT_OFF_GRID_Z",
+        "TSR_LAYOUT_REACHABILITY_PROVEN"
       ],
-      "python_errors": 7
+      "python_errors": 8
     },
     "connector_direction": {
       "code": "TSR_LAYOUT_CONNECTOR_DIRECTION",
       "js_should_detect": false,
       "python_codes": [
+        "TSR_LAYOUT_APERTURE_CLOSED",
         "TSR_LAYOUT_APERTURE_OCCUPIED_BY_LEAF",
         "TSR_LAYOUT_BURIED",
         "TSR_LAYOUT_CONNECTOR_DIRECTION",
         "TSR_LAYOUT_CONNECTOR_GAP",
         "TSR_LAYOUT_FLOATING",
-        "TSR_LAYOUT_INTERSECTION"
+        "TSR_LAYOUT_INTERSECTION",
+        "TSR_LAYOUT_REACHABILITY_PROVEN"
       ],
       "python_errors": 12
     },
@@ -62,10 +72,12 @@
       "code": "TSR_LAYOUT_CONNECTOR_GAP",
       "js_should_detect": false,
       "python_codes": [
+        "TSR_LAYOUT_APERTURE_CLOSED",
         "TSR_LAYOUT_APERTURE_OCCUPIED_BY_LEAF",
         "TSR_LAYOUT_CONNECTOR_GAP",
         "TSR_LAYOUT_INTERSECTION",
-        "TSR_LAYOUT_OFF_GRID"
+        "TSR_LAYOUT_OFF_GRID",
+        "TSR_LAYOUT_REACHABILITY_PROVEN"
       ],
       "python_errors": 5
     },
@@ -73,8 +85,10 @@
       "code": "TSR_LAYOUT_DUPLICATE_INSTANCE",
       "js_should_detect": false,
       "python_codes": [
+        "TSR_LAYOUT_APERTURE_CLOSED",
         "TSR_LAYOUT_APERTURE_OCCUPIED_BY_LEAF",
         "TSR_LAYOUT_DUPLICATE_INSTANCE",
+        "TSR_LAYOUT_REACHABILITY_PROVEN",
         "TSR_LAYOUT_UNKNOWN_CONNECTOR"
       ],
       "python_errors": 2
@@ -83,10 +97,12 @@
       "code": "TSR_LAYOUT_FLOATING",
       "js_should_detect": true,
       "python_codes": [
+        "TSR_LAYOUT_APERTURE_CLOSED",
         "TSR_LAYOUT_APERTURE_OCCUPIED_BY_LEAF",
         "TSR_LAYOUT_CONNECTOR_GAP",
         "TSR_LAYOUT_FLOATING",
-        "TSR_LAYOUT_OFF_GRID_Z"
+        "TSR_LAYOUT_OFF_GRID_Z",
+        "TSR_LAYOUT_REACHABILITY_PROVEN"
       ],
       "python_errors": 3
     },
@@ -94,11 +110,13 @@
       "code": "TSR_LAYOUT_ILLEGAL_ROTATION",
       "js_should_detect": false,
       "python_codes": [
+        "TSR_LAYOUT_APERTURE_CLOSED",
         "TSR_LAYOUT_APERTURE_OCCUPIED_BY_LEAF",
         "TSR_LAYOUT_CONNECTOR_DIRECTION",
         "TSR_LAYOUT_CONNECTOR_GAP",
         "TSR_LAYOUT_ILLEGAL_ROTATION",
-        "TSR_LAYOUT_INTERSECTION"
+        "TSR_LAYOUT_INTERSECTION",
+        "TSR_LAYOUT_REACHABILITY_PROVEN"
       ],
       "python_errors": 6
     },
@@ -106,11 +124,13 @@
       "code": "TSR_LAYOUT_ILLEGAL_SCALE",
       "js_should_detect": false,
       "python_codes": [
+        "TSR_LAYOUT_APERTURE_CLOSED",
         "TSR_LAYOUT_APERTURE_OCCUPIED_BY_LEAF",
         "TSR_LAYOUT_BURIED",
         "TSR_LAYOUT_CONNECTOR_GAP",
         "TSR_LAYOUT_ILLEGAL_SCALE",
-        "TSR_LAYOUT_INTERSECTION"
+        "TSR_LAYOUT_INTERSECTION",
+        "TSR_LAYOUT_REACHABILITY_PROVEN"
       ],
       "python_errors": 7
     },
@@ -118,8 +138,10 @@
       "code": "TSR_LAYOUT_INTERSECTION",
       "js_should_detect": true,
       "python_codes": [
+        "TSR_LAYOUT_APERTURE_CLOSED",
         "TSR_LAYOUT_APERTURE_OCCUPIED_BY_LEAF",
-        "TSR_LAYOUT_INTERSECTION"
+        "TSR_LAYOUT_INTERSECTION",
+        "TSR_LAYOUT_REACHABILITY_PROVEN"
       ],
       "python_errors": 1
     },
@@ -127,10 +149,12 @@
       "code": "TSR_LAYOUT_OFF_GRID",
       "js_should_detect": false,
       "python_codes": [
+        "TSR_LAYOUT_APERTURE_CLOSED",
         "TSR_LAYOUT_APERTURE_OCCUPIED_BY_LEAF",
         "TSR_LAYOUT_CONNECTOR_GAP",
         "TSR_LAYOUT_INTERSECTION",
-        "TSR_LAYOUT_OFF_GRID"
+        "TSR_LAYOUT_OFF_GRID",
+        "TSR_LAYOUT_REACHABILITY_PROVEN"
       ],
       "python_errors": 6
     },
@@ -138,6 +162,7 @@
       "code": "TSR_LAYOUT_ILLEGAL_ROTATION",
       "js_should_detect": false,
       "python_codes": [
+        "TSR_LAYOUT_APERTURE_CLOSED",
         "TSR_LAYOUT_APERTURE_OCCUPIED_BY_LEAF",
         "TSR_LAYOUT_BURIED",
         "TSR_LAYOUT_CONNECTOR_DIRECTION",
@@ -145,6 +170,7 @@
         "TSR_LAYOUT_CONNECTOR_ROLL",
         "TSR_LAYOUT_ILLEGAL_ROTATION",
         "TSR_LAYOUT_INTERSECTION",
+        "TSR_LAYOUT_REACHABILITY_PROVEN",
         "TSR_LAYOUT_UNSUPPORTED"
       ],
       "python_errors": 13
@@ -153,7 +179,9 @@
       "code": "TSR_LAYOUT_UNKNOWN_ASSET",
       "js_should_detect": true,
       "python_codes": [
+        "TSR_LAYOUT_APERTURE_CLOSED",
         "TSR_LAYOUT_APERTURE_OCCUPIED_BY_LEAF",
+        "TSR_LAYOUT_REACHABILITY_PROVEN",
         "TSR_LAYOUT_UNKNOWN_ASSET",
         "TSR_LAYOUT_UNSUPPORTED"
       ],
@@ -163,7 +191,9 @@
       "code": "TSR_LAYOUT_UNKNOWN_CONNECTOR",
       "js_should_detect": false,
       "python_codes": [
+        "TSR_LAYOUT_APERTURE_CLOSED",
         "TSR_LAYOUT_APERTURE_OCCUPIED_BY_LEAF",
+        "TSR_LAYOUT_REACHABILITY_PROVEN",
         "TSR_LAYOUT_UNKNOWN_CONNECTOR"
       ],
       "python_errors": 1
@@ -172,7 +202,9 @@
       "code": "TSR_LAYOUT_UNSUPPORTED",
       "js_should_detect": true,
       "python_codes": [
+        "TSR_LAYOUT_APERTURE_CLOSED",
         "TSR_LAYOUT_APERTURE_OCCUPIED_BY_LEAF",
+        "TSR_LAYOUT_REACHABILITY_PROVEN",
         "TSR_LAYOUT_UNSUPPORTED"
       ],
       "python_errors": 1

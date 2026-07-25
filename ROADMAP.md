@@ -2,6 +2,30 @@
 
 SPDX-License-Identifier: CC0-1.0
 
+## Where this is right now
+
+**Done and verified.** The placement contract, the exact geometry kernel, 18
+original parts, 41 validation rules with agent-readable diagnostics, the
+reachability solver, the context-budgeted brief, three validated example
+buildings, and four verified targets — core, three.js and Blender in CI, Unreal
+against a real 5.6.1 install.
+
+**Next, in order.** Interior walls, doorways and corners come first: without
+them an interior room can be closed but not entered, which blocks every
+multi-room building — safe house, checkpoint, warehouse, village. Then the gable
+end wall and second-storey walls, which the renders exposed. Then the intent
+layer, which is the largest remaining reduction in agent reasoning but benefits
+from having more to reason about.
+
+**Read first if you are new here.** [`AGENTS.md`](AGENTS.md) if you are an
+agent. [`docs/decisions/0008`](docs/decisions/0008-scope-and-replaceable-layers.md)
+for why scope is wide and coupling is not.
+[`docs/conformance.md`](docs/conformance.md) for what compatibility means.
+[`benchmarks/constrained_agent/`](benchmarks/constrained_agent/) for how the
+project tests itself against a real agent.
+
+---
+
 Every milestone below has acceptance tests that either pass or do not. There are
 no items reading "support characters" or "add assets", because those cannot be
 finished — only abandoned.
@@ -67,10 +91,13 @@ that table read `verified-locally` or better.
 - [ ] Unreal: a `PlayerStart` outside the building pathing through the doorway
       to a point inside, so the aperture is proven at runtime and not only in
       the collision data.
-- [ ] **Unity.** All 12 GLBs import as prefabs; `BuildLayout` instantiates 41
-      objects; a `CharacterController` capsule of the reference dimensions walks
-      through the doorway in play mode; no convex `MeshCollider` exists anywhere
-      in the scene.
+- [ ] **Unity — blocked on a licence, not on work.** Unity 6000.4.11f1 is
+      installed on the verification machine and batch mode refuses to start with
+      "Found 0 entitlement groups and 0 free entitlements". One interactive sign
+      in to Unity Hub unblocks it; see `docs/engine-support.md`. Then: all 18
+      GLBs import as prefabs, `BuildLayout` instantiates every instance, a
+      `CharacterController` of the reference dimensions walks through the
+      doorway in play mode, and no convex `MeshCollider` exists in the scene.
 - [ ] **three.js.** `adapters/three/viewer.html` renders the workshop, and an
       automated screenshot diff against a committed reference stays within
       tolerance.
@@ -222,6 +249,69 @@ grows linearly.
 | Scene assembled from a brief alone, validated against the full catalog | 0 errors | **0 errors, 37 instances** |
 | Catalog mismatch detected | yes | **yes** |
 | Fingerprint stable across rebuilds, unstable across geometry changes | yes | **yes** |
+
+---
+
+## External review, 2026-07-25
+
+An independent evaluation was asked to behave like an agent trying to build a
+small environment and to be neither charitable nor overly critical. Its central
+finding is accepted and the README has been corrected to match it:
+
+> Tessera stops an agent from guessing measurable placement facts. It does not
+> yet stop the agent from guessing what world should be built.
+
+It scored geometric placement, collision and agent onboarding highly, and asset
+breadth (3/10), semantic world generation (2/10) and visual production readiness
+(3/10) low. That split is fair and is the real shape of the project today.
+
+Acted on immediately:
+
+- [x] The README's "stops guessing" claim corrected, and a "what it does not do"
+      section added rather than left to be discovered
+- [x] **Validation no longer depends on the author remembering to ask.** Every
+      traversable opening is audited whether or not a route was declared, and a
+      layout with openings but no claims is told so. This was the sharpest
+      technical finding: a layout could omit the one check that mattered and
+      still pass clean
+- [x] The workshop and single-storey safe house, both of which were silently
+      unaudited, now carry stoops and declared routes
+- [x] `docs/conformance.md`, so "Tessera-compatible" can mean something other
+      than "used our code"
+
+Logged, in the review's own priority order:
+
+- [ ] **1. Intent schema and intent validation** — the largest remaining burden.
+      Designed in `docs/remote-agents.md`, built in M4
+- [ ] **2. Automatic enclosure and roofing** — M4
+- [ ] **3. Interior wall, doorway and corner system** — M3
+- [ ] **4. Completeness validation.** Detect an expected enclosure surface that
+      is simply absent. This is the gable-end class of defect: every rule passes
+      and a picture shows daylight through the building
+- [ ] **5. `tessera repair`** — apply every `fix_transform` to a fixed point
+- [ ] **6. Road, terrain, gate, fence and checkpoint assets** — M3
+- [ ] **7. Runtime navigation verified in every supported engine** — M2
+- [ ] **8. A verified interactive browser demo.** No public demo is currently
+      discoverable, which the review correctly noted
+- [ ] **9. A multi-agent benchmark measuring total tokens and elapsed work**
+      against a conventional workflow. Catalog compression is measured;
+      end-to-end saving is not
+- [ ] **10. More visual themes and production detailing**
+
+On asset breadth: 3/10 is an accurate snapshot and **not a policy**. The kit
+will grow substantially — M3 alone adds traversal variants, interior walls and
+doorways, junction trim, more roof forms, roads, ground, openings and a second
+theme, and there is no ceiling after that. What is deliberate is the *ordering*:
+assets are ranked by how much agent guesswork they remove, not by count. Forty
+assets an agent places correctly on the first attempt are worth more than two
+hundred it has to be corrected on, and the eighteen that exist were chosen to
+prove the contract end to end rather than to look like a library. Growth is also
+not the only route — under
+[`decisions/0008`](docs/decisions/0008-scope-and-replaceable-layers.md) anyone
+can supply their own kit and keep everything else.
+
+One criticism genuinely is not a defect: validators will never establish
+unspecified intent. That is what layer 5 is for, not a hole in layers 0–4.
 
 ---
 

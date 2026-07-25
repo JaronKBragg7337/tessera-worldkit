@@ -713,10 +713,12 @@ def _check_reachability(c, layout, instances):
     expensive check here by a wide margin.
     """
     claims = layout.get("reachability") or []
+    traversable = [(i, ap) for i in instances for ap in i.apertures
+                   if ap.get("traversable")]
     stairs = [i for i in instances
               if i.record.get("semantic_role") in ("stair", "railing")
               and i.record.get("semantic_role") == "stair"]
-    if not claims and not stairs:
+    if not claims and not stairs and not traversable:
         return
 
     from ..navigate import grid_from_instances
@@ -755,7 +757,76 @@ def _check_reachability(c, layout, instances):
                     fix=("check the stairwell opening covers the upper flight, "
                          "and that the landing height matches the floor above"))
 
+    # An opening nobody asked about is the gap an external review found: the
+    # reachability rules only ever proved the routes a layout *declared*, so a
+    # layout could omit the one check that mattered and still pass clean. Every
+    # traversable opening is now audited whether or not anyone asked.
+    c.check("layout.aperture_passable")
+    for inst, ap in traversable:
+        axis = "xyz".index(ap["traversal_axis"])
+        box = ap["world"]
+        centre = [(box[k] + box[k + 3]) / 2 for k in range(3)]
+        reach = (box[axis + 3] - box[axis]) / 2 + 0.55
+        stand = box[2] + 0.02
+        a = list(centre); a[axis] = centre[axis] - reach; a[2] = stand
+        b = list(centre); b[axis] = centre[axis] + reach; b[2] = stand
+
+        blocker = None
+        for other in instances:
+            if other is inst:
+                continue
+            if any(overlap_box(ob, box) for ob in other.occupancy):
+                blocker = other
+                break
+
+        where = {"instance": inst.id, "asset": inst.asset_id,
+                 "aperture": ap["id"], "position": list(inst.transform.position)}
+        if blocker is not None:
+            c.info(code="TSR_LAYOUT_APERTURE_CLOSED", rule="layout.aperture_passable",
+                   what="Opening is closed, so it was not audited as a route.",
+                   where=dict(where, closed_by=blocker.id),
+                   expected="informational", actual="occupied by %s" % blocker.id,
+                   why=("A shut door is a legitimate state, not a defect, so "
+                        "passability is not asserted either way. Remove or open "
+                        "the leaf if this route has to be proven."),
+                   fix="none needed")
+            continue
+
+        ok, detail = grid.route_exists(tuple(a), tuple(b), tolerance=0.6)
+        if ok:
+            c.info(code="TSR_LAYOUT_APERTURE_PASSABLE", rule="layout.aperture_passable",
+                   what="Opening audited: a character can pass through it.",
+                   where=where, expected="passable", actual=detail.get("reason"),
+                   why="Checked by flood fill from one side to the other.",
+                   fix="none needed")
+        else:
+            c.warn(code="TSR_LAYOUT_APERTURE_UNREACHABLE",
+                   rule="layout.aperture_passable",
+                   what="Opening is clear, but a character cannot get through it.",
+                   where=where,
+                   expected="a walkable route from one side to the other",
+                   actual=detail.get("reason"),
+                   why=("The hole is the right size, collision preserves it and "
+                        "nothing is standing in it -- so the obstacle is the "
+                        "approach. Most often the floor inside sits higher than "
+                        "a character can step, and there is no stoop or stair."),
+                   fix=("add a step up to the threshold, or check the ground on "
+                        "both sides is actually reachable"))
+
     if not claims:
+        c.check("layout.traversal_audited")
+        if traversable:
+            c.info(code="TSR_LAYOUT_NO_ROUTES_DECLARED",
+                   rule="layout.traversal_audited",
+                   what="Layout declares no routes of its own.",
+                   where={"traversable_openings": len(traversable)},
+                   expected="a reachability claim for each route that matters",
+                   actual="0 declared",
+                   why=("Openings were audited individually, but nothing has "
+                        "checked that the places they lead to are connected to "
+                        "each other. Declaring routes is what turns 'the door "
+                        "works' into 'you can get from outside to upstairs'."),
+                   fix="add a layout.reachability entry per route that matters")
         return
 
     c.check("layout.reachability")

@@ -47,8 +47,8 @@
     "tsr:shell/window.leaf.1m8"
   ],
   "placement_method": {
-    "explicit": 1,
-    "solved_from_contract": 36
+    "explicit": 0,
+    "solved_from_contract": 37
   },
   "instances": [
     {

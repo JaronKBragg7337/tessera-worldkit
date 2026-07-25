@@ -1,14 +1,14 @@
 {
   "schema": "tessera.report/1",
   "validator_version": "1.0.0",
-  "generated_utc": "2026-07-25T11:27:19+00:00",
+  "generated_utc": "2026-07-25T18:12:45+00:00",
   "subject": "Survivor Safe House",
   "subject_kind": "layout",
   "status": "passed",
   "counts": {
     "errors": 0,
     "warnings": 0,
-    "info": 1
+    "info": 4
   },
   "coverage": {
     "checks_run": [
@@ -29,13 +29,18 @@
       "layout.connector.gap",
       "layout.connector.scale_class",
       "layout.aperture_clear",
-      "layout.clearance"
+      "layout.clearance",
+      "layout.stair_usable",
+      "layout.aperture_passable",
+      "layout.reachability"
     ],
-    "checks_run_count": 18,
+    "checks_run_count": 21,
     "rules_failed": []
   },
   "by_code": {
-    "TSR_LAYOUT_APERTURE_OCCUPIED_BY_LEAF": 1
+    "TSR_LAYOUT_APERTURE_OCCUPIED_BY_LEAF": 1,
+    "TSR_LAYOUT_APERTURE_CLOSED": 1,
+    "TSR_LAYOUT_REACHABILITY_PROVEN": 2
   },
   "diagnostics": [
     {
@@ -55,6 +60,76 @@
       "fix": "none needed; open the leaf if the route must be passable",
       "fix_transform": null,
       "rule": "layout.aperture_clear"
+    },
+    {
+      "code": "TSR_LAYOUT_APERTURE_CLOSED",
+      "severity": "info",
+      "what": "Opening is closed, so it was not audited as a route.",
+      "where": {
+        "instance": "wall_doorway_4m_01",
+        "asset": "tsr:shell/wall.doorway.4m",
+        "aperture": "door",
+        "position": [
+          4.0,
+          0.0,
+          0.5
+        ],
+        "closed_by": "door_leaf_1m2_01"
+      },
+      "why": "A shut door is a legitimate state, not a defect, so passability is not asserted either way. Remove or open the leaf if this route has to be proven.",
+      "expected": "informational",
+      "actual": "occupied by door_leaf_1m2_01",
+      "fix": "none needed",
+      "fix_transform": null,
+      "rule": "layout.aperture_passable"
+    },
+    {
+      "code": "TSR_LAYOUT_REACHABILITY_PROVEN",
+      "severity": "info",
+      "what": "Route proven: terrain up the stoop to the threshold.",
+      "where": {
+        "claim": "terrain up the stoop to the threshold",
+        "from": [
+          6.0,
+          -1.6,
+          0.0
+        ],
+        "to": [
+          6.0,
+          -0.15,
+          0.5
+        ]
+      },
+      "why": "Checked by flood fill over the exact occupancy volumes.",
+      "expected": "reachable",
+      "actual": "route_found",
+      "fix": "none needed",
+      "fix_transform": null,
+      "rule": "layout.reachability"
+    },
+    {
+      "code": "TSR_LAYOUT_REACHABILITY_PROVEN",
+      "severity": "info",
+      "what": "Route proven: the whole ground floor is one connected space.",
+      "where": {
+        "claim": "the whole ground floor is one connected space",
+        "from": [
+          2.0,
+          2.0,
+          0.5
+        ],
+        "to": [
+          10.0,
+          10.0,
+          0.5
+        ]
+      },
+      "why": "Checked by flood fill over the exact occupancy volumes.",
+      "expected": "reachable",
+      "actual": "route_found",
+      "fix": "none needed",
+      "fix_transform": null,
+      "rule": "layout.reachability"
     }
   ],
   "connections": {

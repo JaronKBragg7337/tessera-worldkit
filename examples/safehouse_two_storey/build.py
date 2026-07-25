@@ -68,7 +68,7 @@ def build(catalog):
     # The threshold. Without it the doorway is 0.50 m above the ground outside
     # and nobody can get in -- which the reachability solver found in a scene
     # that had already passed every other rule.
-    b.place(A + "stair.stoop.1m2", (5.4, -0.60, 0.0), yaw=0.0)
+    b.ground(A + "stair.stoop.1m2", 5.4, -0.60, yaw=0.0)
 
     # A guard post clear of the door swing. The single-storey variant also
     # partitions a storage alcove here; this one does not, because the partition

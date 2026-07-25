@@ -63,6 +63,11 @@ def build(catalog):
     b.ground(A + "wall.straight.4m", SPAN - 0.2, 2 * BAY, yaw=270.0, on=floors[(2, 1)])
 
     b.mate(A + "door.leaf.1m2", "hinge", entrance, "jamb_neg_y")
+
+    # The threshold. Without it the doorway sits 0.50 m above the ground
+    # outside and nobody can step up to it -- which every other rule
+    # passes, and only the reachability audit reports.
+    b.ground(A + "stair.stoop.1m2", 5.4, -0.60, yaw=0.0)
     b.mate(A + "window.leaf.1m8", "mount", window, "jamb_neg_y")
 
     # ------------------------------------------------------ storage alcove
@@ -116,6 +121,15 @@ def main():
         "bay, and a gable roof. Repaired from a constrained-agent draft."
     )
     layout["discovered_connections"] = b.discovered_connections
+
+    ground = catalog["derived"]["floor_top_z"]
+    layout["reachability"] = [
+        {"label": "terrain up the stoop to the threshold",
+         "from": [6.0, -1.6, 0.0], "to": [6.0, -0.15, ground], "must": True},
+        {"label": "the whole ground floor is one connected space",
+         "from": [2.0, 2.0, ground], "to": [10.0, 10.0, ground], "must": True},
+    ]
+
     out = os.path.join(HERE, "layout.json")
     with open(out, "w", encoding="utf-8", newline="\n") as fh:
         json.dump(layout, fh, indent=2)
