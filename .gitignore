@@ -14,6 +14,7 @@ build/fbx/
 build/*.blend
 build/*.blend1
 build/unreal-import-report.json
+build/unreal-verify-report.json
 
 # build/catalog.json, build/meshes/, build/fixtures/ and build/parity-expected.json
 # ARE committed on purpose. They are small, deterministic and byte-stable, and

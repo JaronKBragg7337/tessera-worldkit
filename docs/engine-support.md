@@ -26,7 +26,38 @@ Each adapter has a verification status, and the status is the honest one:
 | **glTF / GLB output** | `src/tessera/export/glb.py` | `verified-in-ci` | every exported mesh is re-loaded by an independent third-party parser and confirmed watertight, winding-consistent, and of exactly the expected volume and extents |
 | **Blender** | `adapters/blender/tessera_blender.py` | `verified-in-ci` | 81 checks against **Blender 5.0.1** on every commit: all 18 assets import with bounds matching the contract to ~1e-8 m, triangle counts survive, collision hulls are built one per declared hull, a doorway's collision is void where its aperture is, a 37-instance layout lands at its declared transforms to 1.9e-7 m, and FBX export keeps the `UCX_<mesh>_##` names Unreal binds collision by |
 | **Unreal Engine 5** | `adapters/unreal/tessera_unreal.py` | `verified-locally` | 94 checks against **Unreal Engine 5.6.1**, headless: all 18 assets import with bounds matching the contract to **0.0000 cm**, collision is rebuilt one hull per declared hull and persists, a 37-instance layout spawns at its declared transforms to **0.0000 cm**, and a doorway's collision is void where its aperture is. Not in CI: Unreal needs a licensed multi-gigabyte install, so it cannot follow Blender's pip route |
-| **Unity** | `adapters/unity/Editor/TesseraImporter.cs` | `script-provided-unverified` | reviewed and structurally checked; not compiled against a Unity install |
+| **Unity** | `adapters/unity/Editor/TesseraImporter.cs` | `script-provided-unverified` | reviewed and structurally checked. Unity 6000.4.11f1 **is** installed on the verification machine, and batch mode refuses to start: no licence is activated. See below — this is one interactive step away from being verifiable |
+
+### Why Unity is still unverified
+
+Not for want of an install. Unity 6000.4.11f1 is present on the machine that
+verified Unreal, and headless batch mode stops before it does anything:
+
+```
+[Licensing::Module] Error: Access token is unavailable; failed to update
+[Licensing::Client] Error: Code 404 (status: Found 0 entitlement groups and
+                           0 free entitlements matching requested entitlement ids)
+[Licensing::Module] Error: 'com.unity.editor.headless' was not found.
+```
+
+No licence is activated. Unlike Blender's pip route or Unreal's offline install,
+Unity requires signing in to a Unity account, which is a person's credentials and
+an interactive step — so it is not something to automate around.
+
+**The unblock is one action:** open Unity Hub, sign in once, and a Personal
+licence is issued. After that:
+
+```
+Unity.exe -batchmode -nographics -quit ^
+    -projectPath C:\path\TesseraUnity ^
+    -executeMethod Tessera.TesseraVerify.Run ^
+    -logFile unity-verify.log
+```
+
+Until that happens the row above stays `script-provided-unverified`, because a
+Unity adapter that has never been compiled is exactly as unproven as one that
+has never been written — and Unreal has now demonstrated that unverified
+adapters carry real, invisible coordinate bugs.
 
 ### What Unreal actually does with collision
 

@@ -67,10 +67,13 @@ that table read `verified-locally` or better.
 - [ ] Unreal: a `PlayerStart` outside the building pathing through the doorway
       to a point inside, so the aperture is proven at runtime and not only in
       the collision data.
-- [ ] **Unity.** All 12 GLBs import as prefabs; `BuildLayout` instantiates 41
-      objects; a `CharacterController` capsule of the reference dimensions walks
-      through the doorway in play mode; no convex `MeshCollider` exists anywhere
-      in the scene.
+- [ ] **Unity — blocked on a licence, not on work.** Unity 6000.4.11f1 is
+      installed on the verification machine and batch mode refuses to start with
+      "Found 0 entitlement groups and 0 free entitlements". One interactive sign
+      in to Unity Hub unblocks it; see `docs/engine-support.md`. Then: all 18
+      GLBs import as prefabs, `BuildLayout` instantiates every instance, a
+      `CharacterController` of the reference dimensions walks through the
+      doorway in play mode, and no convex `MeshCollider` exists in the scene.
 - [ ] **three.js.** `adapters/three/viewer.html` renders the workshop, and an
       automated screenshot diff against a committed reference stays within
       tolerance.
