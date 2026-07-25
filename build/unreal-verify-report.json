@@ -1,7 +1,7 @@
 {
   "engine": "5.6.1-44394996+++UE5+Release-5.6",
-  "fingerprint": "2694a0892c21182d98e23cf523d566e4a392b8c1b2fe2af1a13600bb632525fc",
-  "checks": 94,
+  "fingerprint": "58102ca826808059740353ed6927fe3d84bbcd5bb0cb2b3095cf6fcbc137726d",
+  "checks": 109,
   "failed": 0,
   "auto_generated_hulls_before_replacement": {
     "foundation.pad.4m": 1,
@@ -21,7 +21,10 @@
     "beam.4m": 1,
     "railing.4m": 1,
     "column.3m": 1,
-    "stair.stoop.1m2": 1
+    "stair.stoop.1m2": 1,
+    "wall.interior.4m": 1,
+    "wall.interior.doorway.4m": 1,
+    "wall.interior.corner.4m": 1
   },
   "results": [
     {
@@ -473,6 +476,81 @@
       "name": "stair.stoop.1m2 box collision persisted",
       "ok": true,
       "detail": "4 box(es) stored"
+    },
+    {
+      "name": "wall.interior.4m imports",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "name": "wall.interior.4m bounds match the contract",
+      "ok": true,
+      "detail": "worst axis error 0.0000 cm"
+    },
+    {
+      "name": "wall.interior.4m collision rebuilt from the contract",
+      "ok": true,
+      "detail": "5 of 5 hulls"
+    },
+    {
+      "name": "wall.interior.4m auto-generated collision removed",
+      "ok": true,
+      "detail": "0 convex hull(s) left"
+    },
+    {
+      "name": "wall.interior.4m box collision persisted",
+      "ok": true,
+      "detail": "5 box(es) stored"
+    },
+    {
+      "name": "wall.interior.doorway.4m imports",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "name": "wall.interior.doorway.4m bounds match the contract",
+      "ok": true,
+      "detail": "worst axis error 0.0000 cm"
+    },
+    {
+      "name": "wall.interior.doorway.4m collision rebuilt from the contract",
+      "ok": true,
+      "detail": "11 of 11 hulls"
+    },
+    {
+      "name": "wall.interior.doorway.4m auto-generated collision removed",
+      "ok": true,
+      "detail": "0 convex hull(s) left"
+    },
+    {
+      "name": "wall.interior.doorway.4m box collision persisted",
+      "ok": true,
+      "detail": "11 box(es) stored"
+    },
+    {
+      "name": "wall.interior.corner.4m imports",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "name": "wall.interior.corner.4m bounds match the contract",
+      "ok": true,
+      "detail": "worst axis error 0.0000 cm"
+    },
+    {
+      "name": "wall.interior.corner.4m collision rebuilt from the contract",
+      "ok": true,
+      "detail": "12 of 12 hulls"
+    },
+    {
+      "name": "wall.interior.corner.4m auto-generated collision removed",
+      "ok": true,
+      "detail": "0 convex hull(s) left"
+    },
+    {
+      "name": "wall.interior.corner.4m box collision persisted",
+      "ok": true,
+      "detail": "12 box(es) stored"
     },
     {
       "name": "doorway collision leaves the aperture void",

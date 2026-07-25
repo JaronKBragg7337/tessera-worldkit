@@ -4,18 +4,17 @@ SPDX-License-Identifier: CC0-1.0
 
 ## Where this is right now
 
-**Done and verified.** The placement contract, the exact geometry kernel, 18
+**Done and verified.** The placement contract, the exact geometry kernel, 21
 original parts, 41 validation rules with agent-readable diagnostics, the
-reachability solver, the context-budgeted brief, three validated example
+reachability solver, the context-budgeted brief, four validated example
 buildings, and four verified targets — core, three.js and Blender in CI, Unreal
 against a real 5.6.1 install.
 
-**Next, in order.** Interior walls, doorways and corners come first: without
-them an interior room can be closed but not entered, which blocks every
-multi-room building — safe house, checkpoint, warehouse, village. Then the gable
-end wall and second-storey walls, which the renders exposed. Then the intent
-layer, which is the largest remaining reduction in agent reasoning but benefits
-from having more to reason about.
+**Next, in order.** A wall-to-wall junction comes first, so the new interior
+pieces can terminate against a perimeter wall instead of requiring a corridor
+around a free-standing room. Then the gable end wall and second-storey walls,
+which the renders exposed. Then the intent layer, which is the largest remaining
+reduction in agent reasoning but benefits from having more to reason about.
 
 **Read first if you are new here.** [`AGENTS.md`](AGENTS.md) if you are an
 agent. [`docs/decisions/0008`](docs/decisions/0008-scope-and-replaceable-layers.md)
@@ -79,12 +78,12 @@ that table read `verified-locally` or better.
 - [x] **Blender — done, and `verified-in-ci`.** `pip install bpy` gives a
       headless Blender as a Python module, so `tools/verify_blender.py` runs on
       every commit with no display and no manual step. 81 checks against Blender
-      5.0.1: bounds to ~1e-8 m on all 18 assets, triangle counts, hull counts, a
+      5.0.1: bounds to ~1e-8 m on all 21 assets, triangle counts, hull counts, a
       doorway's collision void where its aperture is, a 37-instance layout at
       its declared transforms, and FBX export preserving `UCX_<mesh>_##`.
 - [x] **Unreal 5 — done, `verified-locally`.** `tools/verify_unreal.py` runs
-      headless against Unreal 5.6.1: 94 checks, 0 failed. Bounds to 0.0000 cm on
-      all 18 assets, hull counts matching `collision.hull_count`, a 37-instance
+      headless against Unreal 5.6.1: 109 checks, 0 failed. Bounds to 0.0000 cm on
+      all 21 assets, hull counts matching `collision.hull_count`, a 37-instance
       layout at its declared transforms, and the doorway aperture void where
       Unreal's own auto-collision would have sealed it. Not in CI because the
       engine is a licensed multi-gigabyte install.
@@ -94,7 +93,7 @@ that table read `verified-locally` or better.
 - [ ] **Unity — blocked on a licence, not on work.** Unity 6000.4.11f1 is
       installed on the verification machine and batch mode refuses to start with
       "Found 0 entitlement groups and 0 free entitlements". One interactive sign
-      in to Unity Hub unblocks it; see `docs/engine-support.md`. Then: all 18
+      in to Unity Hub unblocks it; see `docs/engine-support.md`. Then: all 21
       GLBs import as prefabs, `BuildLayout` instantiates every instance, a
       `CharacterController` of the reference dimensions walks through the
       doorway in play mode, and no convex `MeshCollider` exists in the scene.
@@ -284,7 +283,7 @@ Logged, in the review's own priority order:
 - [ ] **1. Intent schema and intent validation** — the largest remaining burden.
       Designed in `docs/remote-agents.md`, built in M4
 - [ ] **2. Automatic enclosure and roofing** — M4
-- [ ] **3. Interior wall, doorway and corner system** — M3
+- [x] **3. Interior wall, doorway and corner system** — M3
 - [ ] **4. Completeness validation.** Detect an expected enclosure surface that
       is simply absent. This is the gable-end class of defect: every rule passes
       and a picture shows daylight through the building
@@ -304,9 +303,9 @@ doorways, junction trim, more roof forms, roads, ground, openings and a second
 theme, and there is no ceiling after that. What is deliberate is the *ordering*:
 assets are ranked by how much agent guesswork they remove, not by count. Forty
 assets an agent places correctly on the first attempt are worth more than two
-hundred it has to be corrected on, and the eighteen that exist were chosen to
-prove the contract end to end rather than to look like a library. Growth is also
-not the only route — under
+hundred it has to be corrected on. The initial eighteen were chosen to prove the
+contract end to end rather than to look like a library; the kit has since grown
+to twenty-one. Growth is also not the only route — under
 [`decisions/0008`](docs/decisions/0008-scope-and-replaceable-layers.md) anyone
 can supply their own kit and keep everything else.
 

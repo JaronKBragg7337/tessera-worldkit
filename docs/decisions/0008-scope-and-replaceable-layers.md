@@ -40,7 +40,7 @@ Each layer depends only on the contract, never on the layer below it.
 |---|---|---|
 | **0 — Contract** | `tessera.asset/1`, `tessera.layout/1` | nothing; this is the only hard dependency |
 | **1 — Geometry kernel** | the box-set CSG and mesh extraction | your own modelling pipeline |
-| **2 — Kit** | `shell_v1`, the 18 parts | your own assets |
+| **2 — Kit** | `shell_v1`, the replaceable parts kit | your own assets |
 | **3 — Validation** | the asset and layout rules | your own checker |
 | **4 — Assembly** | `Builder`, connector solving, `autoconnect` | your own placement code |
 | **5 — Intent** | regions, rooms, entrances *(planned)* | your own level-design tooling |
