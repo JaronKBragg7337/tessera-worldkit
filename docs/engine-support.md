@@ -24,11 +24,39 @@ Each adapter has a verification status, and the status is the honest one:
 | **Engine-neutral core** | `src/tessera/` | `verified-in-ci` | 59 tests: kernel invariants, contract coherence, 15 layout rules, 12 asset rules, schema conformance, deterministic builds |
 | **JavaScript / three.js** | `adapters/three/` | `verified-in-ci` | 4 Node tests: the JS validator reaches the same verdict as Python on the known-good layout and on all 15 broken fixtures; transform conversions match the Python reference exactly; the grounding solver reproduces every assembled height |
 | **glTF / GLB output** | `src/tessera/export/glb.py` | `verified-in-ci` | every exported mesh is re-loaded by an independent third-party parser and confirmed watertight, winding-consistent, and of exactly the expected volume and extents |
-| **Blender** | `adapters/blender/tessera_blender.py` | `script-provided-unverified` | parses, imports without `bpy`, and its argument handling is exercised; the import path itself has not been run against Blender in CI |
-| **Unreal Engine 5** | `adapters/unreal/tessera_unreal.py` | `script-provided-unverified` | parses, imports without `unreal`, and its coordinate conversions are unit-tested; the import path has not been run against an editor |
+| **Blender** | `adapters/blender/tessera_blender.py` | `verified-in-ci` | 81 checks against **Blender 5.0.1** on every commit: all 18 assets import with bounds matching the contract to ~1e-8 m, triangle counts survive, collision hulls are built one per declared hull, a doorway's collision is void where its aperture is, a 37-instance layout lands at its declared transforms to 1.9e-7 m, and FBX export keeps the `UCX_<mesh>_##` names Unreal binds collision by |
+| **Unreal Engine 5** | `adapters/unreal/tessera_unreal.py` | `script-provided-unverified` | parses, imports without `unreal`, and its coordinate conversions are unit-tested; the import path has not been run against an editor. Needs a licensed engine install, so it cannot follow Blender's route |
 | **Unity** | `adapters/unity/Editor/TesseraImporter.cs` | `script-provided-unverified` | reviewed and structurally checked; not compiled against a Unity install |
 
-The three unverified adapters each end with a **self-check that fails loudly**
+### How Blender is verified without a Blender install
+
+`pip install bpy` gives a headless Blender as a Python module, so
+`tools/verify_blender.py` runs in CI with no display, no GUI and no manual step.
+That is the difference between an adapter that is *claimed* to work and one that
+is *checked* to.
+
+Running it found three real defects that reading the code did not:
+
+* `finish()` raised on Blender 4.1+. The guard was written
+  `obj.data.use_auto_smooth = True if hasattr(...) else None`, which still
+  performs the assignment. It reads like a guard and is not one.
+* `wipe()` used operators, which depend on a view-layer context headless Blender
+  does not always have. When it silently did nothing, the next import found its
+  name taken and Blender appended `.001` — quietly breaking the `UCX_<mesh>_##`
+  convention, so meshes would import into Unreal with **no collision at all** and
+  nothing would say why.
+* Auto-smooth has moved twice across Blender versions and needed handling for
+  both, plus a path for neither.
+
+### What Blender verification proves transitively
+
+The GLB writer is pure Python with no Blender involved, so a real DCC tool
+reading those files and reproducing the contract's declared bounds to 1e-8 m
+independently confirms the exporter, the glTF Y-up conversion, and the contract
+itself. Two independent implementations agreeing is worth more than either one
+asserting.
+
+The two remaining unverified adapters each end with a **self-check that fails loudly**
 rather than silently producing wrong geometry — for example
 `tessera_blender.check_bounds()` raises if an imported mesh is not the size the
 contract promised, which is exactly the axis-conversion mistake an unverified
@@ -36,6 +64,7 @@ adapter is most likely to make.
 
 Promoting an adapter from `script-provided-unverified` requires the acceptance
 tests in [`ROADMAP.md`](../ROADMAP.md) M2. Until then, this table says so.
+Blender has been promoted; Unreal and Unity have not.
 
 ---
 

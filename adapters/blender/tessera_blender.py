@@ -63,10 +63,21 @@ def parse_args(argv=None):
 
 # ------------------------------------------------------------------ helpers
 def wipe():
-    bpy.ops.object.select_all(action="SELECT")
-    bpy.ops.object.delete(use_global=True)
-    for block in (bpy.data.meshes, bpy.data.materials, bpy.data.objects,
-                  bpy.data.collections, bpy.data.images):
+    """Empty the scene using the data API, not operators.
+
+    ``bpy.ops.object.select_all`` + ``delete`` depends on a view-layer context
+    that headless Blender does not always have in the state a previous step left
+    it in. When it silently does nothing, the next import finds its own name
+    taken and Blender appends ``.001`` -- which then breaks the ``UCX_<mesh>_##``
+    convention Unreal uses to bind collision, so the meshes import with no
+    collision at all and nothing says why.
+
+    Removing datablocks directly always works and needs no context.
+    """
+    for obj in list(bpy.data.objects):
+        bpy.data.objects.remove(obj, do_unlink=True)
+    for block in (bpy.data.meshes, bpy.data.materials, bpy.data.collections,
+                  bpy.data.images, bpy.data.node_groups):
         for item in list(block):
             if item.users == 0:
                 block.remove(item)
@@ -138,7 +149,19 @@ def make_collision(record, parent, coll):
 
 
 def finish(obj):
-    """The shading treatment. Optional, and never changes silhouettes."""
+    """The shading treatment. Optional, and never changes silhouettes.
+
+    Auto-smooth moved twice. Up to Blender 4.0 it was ``mesh.use_auto_smooth``;
+    4.1 removed it in favour of a "Smooth by Angle" node group applied through
+    ``object.shade_auto_smooth``. Both are handled, and neither is required --
+    if the running Blender offers neither, the bevel and weighted normals still
+    do their job.
+
+    The previous version of this guard was written as
+    ``obj.data.use_auto_smooth = True if hasattr(...) else None``, which still
+    performs the assignment and therefore still raises on 4.1+. Reading it, it
+    looks like it guards. Verifying against a real Blender is how that surfaced.
+    """
     bpy.context.view_layer.objects.active = obj
     bevel = obj.modifiers.new("TesseraBevel", "BEVEL")
     bevel.width = BEVEL_WIDTH
@@ -149,7 +172,20 @@ def finish(obj):
     wn = obj.modifiers.new("TesseraWeightedNormal", "WEIGHTED_NORMAL")
     wn.weight = WEIGHTED_NORMAL
     wn.keep_sharp = True
-    obj.data.use_auto_smooth = True if hasattr(obj.data, "use_auto_smooth") else None
+
+    if hasattr(obj.data, "use_auto_smooth"):          # Blender <= 4.0
+        obj.data.use_auto_smooth = True
+        obj.data.auto_smooth_angle = math.radians(40.0)
+        return "mesh.use_auto_smooth"
+    try:                                              # Blender >= 4.1
+        bpy.ops.object.select_all(action="DESELECT")
+        obj.select_set(True)
+        bpy.ops.object.shade_auto_smooth(angle=math.radians(40.0))
+        return "object.shade_auto_smooth"
+    except Exception as exc:
+        unreal_free = "no auto-smooth on this Blender (%s); bevel still applied"
+        print("[tessera] " + unreal_free % type(exc).__name__)
+        return None
 
 
 # ------------------------------------------------------------------- import

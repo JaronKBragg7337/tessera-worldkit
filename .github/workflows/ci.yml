@@ -171,6 +171,35 @@ jobs:
       - name: licence files must exist
         run: test -f LICENSE && test -f LICENSE-CODE && test -f LICENSE-ASSETS
 
+  blender:
+    name: blender adapter, verified against a real blender
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        # bpy ships manylinux wheels for specific CPython versions only.
+        with: { python-version: "3.11" }
+      - name: cache the blender wheel
+        uses: actions/cache@v4
+        with:
+          path: ~/.cache/pip
+          key: bpy-5.0.1-py311
+      - name: install blender as a python module
+        # This is what makes the Blender adapter CI-verifiable rather than
+        # "provided and hoped for". No display, no GUI, no manual step.
+        run: python -m pip install --quiet bpy==5.0.1
+      - name: build the catalog and the two-storey example
+        run: |
+          python3 tessera build --kit kits/shell_v1 --out build
+          python3 examples/safehouse_two_storey/build.py
+      - name: verify
+        # Checks what comes out the other side, not that the script ran:
+        # bounds to the millimetre, triangle counts, collision hull counts,
+        # that a doorway's collision is genuinely void where the aperture is,
+        # that a whole layout lands at its declared transforms, and that FBX
+        # export keeps the UCX_<mesh>_## names Unreal binds collision by.
+        run: python3 tools/verify_blender.py
+
   adapters_parse:
     name: unverified adapters must at least be loadable
     runs-on: ubuntu-latest
@@ -178,10 +207,11 @@ jobs:
       - uses: actions/checkout@v4
       - uses: actions/setup-python@v5
         with: { python-version: "3.12" }
-      - name: blender and unreal adapters import without their host
-        # They are labelled script-provided-unverified in docs/engine-support.md.
-        # This is the floor, not a claim of support: they parse, they import
-        # without bpy/unreal present, and their coordinate maths is exercised.
+      - name: adapters import without their host
+        # The floor, not a claim of support: they parse, they import without
+        # bpy/unreal present, and the coordinate maths is exercised. Blender is
+        # verified properly in the job above; Unreal and Unity are not, and
+        # docs/engine-support.md says so.
         run: |
           python3 - <<'PY'
           import importlib.util, sys

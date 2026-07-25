@@ -52,11 +52,12 @@ Three adapters are written but have never been run against their engine.
 [`docs/engine-support.md`](docs/engine-support.md) says so. This milestone makes
 that table read `verified-locally` or better.
 
-- [ ] **Blender.** `blender -b --python adapters/blender/tessera_blender.py --
-      --catalog build/catalog.json --layout examples/workshop_shell/layout.json
-      --collision` completes with no exception, `check_bounds` passes for all 12
-      assets, and the saved `.blend` contains 41 instances and the expected
-      number of `UCX_` objects.
+- [x] **Blender — done, and `verified-in-ci`.** `pip install bpy` gives a
+      headless Blender as a Python module, so `tools/verify_blender.py` runs on
+      every commit with no display and no manual step. 81 checks against Blender
+      5.0.1: bounds to ~1e-8 m on all 18 assets, triangle counts, hull counts, a
+      doorway's collision void where its aperture is, a 37-instance layout at
+      its declared transforms, and FBX export preserving `UCX_<mesh>_##`.
 - [ ] **Unreal 5.** All 12 assets import; every static mesh reports the same
       hull count as `collision.hull_count`; a `PlayerStart` placed outside the
       workshop can path through the doorway to a point inside, proving the
@@ -72,7 +73,9 @@ that table read `verified-locally` or better.
       above can run headless.
 
 **Done when** the support matrix contains no `script-provided-unverified` row,
-and each promoted row names the command that proves it.
+and each promoted row names the command that proves it. Blender is done. Unreal
+and Unity both need a licensed engine install, so neither can follow Blender's
+pip route and both need a machine with the engine on it.
 
 ---
 
