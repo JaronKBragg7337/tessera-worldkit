@@ -1,7 +1,7 @@
 {
   "schema": "tessera.layout/1",
-  "name": "Workshop Shell",
-  "description": "A sealed 12 x 12 m workshop shell: nine foundation pads, nine floor slabs, four L corners, a walkable doorway, a glazed window, two plain walls, a six-panel gable roof with ridge caps, and interior props. Every transform solved from the placement contract.",
+  "name": "Survivor Safe House, Two Storey",
+  "description": "Two-storey survivor safe house: guarded entrance with a stoop and a hung door, storage alcove, and a mezzanine reached by a real staircase through a real floor opening. Interior access is proven, not claimed.",
   "generator": "tessera.assemble.Builder",
   "catalog": {
     "kit": {
@@ -19,24 +19,27 @@
   "bounds": {
     "min": [
       -0.03,
-      -0.3,
+      -0.6,
       0.0
     ],
     "max": [
       12.03,
-      12.299999999999999,
-      6.3306
+      12.03,
+      4.8
     ]
   },
-  "instance_count": 41,
+  "instance_count": 37,
   "assets_used": [
+    "tsr:shell/beam.4m",
+    "tsr:shell/column.3m",
     "tsr:shell/door.leaf.1m2",
     "tsr:shell/floor.slab.4m",
     "tsr:shell/foundation.pad.4m",
     "tsr:shell/prop.crate.small",
     "tsr:shell/prop.workbench",
-    "tsr:shell/roof.panel.4m",
-    "tsr:shell/roof.ridge.4m",
+    "tsr:shell/railing.4m",
+    "tsr:shell/stair.stoop.1m2",
+    "tsr:shell/stair.straight.4m",
     "tsr:shell/wall.corner.4m",
     "tsr:shell/wall.doorway.4m",
     "tsr:shell/wall.straight.4m",
@@ -44,8 +47,8 @@
     "tsr:shell/window.leaf.1m8"
   ],
   "placement_method": {
-    "explicit": 0,
-    "solved_from_contract": 41
+    "explicit": 1,
+    "solved_from_contract": 36
   },
   "instances": [
     {
@@ -769,269 +772,26 @@
       ]
     },
     {
-      "id": "roof_panel_4m_01",
-      "asset": "tsr:shell/roof.panel.4m",
+      "id": "stair_stoop_1m2_01",
+      "asset": "tsr:shell/stair.stoop.1m2",
       "position": [
-        0.0,
-        0.0,
-        3.5
+        5.3999999999999995,
+        -0.6,
+        0.0
       ],
       "rotation_degrees": [
         0.0,
         0.0,
         0.0
       ],
-      "scale": 1.0,
-      "connections": [
-        {
-          "from": "ridge",
-          "to": {
-            "instance": "roof_panel_4m_04",
-            "connector": "ridge"
-          }
-        },
-        {
-          "from": "edge_pos_x",
-          "to": {
-            "instance": "roof_panel_4m_02",
-            "connector": "edge_neg_x"
-          }
-        }
-      ]
-    },
-    {
-      "id": "roof_panel_4m_02",
-      "asset": "tsr:shell/roof.panel.4m",
-      "position": [
-        4.0,
-        0.0,
-        3.5
-      ],
-      "rotation_degrees": [
-        0.0,
-        0.0,
-        0.0
-      ],
-      "scale": 1.0,
-      "connections": [
-        {
-          "from": "ridge",
-          "to": {
-            "instance": "roof_panel_4m_05",
-            "connector": "ridge"
-          }
-        },
-        {
-          "from": "edge_pos_x",
-          "to": {
-            "instance": "roof_panel_4m_03",
-            "connector": "edge_neg_x"
-          }
-        }
-      ]
-    },
-    {
-      "id": "roof_panel_4m_03",
-      "asset": "tsr:shell/roof.panel.4m",
-      "position": [
-        8.0,
-        0.0,
-        3.5
-      ],
-      "rotation_degrees": [
-        0.0,
-        0.0,
-        0.0
-      ],
-      "scale": 1.0,
-      "connections": [
-        {
-          "from": "ridge",
-          "to": {
-            "instance": "roof_panel_4m_06",
-            "connector": "ridge"
-          }
-        }
-      ]
-    },
-    {
-      "id": "roof_panel_4m_04",
-      "asset": "tsr:shell/roof.panel.4m",
-      "position": [
-        4.0,
-        12.0,
-        3.5
-      ],
-      "rotation_degrees": [
-        180.0,
-        0.0,
-        0.0
-      ],
-      "scale": 1.0,
-      "connections": [
-        {
-          "from": "ridge_cap",
-          "to": {
-            "instance": "roof_ridge_4m_01",
-            "connector": "seat"
-          }
-        },
-        {
-          "from": "edge_neg_x",
-          "to": {
-            "instance": "roof_panel_4m_05",
-            "connector": "edge_pos_x"
-          }
-        }
-      ]
-    },
-    {
-      "id": "roof_panel_4m_05",
-      "asset": "tsr:shell/roof.panel.4m",
-      "position": [
-        8.0,
-        12.0,
-        3.5
-      ],
-      "rotation_degrees": [
-        180.0,
-        0.0,
-        0.0
-      ],
-      "scale": 1.0,
-      "connections": [
-        {
-          "from": "ridge_cap",
-          "to": {
-            "instance": "roof_ridge_4m_02",
-            "connector": "seat"
-          }
-        },
-        {
-          "from": "edge_neg_x",
-          "to": {
-            "instance": "roof_panel_4m_06",
-            "connector": "edge_pos_x"
-          }
-        }
-      ]
-    },
-    {
-      "id": "roof_panel_4m_06",
-      "asset": "tsr:shell/roof.panel.4m",
-      "position": [
-        12.0,
-        12.0,
-        3.5
-      ],
-      "rotation_degrees": [
-        180.0,
-        0.0,
-        0.0
-      ],
-      "scale": 1.0,
-      "connections": [
-        {
-          "from": "ridge_cap",
-          "to": {
-            "instance": "roof_ridge_4m_03",
-            "connector": "seat"
-          }
-        }
-      ]
-    },
-    {
-      "id": "roof_ridge_4m_01",
-      "asset": "tsr:shell/roof.ridge.4m",
-      "position": [
-        0.0,
-        6.0,
-        6.199999999999999
-      ],
-      "rotation_degrees": [
-        0.0,
-        0.0,
-        0.0
-      ],
-      "scale": 1.0,
-      "connections": [
-        {
-          "from": "seat",
-          "to": {
-            "instance": "roof_panel_4m_01",
-            "connector": "ridge_cap"
-          }
-        },
-        {
-          "from": "edge_pos_x",
-          "to": {
-            "instance": "roof_ridge_4m_02",
-            "connector": "edge_neg_x"
-          }
-        }
-      ]
-    },
-    {
-      "id": "roof_ridge_4m_02",
-      "asset": "tsr:shell/roof.ridge.4m",
-      "position": [
-        4.0,
-        6.0,
-        6.199999999999999
-      ],
-      "rotation_degrees": [
-        0.0,
-        0.0,
-        0.0
-      ],
-      "scale": 1.0,
-      "connections": [
-        {
-          "from": "seat",
-          "to": {
-            "instance": "roof_panel_4m_02",
-            "connector": "ridge_cap"
-          }
-        },
-        {
-          "from": "edge_pos_x",
-          "to": {
-            "instance": "roof_ridge_4m_03",
-            "connector": "edge_neg_x"
-          }
-        }
-      ]
-    },
-    {
-      "id": "roof_ridge_4m_03",
-      "asset": "tsr:shell/roof.ridge.4m",
-      "position": [
-        8.0,
-        6.0,
-        6.199999999999999
-      ],
-      "rotation_degrees": [
-        0.0,
-        0.0,
-        0.0
-      ],
-      "scale": 1.0,
-      "connections": [
-        {
-          "from": "seat",
-          "to": {
-            "instance": "roof_panel_4m_03",
-            "connector": "ridge_cap"
-          }
-        }
-      ]
+      "scale": 1.0
     },
     {
       "id": "prop_workbench_01",
       "asset": "tsr:shell/prop.workbench",
       "position": [
-        9.4,
-        9.1,
+        7.6,
+        1.4,
         0.5
       ],
       "rotation_degrees": [
@@ -1045,47 +805,165 @@
       "id": "prop_crate_small_01",
       "asset": "tsr:shell/prop.crate.small",
       "position": [
-        1.4,
-        9.6,
+        9.2,
+        1.0,
         0.5
       ],
       "rotation_degrees": [
-        12.0,
+        18.0,
         0.0,
         0.0
       ],
       "scale": 1.0
     },
     {
-      "id": "prop_crate_small_02",
-      "asset": "tsr:shell/prop.crate.small",
+      "id": "column_3m_01",
+      "asset": "tsr:shell/column.3m",
       "position": [
-        2.15,
-        9.549999999999999,
+        3.8,
+        7.8,
         0.5
       ],
       "rotation_degrees": [
-        -8.0,
+        0.0,
         0.0,
         0.0
       ],
       "scale": 1.0
     },
     {
-      "id": "prop_crate_small_03",
-      "asset": "tsr:shell/prop.crate.small",
+      "id": "column_3m_02",
+      "asset": "tsr:shell/column.3m",
       "position": [
-        2.15,
-        9.549999999999999,
-        1.0999999999999999
+        7.8,
+        7.8,
+        0.5
       ],
       "rotation_degrees": [
-        37.0,
+        0.0,
+        0.0,
+        0.0
+      ],
+      "scale": 1.0
+    },
+    {
+      "id": "beam_4m_01",
+      "asset": "tsr:shell/beam.4m",
+      "position": [
+        4.0,
+        8.0,
+        3.1999999999999997
+      ],
+      "rotation_degrees": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "scale": 1.0
+    },
+    {
+      "id": "floor_slab_4m_10",
+      "asset": "tsr:shell/floor.slab.4m",
+      "position": [
+        4.0,
+        8.0,
+        3.5
+      ],
+      "rotation_degrees": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "scale": 1.0
+    },
+    {
+      "id": "stair_straight_4m_01",
+      "asset": "tsr:shell/stair.straight.4m",
+      "position": [
+        4.3999999999999995,
+        4.0,
+        0.5
+      ],
+      "rotation_degrees": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "scale": 1.0
+    },
+    {
+      "id": "railing_4m_01",
+      "asset": "tsr:shell/railing.4m",
+      "position": [
+        4.2,
+        8.0,
+        3.6999999999999997
+      ],
+      "rotation_degrees": [
+        90.0,
         0.0,
         0.0
       ],
       "scale": 1.0
     }
   ],
-  "discovered_connections": 46
+  "discovered_connections": 34,
+  "reachability": [
+    {
+      "label": "terrain up the stoop to the threshold",
+      "from": [
+        6.0,
+        -1.6,
+        0.0
+      ],
+      "to": [
+        6.0,
+        -0.15,
+        0.5
+      ],
+      "must": true
+    },
+    {
+      "label": "ground floor to mezzanine",
+      "from": [
+        6.0,
+        2.0,
+        0.5
+      ],
+      "to": [
+        6.0,
+        10.0,
+        3.7
+      ],
+      "must": true
+    },
+    {
+      "label": "mezzanine back down to the ground floor",
+      "from": [
+        6.0,
+        10.0,
+        3.7
+      ],
+      "to": [
+        2.0,
+        2.0,
+        0.5
+      ],
+      "must": true
+    },
+    {
+      "label": "outside cannot reach the mezzanine except through the house",
+      "from": [
+        14.0,
+        14.0,
+        0.0
+      ],
+      "to": [
+        6.0,
+        10.0,
+        3.7
+      ],
+      "must": false
+    }
+  ]
 }
