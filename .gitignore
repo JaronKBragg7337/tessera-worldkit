@@ -1,0 +1,22 @@
+__pycache__/
+*.py[cod]
+.pytest_cache/
+.venv/
+venv/
+node_modules/
+*.egg-info/
+dist/
+.DS_Store
+Thumbs.db
+
+# Blender / engine outputs are optional and machine-specific
+build/fbx/
+build/*.blend
+build/*.blend1
+build/unreal-import-report.json
+
+# build/catalog.json, build/meshes/, build/fixtures/ and build/parity-expected.json
+# ARE committed on purpose. They are small, deterministic and byte-stable, and
+# they are the product's primary interface: an agent handed this repository can
+# read the contract immediately without running anything. Regenerate with
+# `./tessera build`; a diff there is meaningful, not noise.

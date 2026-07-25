@@ -1,0 +1,48 @@
+# Licensing overview
+
+Short version: **do anything you like with this, including selling it, and you
+do not have to credit anyone.**
+
+| What | Licence | SPDX | File |
+|---|---|---|---|
+| Code, scripts, adapters, tools, tests | BSD Zero Clause | `0BSD` | [`LICENSE-CODE`](LICENSE-CODE) |
+| Meshes, textures, materials, animations, schemas, catalogs, documentation | Creative Commons Zero v1.0 Universal | `CC0-1.0` | [`LICENSE-ASSETS`](LICENSE-ASSETS) |
+
+Both licences permit, with no conditions attached:
+
+- use, for any purpose
+- copying and redistribution
+- modification
+- commercial use
+- inclusion in paid products
+- building on it and charging for your own work immediately
+
+Neither requires attribution, notice retention, source disclosure, or a
+share-alike licence on your derivatives. 0BSD is a public-domain-equivalent
+permissive licence with no attribution clause; CC0 is a public-domain
+dedication. The split exists only because CC0 is the right instrument for
+creative assets and 0BSD is the right instrument for code — not because the
+permissions differ.
+
+## Why you can trust that
+
+Every file in this repository is generated from scratch by scripts in this
+repository. No third-party mesh, texture, model, scan or asset library is read
+at any point in the pipeline, so there is nothing here whose rights could be
+unclear.
+
+That claim is auditable rather than asserted:
+
+- every asset carries a per-asset `provenance` record naming the exact function
+  that generated it, when, from what inputs (none), and under what origin
+- `provenance/manifest.json` records a SHA-256 for every generated file
+- `tessera validate` **fails** an asset whose provenance or licence fields are
+  incomplete, and fails any asset marked `third-party` without a completed
+  licence review
+- see [`docs/provenance-policy.md`](docs/provenance-policy.md) for the quarantine
+  rule for anything uncertain
+
+## Contributing
+
+By submitting a contribution you confirm you have the right to release it under
+these terms. See [`CONTRIBUTING.md`](CONTRIBUTING.md).

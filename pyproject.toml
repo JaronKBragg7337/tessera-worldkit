@@ -1,0 +1,39 @@
+[build-system]
+requires = ["setuptools>=68"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "tessera-worldkit"
+version = "0.1.0"
+description = "An AI-readable world-building framework and original asset pack"
+readme = "README.md"
+requires-python = ">=3.10"
+license = { text = "0BSD" }
+authors = [{ name = "Jaron K Bragg" }]
+keywords = ["gamedev", "procedural", "modular", "assets", "validation", "agents"]
+classifiers = [
+  "Development Status :: 4 - Beta",
+  "Intended Audience :: Developers",
+  "License :: OSI Approved :: BSD License",
+  "Programming Language :: Python :: 3 :: Only",
+  "Topic :: Multimedia :: Graphics :: 3D Modeling",
+]
+# Zero runtime dependencies, deliberately. See docs/decisions/0002.
+dependencies = []
+
+[project.optional-dependencies]
+dev = ["pytest>=7", "jsonschema>=4.18", "referencing>=0.30", "trimesh>=4"]
+
+[project.scripts]
+tessera = "tessera.cli:main"
+
+[project.urls]
+Homepage = "https://github.com/JaronKBragg7337/tessera-worldkit"
+Documentation = "https://github.com/JaronKBragg7337/tessera-worldkit/tree/main/docs"
+
+[tool.setuptools.packages.find]
+where = ["src"]
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+addopts = "-q"

@@ -1,0 +1,7 @@
+* text=auto eol=lf
+*.glb binary
+*.obj text
+*.mtl text
+*.json text
+*.md text
+tessera text eol=lf
