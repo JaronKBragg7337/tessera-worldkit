@@ -1,0 +1,14 @@
+{
+  "name": "@tessera/three",
+  "version": "0.1.0",
+  "description": "Tessera catalog loader, placement solver and runtime validator for three.js and plain JavaScript.",
+  "license": "0BSD",
+  "type": "module",
+  "main": "src/tessera-core.mjs",
+  "exports": {
+    ".": "./src/tessera-core.mjs",
+    "./three": "./src/tessera-three.mjs"
+  },
+  "scripts": { "test": "node --test test/*.test.mjs" },
+  "files": ["src", "README.md"]
+}
