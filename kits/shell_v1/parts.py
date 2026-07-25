@@ -671,8 +671,301 @@ def prop_workbench():
     )
 
 
+
+# ========================================================== 13 straight stair
+def stair_straight():
+    """A closed-stringer stair that lands exactly on the floor above.
+
+    Every step is a box, so the box kernel represents this solid exactly -- no
+    approximation, and the collision hulls are the treads themselves. That
+    matters more here than anywhere else in the kit: a stair whose collision is
+    a single convex hull is a ramp, and a stair whose collision is a hull per
+    tread is a stair.
+
+    The rise divides the storey height a whole number of times and the run is
+    exactly one bay, both enforced by ``config.validate()``. A stair that lands
+    19 cm below the floor is the kind of defect that survives every visual check
+    and ruins the level.
+    """
+    rise, going, width = cfg.STAIR_RISE, cfg.STAIR_GOING, cfg.STAIR_WIDTH
+    steps = round(cfg.STOREY_HEIGHT / rise)
+    run = steps * going
+
+    s = BoxSet()
+    for i in range(steps):
+        s.add((0, i * going, 0), (width, (i + 1) * going, (i + 1) * rise))
+    # stringers stand slightly proud so the flight reads as built, not extruded
+    for x0 in (-cfg.STAIR_STRINGER, width):
+        s.add((x0, 0, 0), (x0 + cfg.STAIR_STRINGER, run, rise))
+
+    return dict(
+        asset_id="tsr:shell/stair.straight.4m",
+        name="Stair Straight 4 m",
+        category="traversal", semantic_role="stair",
+        tags=["modular", "traversal", "vertical"],
+        solid=s, mesh=surface_from_boxset(s, "M_Concrete"),
+        materials=slots("M_Concrete"),
+        connectors=[
+            conn("base", "wall_base", (width / 2, run / 2, 0), (0, 0, -1), (0, 1, 0),
+                 mode="surface", extent_half=(width / 2, run / 2), role="support",
+                 required=True),
+            conn("landing", "floor_edge", (width / 2, run, steps * rise),
+                 (0, 1, 0), (1, 0, 0), role="seam", required=True,
+                 notes="meets the edge of the floor it climbs to; the top tread "
+                       "is flush with that floor's walking surface"),
+            conn("foot", "floor_edge", (width / 2, 0, 0), (0, -1, 0), (1, 0, 0),
+                 role="seam"),
+        ],
+        pivot_convention="bay_min_corner_on_base",
+        support=dict(requires_support=True, rests_on=["floor_top", "foundation_top"],
+                     support_axis="z", may_float=False),
+        # Headroom is the whole point of a stairwell opening. Declaring it as
+        # clearance means the validator complains when a floor is left solid
+        # above the flight, instead of a player discovering it with their head.
+        clearance_boxes=[
+            [0.0, i * going, (i + 1) * rise,
+             width, (i + 1) * going, (i + 1) * rise + cfg.STAIR_HEADROOM]
+            for i in range(steps)
+        ],
+        notes=("%d steps of %.2f m rise and %.2f m going, climbing %.2f m over a "
+               "%.2f m run at %.2f degrees. Collision is one hull per tread."
+               % (steps, rise, going, steps * rise, run,
+                  math.degrees(math.atan2(rise, going)))),
+    )
+
+
+# ==================================================== 14 floor with a stairwell
+def floor_opening():
+    """A floor slab with a stairwell cut through it.
+
+    The hole is carved with ``carve_aperture`` on the vertical axis, so it is a
+    first-class traversal opening rather than absent material: it has a clear
+    size, it is checked against the reference character, and collision inherits
+    it. Without this piece a second storey is a sealed lid.
+    """
+    s = BoxSet.from_box((0, 0, 0), (M, M, FT))
+    g, d = cfg.TILE_GROOVE, cfg.TILE_GROOVE_DEPTH
+    s.subtract((M / 2 - g / 2, 0, FT - d), (M / 2 + g / 2, M, FT + 0.001))
+    s.subtract((0, M / 2 - g / 2, FT - d), (M, M / 2 + g / 2, FT + 0.001))
+
+    ow, ol = cfg.OPENING_WIDTH, cfg.OPENING_LENGTH
+    # Clear of a beam running under this edge of the slab. At 0.20 the opening
+    # overlapped the beam by 4 cm and reported as an obstructed stairwell.
+    x0 = cfg.BEAM_WIDTH + 0.06
+    y0 = M - ol
+    # The aperture reaches the slab edge exactly and does not overhang it.
+    # An overhang of even a centimetre clips whatever the slab abuts and
+    # reports as an obstructed opening.
+    s.carve_aperture("stairwell", "passage",
+                     (x0, y0, -0.01), (x0 + ow, M, FT + 0.01),
+                     axis=2, traversable=True)
+
+    return dict(
+        asset_id="tsr:shell/floor.opening.4m",
+        name="Floor Slab with Stairwell 4 m",
+        category="structure", semantic_role="floor",
+        tags=["modular", "walkable", "traversal"],
+        solid=s, mesh=surface_from_boxset(s, "M_Concrete"),
+        materials=slots("M_Concrete"),
+        connectors=[
+            conn("top", "floor_top", (M / 2, M / 4, FT), (0, 0, 1), (1, 0, 0),
+                 mode="surface", extent_half=(M / 2, M / 4), role="support",
+                 required=True,
+                 notes="walkable area excludes the stairwell; the extent covers "
+                       "the solid half only"),
+            conn("stairwell", "floor_edge", (x0 + ow / 2, M, FT / 2),
+                 (0, 1, 0), (1, 0, 0), role="seam",
+                 notes="the stair's landing connector mates here"),
+            conn("edge_neg_x", "floor_edge", (0, M / 2, FT / 2), (-1, 0, 0), (0, 1, 0)),
+            conn("edge_pos_x", "floor_edge", (M, M / 2, FT / 2), (1, 0, 0), (0, 1, 0)),
+            conn("edge_neg_y", "floor_edge", (M / 2, 0, FT / 2), (0, -1, 0), (1, 0, 0)),
+        ],
+        pivot_convention="bay_min_corner_on_base",
+        support=dict(requires_support=True,
+                     rests_on=["wall_top", "foundation_top", "floor_top"],
+                     support_axis="z", may_float=False),
+        clearance_boxes=[],
+        notes=("Stairwell opening is %.2f x %.2f m through the slab. Walking "
+               "surface is the top at z = %.2f local."
+               % (ow, ol, FT)),
+    )
+
+
+# ================================================================== 15 beam
+def beam():
+    """A spanning beam, so a floor can cross a bay instead of only ringing one.
+
+    The benchmark exposed the need for this directly: with only perimeter walls
+    to bear on, any second storey wider than a single bay is either cantilevered
+    or floating, and both are now correctly refused.
+    """
+    d, w = cfg.BEAM_DEPTH, cfg.BEAM_WIDTH
+    s = BoxSet.from_box((0, 0, 0), (M, w, d))
+    # lighten the web so it reads as a beam rather than a bar
+    for i in range(3):
+        cx = M * (i + 1) / 4.0
+        s.subtract((cx - 0.22, -0.001, 0.07), (cx + 0.22, 0.05, d - 0.07))
+        s.subtract((cx - 0.22, w - 0.05, 0.07), (cx + 0.22, w + 0.001, d - 0.07))
+    return dict(
+        asset_id="tsr:shell/beam.4m",
+        name="Beam 4 m",
+        category="structure", semantic_role="beam",
+        tags=["modular", "spanning"],
+        solid=s, mesh=surface_from_boxset(s, "M_Steel"),
+        materials=slots("M_Steel"),
+        connectors=[
+            conn("bearing", "roof_bearing", (M / 2, w / 2, 0), (0, 0, -1), (1, 0, 0),
+                 mode="surface", extent_half=(M / 2, w / 2), role="support",
+                 required=True, notes="rests on a wall_top like a roof panel does"),
+            conn("top", "floor_top", (M / 2, w / 2, d), (0, 0, 1), (1, 0, 0),
+                 mode="surface", extent_half=(M / 2, w / 2), role="support",
+                 notes="carries a floor slab"),
+            conn("edge_neg_x", "wall_edge", (0, w / 2, d / 2), (-1, 0, 0), (0, 0, 1)),
+            conn("edge_pos_x", "wall_edge", (M, w / 2, d / 2), (1, 0, 0), (0, 0, 1)),
+        ],
+        pivot_convention="bay_min_corner_on_base",
+        support=dict(requires_support=True, rests_on=["wall_top", "column_top"],
+                     support_axis="z", may_float=False,
+                     # A beam is *defined* by bearing only at its ends, so the
+                     # low-contact warning would fire on every correct one.
+                     point_bearing=True),
+        clearance_boxes=[],
+        notes="Spans one bay between two supports, bearing only at its ends. "
+              "Its top finishes level with the wall top so the floor above "
+              "lands on one continuous plane.",
+    )
+
+
+# =============================================================== 16 railing
+def railing():
+    """Guards the open side of a stairwell or a landing."""
+    h, post, rail = cfg.RAILING_HEIGHT, cfg.RAILING_POST, cfg.RAILING_RAIL
+    s = BoxSet()
+    n = cfg.RAILING_POSTS
+    for i in range(n):
+        x = (M - post) * i / (n - 1)
+        s.add((x, 0, 0), (x + post, post, h))
+    s.add((0, 0, h - rail), (M, rail, h))
+    s.add((0, 0, h * 0.45), (M, rail * 0.8, h * 0.45 + rail * 0.8))
+    return dict(
+        asset_id="tsr:shell/railing.4m",
+        name="Railing 4 m",
+        category="traversal", semantic_role="railing",
+        tags=["modular", "safety"],
+        solid=s, mesh=surface_from_boxset(s, "M_Steel"),
+        materials=slots("M_Steel"),
+        connectors=[
+            conn("base", "prop_base", (M / 2, post / 2, 0), (0, 0, -1), (1, 0, 0),
+                 mode="surface", extent_half=(M / 2, post / 2), role="support",
+                 required=True),
+            conn("edge_neg_x", "wall_edge", (0, post / 2, h / 2), (-1, 0, 0), (0, 0, 1)),
+            conn("edge_pos_x", "wall_edge", (M, post / 2, h / 2), (1, 0, 0), (0, 0, 1)),
+        ],
+        pivot_convention="bay_min_corner_on_base",
+        support=dict(requires_support=True, rests_on=["floor_top", "foundation_top"],
+                     support_axis="z", may_float=False),
+        clearance_boxes=[],
+        notes="%.2f m high. Blocks a fall without blocking a sight line." % h,
+    )
+
+
+# =============================================================== 17 column
+def column():
+    """Carries a beam where there is no wall.
+
+    Exactly one beam shorter than a wall, so column plus beam finishes flush
+    with the wall top and the floor above rests on a single plane. Without this
+    piece, any storey wider than one walled bay is either cantilevered or
+    floating -- both of which the support rules now correctly refuse, which is
+    how the gap was found.
+    """
+    size, h = cfg.COLUMN_SIZE, cfg.COLUMN_HEIGHT
+    s = BoxSet.from_box((0, 0, 0), (size, size, h))
+    cap = 0.06
+    s.add((-0.04, -0.04, 0), (size + 0.04, size + 0.04, cap))
+    s.add((-0.04, -0.04, h - cap), (size + 0.04, size + 0.04, h))
+    for f in (0.0, size - 0.05):
+        s.subtract((f - 0.001, 0.09, cap + 0.08),
+                   (f + 0.05, size - 0.09, h - cap - 0.08))
+    return dict(
+        asset_id="tsr:shell/column.3m",
+        name="Column",
+        category="structure", semantic_role="column",
+        tags=["modular", "bearing"],
+        solid=s, mesh=surface_from_boxset(s, "M_Steel"),
+        materials=slots("M_Steel"),
+        connectors=[
+            conn("base", "wall_base", (size / 2, size / 2, 0), (0, 0, -1), (1, 0, 0),
+                 mode="surface", extent_half=(size / 2, size / 2), role="support",
+                 required=True),
+            conn("top", "wall_top", (size / 2, size / 2, h), (0, 0, 1), (1, 0, 0),
+                 mode="surface", extent_half=(size / 2, size / 2), role="bearing",
+                 required=True, notes="carries a beam's bearing connector"),
+        ],
+        pivot_convention="bay_min_corner_on_base",
+        support=dict(requires_support=True, rests_on=["floor_top", "foundation_top"],
+                     support_axis="z", may_float=False),
+        clearance_boxes=[],
+        notes=("%.2f m tall -- exactly WALL_HEIGHT minus BEAM_DEPTH, so column "
+               "plus beam finishes level with the wall top." % h),
+    )
+
+
+# ============================================================ 18 entry stoop
+def stair_stoop():
+    """Two steps from the terrain up to the floor, outside a doorway.
+
+    This asset exists because the reachability solver refused the finished
+    workshop. The door was open, the aperture was wide enough, collision
+    preserved it, and every other rule passed -- and no character could get in,
+    because the floor sits 0.50 m above the ground outside and that is twice
+    what anyone can step up.
+
+    It is the clearest example so far of a defect that no amount of looking at
+    the geometry reveals, because nothing about it looks wrong.
+    """
+    rise = cfg.STOOP_RISE / cfg.STOOP_STEPS
+    going, width = cfg.STOOP_GOING, cfg.STOOP_WIDTH
+    depth = going * cfg.STOOP_STEPS
+
+    s = BoxSet()
+    for i in range(cfg.STOOP_STEPS):
+        s.add((0, i * going, 0), (width, (i + 1) * going, (i + 1) * rise))
+    for x0 in (-0.05, width):
+        s.add((x0, 0, 0), (x0 + 0.05, depth, rise * 0.5))
+
+    return dict(
+        asset_id="tsr:shell/stair.stoop.1m2",
+        name="Entrance Stoop",
+        category="traversal", semantic_role="stair",
+        tags=["traversal", "entrance"],
+        solid=s, mesh=surface_from_boxset(s, "M_Concrete"),
+        materials=slots("M_Concrete"),
+        connectors=[
+            conn("base", "prop_base", (width / 2, depth / 2, 0), (0, 0, -1),
+                 (0, 1, 0), mode="surface", extent_half=(width / 2, depth / 2),
+                 role="support", required=True),
+            conn("foot", "floor_edge", (width / 2, 0, 0), (0, -1, 0), (1, 0, 0),
+                 role="seam",
+                 notes="the approach side; the stair-usability check probes from here"),
+            conn("landing", "floor_edge", (width / 2, depth, cfg.STOOP_RISE),
+                 (0, 1, 0), (1, 0, 0), role="seam", required=True,
+                 notes="the top step is level with the floor inside the doorway"),
+        ],
+        pivot_convention="bay_min_corner_on_base",
+        support=dict(requires_support=True, rests_on=["terrain", "foundation_top"],
+                     support_axis="z", may_float=False),
+        clearance_boxes=[[0.0, 0.0, cfg.STOOP_RISE, width, depth,
+                          cfg.STOOP_RISE + cfg.CHARACTER_HEIGHT]],
+        notes=("%d steps of %.2f m rising %.2f m to meet the floor inside. "
+               "Sits on terrain in front of a doorway."
+               % (cfg.STOOP_STEPS, rise, cfg.STOOP_RISE)),
+    )
+
+
 PARTS = [
     foundation_pad, floor_slab, wall_straight, wall_corner, wall_doorway,
     door_leaf, wall_window, window_leaf, roof_panel, roof_ridge,
     prop_crate, prop_workbench,
+    stair_straight, floor_opening, beam, railing, column, stair_stoop,
 ]
