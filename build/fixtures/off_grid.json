@@ -19,7 +19,7 @@
   "bounds": {
     "min": [
       -0.03,
-      -0.3,
+      -0.6,
       0.0
     ],
     "max": [
@@ -28,7 +28,7 @@
       6.3306
     ]
   },
-  "instance_count": 41,
+  "instance_count": 42,
   "assets_used": [
     "tsr:shell/door.leaf.1m2",
     "tsr:shell/floor.slab.4m",
@@ -37,6 +37,7 @@
     "tsr:shell/prop.workbench",
     "tsr:shell/roof.panel.4m",
     "tsr:shell/roof.ridge.4m",
+    "tsr:shell/stair.stoop.1m2",
     "tsr:shell/wall.corner.4m",
     "tsr:shell/wall.doorway.4m",
     "tsr:shell/wall.straight.4m",
@@ -45,7 +46,7 @@
   ],
   "placement_method": {
     "explicit": 0,
-    "solved_from_contract": 41
+    "solved_from_contract": 42
   },
   "instances": [
     {
@@ -736,6 +737,21 @@
       ]
     },
     {
+      "id": "stair_stoop_1m2_01",
+      "asset": "tsr:shell/stair.stoop.1m2",
+      "position": [
+        5.3999999999999995,
+        -0.6,
+        0.0
+      ],
+      "rotation_degrees": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "scale": 1.0
+    },
+    {
       "id": "window_leaf_1m8_01",
       "asset": "tsr:shell/window.leaf.1m8",
       "position": [
@@ -1078,5 +1094,35 @@
       "scale": 1.0
     }
   ],
-  "discovered_connections": 46
+  "discovered_connections": 46,
+  "reachability": [
+    {
+      "label": "terrain up the stoop to the threshold",
+      "from": [
+        6.0,
+        -1.6,
+        0.0
+      ],
+      "to": [
+        6.0,
+        -0.15,
+        0.5
+      ],
+      "must": true
+    },
+    {
+      "label": "the whole ground floor is one connected space",
+      "from": [
+        2.0,
+        2.0,
+        0.5
+      ],
+      "to": [
+        10.0,
+        10.0,
+        0.5
+      ],
+      "must": true
+    }
+  ]
 }

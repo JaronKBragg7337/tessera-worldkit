@@ -197,3 +197,51 @@ def test_a_doorway_you_cannot_step_up_to_is_not_an_entrance(catalog):
     with_stoop = _grid(catalog, b.to_layout())
     ok2, detail = with_stoop.route_exists((2.0, -1.5, 0.0), (2.0, 2.0, 0.5))
     assert ok2, detail
+
+
+def test_every_traversable_opening_is_audited_without_being_asked(catalog, layout):
+    """The gap an external review found.
+
+    Reachability used to prove only the routes a layout *declared*, so a layout
+    could omit the one check that mattered and still pass clean. Every
+    traversable opening is now audited whether or not anyone asked for it.
+    """
+    result = validate_layout(layout, catalog)
+    audited = {d.where.get("aperture") for d in result.diagnostics
+               if d.code in ("TSR_LAYOUT_APERTURE_PASSABLE",
+                             "TSR_LAYOUT_APERTURE_CLOSED")}
+    index = {a["id"]: a for a in catalog["assets"]}
+    expected = {ap["id"] for inst in layout["instances"]
+                for ap in index[inst["asset"]]["apertures"] if ap["traversable"]}
+    assert expected, "the scene must contain a traversable opening to be a test"
+    assert expected <= audited, "unaudited openings: %s" % (expected - audited)
+
+
+def test_an_unreachable_doorway_is_reported_even_with_no_claims(catalog):
+    """A doorway 0.50 m above the ground outside, with nothing declared.
+
+    Every other rule passes: the hole is the right size, collision preserves it,
+    nothing stands in it. Only the audit reports that you cannot get in.
+    """
+    from tessera.assemble import Builder
+    b = Builder(catalog, "no stoop")
+    pad = b.ground("tsr:shell/foundation.pad.4m", 0, 0)
+    floor = b.ground("tsr:shell/floor.slab.4m", 0, 0, on=pad)
+    b.ground("tsr:shell/wall.doorway.4m", 0, 0, yaw=0.0, on=floor)
+    result = validate_layout(b.to_layout(), catalog)
+    codes = {d.code for d in result.diagnostics}
+    assert "TSR_LAYOUT_APERTURE_UNREACHABLE" in codes, sorted(codes)
+    assert result.ok, "an unreachable opening is a warning, not an error"
+
+
+def test_adding_the_stoop_clears_it(catalog):
+    from tessera.assemble import Builder
+    b = Builder(catalog, "with stoop")
+    pad = b.ground("tsr:shell/foundation.pad.4m", 0, 0)
+    floor = b.ground("tsr:shell/floor.slab.4m", 0, 0, on=pad)
+    b.ground("tsr:shell/wall.doorway.4m", 0, 0, yaw=0.0, on=floor)
+    b.ground("tsr:shell/stair.stoop.1m2", 1.4, -0.60, yaw=0.0)
+    result = validate_layout(b.to_layout(), catalog)
+    codes = {d.code for d in result.diagnostics}
+    assert "TSR_LAYOUT_APERTURE_UNREACHABLE" not in codes
+    assert "TSR_LAYOUT_APERTURE_PASSABLE" in codes, sorted(codes)

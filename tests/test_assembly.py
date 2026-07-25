@@ -14,7 +14,14 @@ def test_everything_is_solved_not_hand_placed(layout):
 
 def test_scene_is_substantial(layout):
     assert layout["instance_count"] >= 35
-    assert len(layout["assets_used"]) == 12, "the slice must exercise every asset"
+    # Not every asset in the kit: the workshop is single-storey, so it uses no
+    # stair, beam, column, railing or floor-with-an-opening. It does have to
+    # cover everything a single-storey building needs, including the entrance
+    # stoop, without which its own doorway is unreachable.
+    assert len(layout["assets_used"]) >= 12
+    for needed in ("wall.doorway.4m", "door.leaf.1m2", "stair.stoop.1m2",
+                   "roof.panel.4m", "roof.ridge.4m", "wall.corner.4m"):
+        assert any(a.endswith(needed) for a in layout["assets_used"]), needed
 
 
 def test_seams_are_discovered_from_the_contract(layout):

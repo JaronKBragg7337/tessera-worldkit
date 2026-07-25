@@ -1,14 +1,14 @@
 {
   "schema": "tessera.report/1",
   "validator_version": "1.0.0",
-  "generated_utc": "2026-07-25T11:27:19+00:00",
+  "generated_utc": "2026-07-25T16:47:09+00:00",
   "subject": "Survivor Safe House, Two Storey",
   "subject_kind": "layout",
   "status": "passed",
   "counts": {
     "errors": 0,
     "warnings": 0,
-    "info": 5
+    "info": 6
   },
   "coverage": {
     "checks_run": [
@@ -31,13 +31,15 @@
       "layout.aperture_clear",
       "layout.clearance",
       "layout.stair_usable",
+      "layout.aperture_passable",
       "layout.reachability"
     ],
-    "checks_run_count": 20,
+    "checks_run_count": 21,
     "rules_failed": []
   },
   "by_code": {
     "TSR_LAYOUT_APERTURE_OCCUPIED_BY_LEAF": 1,
+    "TSR_LAYOUT_APERTURE_CLOSED": 1,
     "TSR_LAYOUT_REACHABILITY_PROVEN": 4
   },
   "diagnostics": [
@@ -58,6 +60,28 @@
       "fix": "none needed; open the leaf if the route must be passable",
       "fix_transform": null,
       "rule": "layout.aperture_clear"
+    },
+    {
+      "code": "TSR_LAYOUT_APERTURE_CLOSED",
+      "severity": "info",
+      "what": "Opening is closed, so it was not audited as a route.",
+      "where": {
+        "instance": "wall_doorway_4m_01",
+        "asset": "tsr:shell/wall.doorway.4m",
+        "aperture": "door",
+        "position": [
+          4.0,
+          0.0,
+          0.5
+        ],
+        "closed_by": "door_leaf_1m2_01"
+      },
+      "why": "A shut door is a legitimate state, not a defect, so passability is not asserted either way. Remove or open the leaf if this route has to be proven.",
+      "expected": "informational",
+      "actual": "occupied by door_leaf_1m2_01",
+      "fix": "none needed",
+      "fix_transform": null,
+      "rule": "layout.aperture_passable"
     },
     {
       "code": "TSR_LAYOUT_REACHABILITY_PROVEN",
