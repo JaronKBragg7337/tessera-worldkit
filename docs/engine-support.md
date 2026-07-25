@@ -59,15 +59,20 @@ Unity adapter that has never been compiled is exactly as unproven as one that
 has never been written — and Unreal has now demonstrated that unverified
 adapters carry real, invisible coordinate bugs.
 
-> **The asset counts above are 18, and the kit now has 21.** The three M3
-> interior pieces — `wall.interior.4m`, `wall.interior.doorway.4m`,
-> `wall.interior.corner.4m` — have not been through either engine yet. Blender
-> is `verified-in-ci`, so its run covers them on the next commit and the count
-> becomes 21 when that run is read, not before. Unreal is `verified-locally`
-> and needs `tools/verify_unreal.py` re-run by hand against the licensed
-> install; until someone does, its 94 checks describe the 18 assets that were
-> present at the last run. Restating a number an engine has not actually
-> produced is exactly the kind of claim this table exists to prevent.
+> **Both engines have now been run against all 21 assets.** The three M3 interior
+> pieces — `wall.interior.4m`, `wall.interior.doorway.4m`,
+> `wall.interior.corner.4m` — were authored on a machine without `bpy` and were
+> not put through Unreal at the time, so the counts were deliberately left stale
+> and the gap stated rather than papered over. That was the right instinct and
+> it is worth keeping the shape of it: a number an engine has not actually
+> produced is exactly what this table exists to prevent.
+>
+> They have since been run. Unreal 5.6.1: **109 checks, 0 failed**, and the new
+> pieces behave like the rest — bounds to 0.0000 cm, collision rebuilt one hull
+> per declared hull, and Unreal's own auto-generated convex hull removed in
+> every case. The interior doorway is the one that mattered: an interior door
+> sealed by auto-collision is the same defect as an exterior one, and just as
+> invisible.
 
 ### What Unreal actually does with collision
 
