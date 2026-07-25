@@ -225,8 +225,13 @@ jobs:
           import importlib.util as iu
           spec = iu.spec_from_file_location("tu", "adapters/unreal/tessera_unreal.py")
           tu = iu.module_from_spec(spec); spec.loader.exec_module(tu)
-          assert tu.to_unreal_location((1, 2, 3)) == (200.0, 100.0, 300.0)
+          # Measured against Unreal 5.6.1, not assumed: canonical (x, y, z)
+          # metres -> Unreal (x, -y, z) centimetres. See docs/engine-support.md.
+          assert tu.to_unreal_location((1, 2, 3)) == (100.0, -200.0, 300.0)
           assert tu.to_unreal_yaw(90) == -90
+          centre, extent = tu.box_to_unreal([0.0, 0.0, 0.0, 4.0, 0.2, 3.0])
+          assert centre == (200.0, -10.0, 150.0), centre
+          assert extent == (400.0, 20.0, 300.0), extent
           print("ok unreal coordinate conversion")
           PY
       - name: unity script is structurally sound

@@ -2,29 +2,38 @@
 
 SPDX-License-Identifier: 0BSD
 
-Run inside the editor's Python console, or headless:
+Verified against Unreal Engine 5.6.1 by ``tools/verify_unreal.py``. Run it
+headless::
 
-    UnrealEditor-Cmd.exe Project.uproject -run=pythonscript \\
-        -script="adapters/unreal/tessera_unreal.py --catalog build/catalog.json"
+    UnrealEditor-Cmd.exe <Project>.uproject ^
+        -ExecutePythonScript="tools/verify_unreal.py" ^
+        -unattended -nopause -nosplash -NullRHI
 
 Coordinate handling
 -------------------
-Unreal is Z-up like Tessera, but LEFT-handed with +X forward and +Y right, and
-it works in centimetres. Two things follow, and both are applied here rather
-than left to an import setting somebody will forget:
+Unreal is Z-up like Tessera, but LEFT-handed, and works in centimetres. The
+conversion is::
 
-* one canonical metre is 100 Unreal units
-* canonical +Y forward becomes Unreal +X forward, which is the X/Y swap that
-  also flips handedness, so no extra mirror is needed
+    canonical (x, y, z) metres  ->  Unreal (x, -y, z) centimetres
+
+That is the mapping Unreal's own glTF importer applies to the shipped meshes, so
+layout transforms have to match it exactly or the geometry and the instances
+disagree. This was measured, not assumed: a 4.00 x 0.26 x 3.00 m wall imports to
+X 0..400, Y -23..3, Z 0..300, which is (x, -y, z) and not a swap.
+
+Negating Y flips handedness on its own, so no extra mirror is applied, and a
+canonical yaw about +Z becomes a negated yaw about Unreal's +Z.
 
 Collision
 ---------
-Auto-generated convex collision seals doorways. That is the single worst trap
-in modular kits and it is why every Tessera asset ships its own hulls: the
-occupancy box set is already a valid convex decomposition, and because
-apertures were carved out of it, the doorway survives. This script turns
-``auto_generate_collision`` OFF and builds ``UBodySetup`` boxes from the
-contract instead.
+Unreal generates convex collision for an imported mesh **whether or not you ask
+it to**. Setting the mesh pipeline's ``collision`` flag to False still produced
+one 18-DOP convex hull over a doorway wall in 5.6 -- which seals the doorway,
+silently, and is the single worst trap in modular kits.
+
+So this adapter does not try to prevent it. It imports, then *removes* whatever
+collision arrived and rebuilds it from the contract's hulls, which are the
+carved solid and therefore keep the aperture open.
 """
 from __future__ import annotations
 
@@ -43,16 +52,23 @@ CM_PER_METRE = 100.0
 
 def to_unreal_location(p):
     """canonical (x, y, z) metres -> Unreal (X, Y, Z) centimetres."""
-    return (p[1] * CM_PER_METRE, p[0] * CM_PER_METRE, p[2] * CM_PER_METRE)
+    return (p[0] * CM_PER_METRE, -p[1] * CM_PER_METRE, p[2] * CM_PER_METRE)
 
 
 def to_unreal_yaw(yaw_degrees):
-    """Canonical yaw about +Z becomes Unreal yaw about +Z, negated.
-
-    Canonical is right-handed and Unreal is left-handed, so a positive rotation
-    in one is a negative rotation in the other once the axes are swapped.
-    """
+    """Canonical yaw about +Z -> Unreal yaw, negated for the handedness flip."""
     return -yaw_degrees
+
+
+def box_to_unreal(hull):
+    """A contract hull -> (centre, full extents) in Unreal units.
+
+    ``FKBoxElem`` X/Y/Z are full extents, not half -- confirmed by asking Unreal
+    to fit a box to a known mesh and reading back what it stored.
+    """
+    centre = to_unreal_location([(hull[i] + hull[i + 3]) / 2 for i in range(3)])
+    extent = tuple(abs(hull[i + 3] - hull[i]) * CM_PER_METRE for i in range(3))
+    return centre, extent
 
 
 def parse_args(argv=None):
@@ -60,8 +76,6 @@ def parse_args(argv=None):
     p.add_argument("--catalog", default="build/catalog.json")
     p.add_argument("--layout")
     p.add_argument("--content-root", default="/Game/Tessera")
-    p.add_argument("--skip-import", action="store_true",
-                   help="assets are already imported; only build the level")
     p.add_argument("--report", default="build/unreal-import-report.json")
     known, _ = p.parse_known_args(argv or sys.argv[1:])
     return known
@@ -69,75 +83,104 @@ def parse_args(argv=None):
 
 # ------------------------------------------------------------------- import
 def import_asset(record, base_dir, destination):
+    """Import one GLB and return the StaticMesh object Unreal actually made.
+
+    The path cannot be constructed from destination_path + destination_name:
+    Interchange nests the result at ``<dest>/<file stem>/StaticMeshes/<name>``,
+    so a constructed path resolves to nothing and every later step fails. Ask
+    the task what it produced instead.
+    """
+    source = os.path.join(base_dir, record["files"]["glb"].replace("/", os.sep))
+    options = unreal.InterchangeGenericAssetsPipeline()
+    try:
+        mesh_pipeline = options.get_editor_property("mesh_pipeline")
+        mesh_pipeline.set_editor_property("combine_static_meshes", False)
+        mesh_pipeline.set_editor_property("import_collision_according_to_mesh_name", False)
+        mesh_pipeline.set_editor_property("force_collision_primitive_generation", False)
+        # NOTE: setting this False does not stop Unreal generating a convex
+        # hull. apply_collision() removes whatever arrives regardless.
+        mesh_pipeline.set_editor_property("collision", False)
+    except Exception as exc:
+        unreal.log_warning("[tessera] mesh pipeline options: %s" % exc)
+
     task = unreal.AssetImportTask()
-    task.filename = os.path.join(base_dir, record["files"]["glb"])
+    task.filename = source
     task.destination_path = destination
     task.destination_name = record["id"].split("/")[-1].replace(".", "_")
     task.automated = True
     task.replace_existing = True
     task.save = True
-
-    options = unreal.InterchangeGenericAssetsPipeline()
-    try:
-        mesh_pipeline = options.get_editor_property("mesh_pipeline")
-        # Do NOT let the engine invent collision. See the module docstring.
-        mesh_pipeline.set_editor_property("build_nanite", True)
-        mesh_pipeline.set_editor_property("import_collision", False)
-        mesh_pipeline.set_editor_property("import_collision_according_to_mesh_name",
-                                          False)
-        mesh_pipeline.set_editor_property("combine_static_meshes", False)
-    except Exception as exc:  # editor version differences are expected
-        unreal.log_warning("[tessera] could not set mesh pipeline options: %s" % exc)
     task.options = options
 
     unreal.AssetToolsHelpers.get_asset_tools().import_asset_tasks([task])
-    return "%s/%s" % (destination, task.destination_name)
+    meshes = [o for o in (task.get_objects() or [])
+              if isinstance(o, unreal.StaticMesh)]
+    if not meshes:
+        raise RuntimeError("no static mesh produced by importing %s" % source)
+    return meshes[0]
 
 
-def apply_collision(asset_path, record):
-    """Replace whatever collision exists with the contract's hulls."""
-    mesh = unreal.EditorAssetLibrary.load_asset(asset_path)
-    if mesh is None:
-        raise RuntimeError("could not load %s after import" % asset_path)
-    unreal.EditorStaticMeshLibrary.remove_collisions(mesh)
-    for hull in record["collision"]["hulls"]:
-        centre = [(hull[i] + hull[i + 3]) / 2 for i in range(3)]
-        size = [hull[i + 3] - hull[i] for i in range(3)]
-        loc = to_unreal_location(centre)
-        # Unreal's box helper takes half-extents implicitly via the box size
+def apply_collision(mesh, record):
+    """Replace whatever collision arrived with the contract's hulls.
+
+    Built as one list and assigned in a single write. Appending a fitted box and
+    editing it in place does not reliably persist, because the array returns
+    copies of the struct.
+    """
+    body = mesh.get_editor_property("body_setup")
+    if body is None:
         unreal.EditorStaticMeshLibrary.add_simple_collisions(
             mesh, unreal.ScriptingCollisionShapeType.BOX)
-        # position the newly added primitive
         body = mesh.get_editor_property("body_setup")
-        boxes = body.get_editor_property("agg_geom").get_editor_property("box_elems")
-        if boxes:
-            box = boxes[-1]
-            box.set_editor_property("center", unreal.Vector(*loc))
-            box.set_editor_property("x", size[1] * CM_PER_METRE)
-            box.set_editor_property("y", size[0] * CM_PER_METRE)
-            box.set_editor_property("z", size[2] * CM_PER_METRE)
-    unreal.EditorAssetLibrary.save_asset(asset_path)
-    return len(record["collision"]["hulls"])
+    unreal.EditorStaticMeshLibrary.remove_collisions(mesh)
+
+    elems = []
+    for hull in record["collision"]["hulls"]:
+        centre, extent = box_to_unreal(hull)
+        elem = unreal.KBoxElem()
+        elem.set_editor_property("center", unreal.Vector(*centre))
+        elem.set_editor_property("x", extent[0])
+        elem.set_editor_property("y", extent[1])
+        elem.set_editor_property("z", extent[2])
+        elems.append(elem)
+
+    agg = body.get_editor_property("agg_geom")
+    agg.set_editor_property("box_elems", elems)
+    agg.set_editor_property("convex_elems", [])
+    body.set_editor_property("agg_geom", agg)
+    body.set_editor_property("collision_trace_flag",
+                             unreal.CollisionTraceFlag.CTF_USE_SIMPLE_AND_COMPLEX)
+    mesh.set_editor_property("body_setup", body)
+    unreal.EditorAssetLibrary.save_loaded_asset(mesh, only_if_is_dirty=False)
+    return len(elems)
 
 
-def spawn_layout(layout, asset_paths):
+def spawn_layout(layout, meshes):
     subsystem = unreal.get_editor_subsystem(unreal.EditorActorSubsystem)
     spawned = []
     for inst in layout["instances"]:
-        path = asset_paths.get(inst["asset"])
-        if path is None:
-            unreal.log_warning("[tessera] no imported asset for %s" % inst["asset"])
+        mesh = meshes.get(inst["asset"])
+        if mesh is None:
+            unreal.log_warning("[tessera] no imported mesh for %s" % inst["asset"])
             continue
-        mesh = unreal.EditorAssetLibrary.load_asset(path)
         loc = unreal.Vector(*to_unreal_location(inst["position"]))
         yaw = to_unreal_yaw(inst.get("rotation_degrees", (0, 0, 0))[0])
-        rot = unreal.Rotator(0.0, 0.0, yaw)
-        actor = subsystem.spawn_actor_from_object(mesh, loc, rot)
+        actor = subsystem.spawn_actor_from_object(mesh, loc, unreal.Rotator(0.0, yaw, 0.0))
         if actor:
             actor.set_actor_label(inst["id"])
-            actor.set_actor_scale3d(unreal.Vector(*([inst.get("scale", 1.0)] * 3)))
-            spawned.append(inst["id"])
+            scale = inst.get("scale", 1.0)
+            actor.set_actor_scale3d(unreal.Vector(scale, scale, scale))
+            spawned.append(actor)
     return spawned
+
+
+def import_catalog(catalog, base_dir, content_root):
+    meshes = {}
+    for record in catalog["assets"]:
+        mesh = import_asset(record, base_dir, content_root)
+        apply_collision(mesh, record)
+        meshes[record["id"]] = mesh
+    return meshes
 
 
 def main():
@@ -150,32 +193,23 @@ def main():
     with open(args.catalog, encoding="utf-8") as fh:
         catalog = json.load(fh)
 
-    report = {"catalog": catalog["kit"], "imported": [], "collision": {},
-              "spawned": [], "warnings": []}
-    asset_paths = {}
-    for record in catalog["assets"]:
-        path = "%s/%s" % (args.content_root,
-                          record["id"].split("/")[-1].replace(".", "_"))
-        if not args.skip_import:
-            path = import_asset(record, base_dir, args.content_root)
-            report["imported"].append(path)
-        asset_paths[record["id"]] = path
-        try:
-            report["collision"][path] = apply_collision(path, record)
-        except Exception as exc:
-            report["warnings"].append("collision on %s: %s" % (path, exc))
-
+    meshes = import_catalog(catalog, base_dir, args.content_root)
+    report = {
+        "catalog": catalog["kit"],
+        "fingerprint": catalog.get("fingerprint"),
+        "imported": sorted(m.get_path_name() for m in meshes.values()),
+        "spawned": [],
+    }
     if args.layout:
         with open(args.layout, encoding="utf-8") as fh:
             layout = json.load(fh)
-        report["spawned"] = spawn_layout(layout, asset_paths)
+        report["spawned"] = [a.get_actor_label() for a in spawn_layout(layout, meshes)]
 
     os.makedirs(os.path.dirname(os.path.abspath(args.report)), exist_ok=True)
     with open(args.report, "w", encoding="utf-8") as fh:
         json.dump(report, fh, indent=2)
-    unreal.log("[tessera] imported %d, spawned %d, %d warning(s)"
-               % (len(report["imported"]), len(report["spawned"]),
-                  len(report["warnings"])))
+    unreal.log("[tessera] imported %d, spawned %d"
+               % (len(report["imported"]), len(report["spawned"])))
     return 0
 
 
