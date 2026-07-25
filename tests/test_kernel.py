@@ -90,3 +90,24 @@ def test_timestamps_are_pinnable_for_reproducible_builds(monkeypatch):
     assert utcnow() == utcnow()
     monkeypatch.delenv("SOURCE_DATE_EPOCH")
     assert utcnow().endswith("+00:00")
+
+
+@pytest.mark.parametrize("argv", [
+    ["--json", "doctor"],
+    ["doctor", "--json"],
+    ["doctor"],
+])
+def test_json_flag_works_on_either_side_of_the_subcommand(argv, capsys):
+    """An agent writes `tessera doctor --json` without thinking about it.
+
+    Insisting on one position costs a whole failed invocation, which is exactly
+    the kind of round-trip this project exists to remove.
+    """
+    from tessera.cli import main
+    assert main(argv) == 0
+    out = capsys.readouterr().out
+    if "--json" in argv:
+        import json
+        assert json.loads(out)["blender_required"] is False
+    else:
+        assert "blender_required" in out

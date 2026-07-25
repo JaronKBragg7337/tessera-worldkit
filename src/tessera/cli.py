@@ -167,38 +167,50 @@ def main(argv=None):
     p = argparse.ArgumentParser(prog="tessera",
                                 description="AI-readable world-building framework")
     p.add_argument("--json", action="store_true", help="machine-readable output")
+
+    # --json is accepted on either side of the subcommand. Insisting on one
+    # position is a papercut that costs an agent a whole failed invocation, and
+    # `tessera doctor --json` is the order a person writes without thinking.
+    # SUPPRESS keeps the subparser from overwriting a flag given before the
+    # subcommand with its own default.
+    common = argparse.ArgumentParser(add_help=False)
+    common.add_argument("--json", action="store_true",
+                        default=argparse.SUPPRESS,
+                        help="machine-readable output")
+
     sub = p.add_subparsers(dest="command", required=True)
 
-    b = sub.add_parser("build", help="generate meshes and the catalog")
+    b = sub.add_parser("build", parents=[common],
+                       help="generate meshes and the catalog")
     b.add_argument("--kit", default="kits/shell_v1")
     b.add_argument("--out", default="build")
     b.add_argument("--no-meshes", action="store_true")
     b.set_defaults(func=cmd_build)
 
-    v = sub.add_parser("validate", help="validate a catalog or a layout")
+    v = sub.add_parser("validate", parents=[common], help="validate a catalog or a layout")
     v.add_argument("--catalog", default="build/catalog.json")
     v.add_argument("--layout")
     v.add_argument("--report", help="write the machine-readable report here")
     v.add_argument("--no-colour", action="store_true")
     v.set_defaults(func=cmd_validate)
 
-    c = sub.add_parser("catalog", help="list what is in the catalog")
+    c = sub.add_parser("catalog", parents=[common], help="list what is in the catalog")
     c.add_argument("--catalog", default="build/catalog.json")
     c.add_argument("--ids", action="store_true")
     c.set_defaults(func=cmd_catalog)
 
-    d = sub.add_parser("describe", help="dump one asset's full contract")
+    d = sub.add_parser("describe", parents=[common], help="dump one asset's full contract")
     d.add_argument("asset")
     d.add_argument("--catalog", default="build/catalog.json")
     d.set_defaults(func=cmd_describe)
 
-    a = sub.add_parser("assemble", help="run a scene script and write its layout")
+    a = sub.add_parser("assemble", parents=[common], help="run a scene script and write its layout")
     a.add_argument("script")
     a.add_argument("--catalog", default="build/catalog.json")
     a.add_argument("--out", default="layout.json")
     a.set_defaults(func=cmd_assemble)
 
-    doc = sub.add_parser("doctor", help="report what this environment can do")
+    doc = sub.add_parser("doctor", parents=[common], help="report what this environment can do")
     doc.set_defaults(func=cmd_doctor)
 
     args = p.parse_args(argv)
