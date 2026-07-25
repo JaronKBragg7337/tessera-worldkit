@@ -95,7 +95,25 @@ layout composed against one catalog and executed against another produces a
 building full of gaps with no error anywhere; the pin turns that into
 `TSR_LAYOUT_CATALOG_MISMATCH`.
 
-### 3.5 Always validate, and read the fix
+### 3.5 Declare the routes that matter
+
+Every traversable opening is audited automatically, but that only proves each
+door works in isolation. It does not prove the places they lead to are connected.
+
+```json
+"reachability": [
+  {"label": "outside to the mezzanine", "from": [6, -1.6, 0], "to": [6, 10, 3.7],
+   "must": true},
+  {"label": "the vault stays sealed", "from": [6, 2, 0.5], "to": [9, 9, 0.5],
+   "must": false}
+]
+```
+
+The validator proves or refutes each one by flooding the walkable volume. A
+claim that turns out to be false is reported; `must: false` catches the reverse,
+which is a containment bug and worth checking in a game.
+
+### 3.6 Always validate, and read the fix
 
 ```bash
 ./tessera validate --layout my_layout.json --report report.json
@@ -118,7 +136,7 @@ the instance's position and re-run. Do not render to confirm; re-run the
 validator. There is a test in `tests/test_validators.py` asserting that applying
 `fix_transform` clears the error it came from.
 
-### 3.6 Never let an engine generate collision
+### 3.7 Never let an engine generate collision
 
 `collision.hulls` is a valid convex decomposition of the solid, and because
 apertures were carved out of the same box set, doorways are holes in the
@@ -127,7 +145,7 @@ convex `MeshCollider` in Unity, and use the shipped hulls. The adapters in
 `adapters/` already do this. `collision.auto_convex_would_seal_apertures` tells
 you when it matters.
 
-### 3.7 Respect the placement policy, and read its reason
+### 3.8 Respect the placement policy, and read its reason
 
 `placement.grid.policy` is one of:
 
@@ -144,7 +162,7 @@ axis-aligned box stays axis aligned, so occupancy, collision and aperture tests
 stay *exact*. Every policy field ships with a `rationale` string. Read it before
 you decide the rule is wrong.
 
-### 3.8 Do not scale modular pieces
+### 3.9 Do not scale modular pieces
 
 `placement.allowed_scaling` is `1.0 .. 1.0` for everything structural, with the
 reason attached. Scaling moves connectors off the grid, and the piece stops
@@ -192,6 +210,18 @@ or a connector floating in space fails the build rather than reaching a scene.
       a diff in an asset you did not touch means you altered shared geometry
 
 ---
+
+## 5.5 What Tessera will not tell you
+
+It has no opinion on what to build. Footprint, room programme, which wall gets a
+window, where the entrance faces, whether it looks finished — all yours. The kit
+is 18 structural parts and has no roads, terrain, fences, lighting or gameplay.
+
+If the thing you were asked for is not expressible, **say so and say why** rather
+than approximating it. A benchmark agent asked for "two storeys with interior
+access" stacked three crates where a staircase belonged, and every geometric rule
+passed. Refusing with a reason is a better answer than geometry that validates
+and does not work.
 
 ## 6. Things that will waste your time
 

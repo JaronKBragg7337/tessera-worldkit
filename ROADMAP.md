@@ -213,6 +213,61 @@ grows linearly.
 
 ---
 
+## External review, 2026-07-25
+
+An independent evaluation was asked to behave like an agent trying to build a
+small environment and to be neither charitable nor overly critical. Its central
+finding is accepted and the README has been corrected to match it:
+
+> Tessera stops an agent from guessing measurable placement facts. It does not
+> yet stop the agent from guessing what world should be built.
+
+It scored geometric placement, collision and agent onboarding highly, and asset
+breadth (3/10), semantic world generation (2/10) and visual production readiness
+(3/10) low. That split is fair and is the real shape of the project today.
+
+Acted on immediately:
+
+- [x] The README's "stops guessing" claim corrected, and a "what it does not do"
+      section added rather than left to be discovered
+- [x] **Validation no longer depends on the author remembering to ask.** Every
+      traversable opening is audited whether or not a route was declared, and a
+      layout with openings but no claims is told so. This was the sharpest
+      technical finding: a layout could omit the one check that mattered and
+      still pass clean
+- [x] The workshop and single-storey safe house, both of which were silently
+      unaudited, now carry stoops and declared routes
+- [x] `docs/conformance.md`, so "Tessera-compatible" can mean something other
+      than "used our code"
+
+Logged, in the review's own priority order:
+
+- [ ] **1. Intent schema and intent validation** — the largest remaining burden.
+      Designed in `docs/remote-agents.md`, built in M4
+- [ ] **2. Automatic enclosure and roofing** — M4
+- [ ] **3. Interior wall, doorway and corner system** — M3
+- [ ] **4. Completeness validation.** Detect an expected enclosure surface that
+      is simply absent. This is the gable-end class of defect: every rule passes
+      and a picture shows daylight through the building
+- [ ] **5. `tessera repair`** — apply every `fix_transform` to a fixed point
+- [ ] **6. Road, terrain, gate, fence and checkpoint assets** — M3
+- [ ] **7. Runtime navigation verified in every supported engine** — M2
+- [ ] **8. A verified interactive browser demo.** No public demo is currently
+      discoverable, which the review correctly noted
+- [ ] **9. A multi-agent benchmark measuring total tokens and elapsed work**
+      against a conventional workflow. Catalog compression is measured;
+      end-to-end saving is not
+- [ ] **10. More visual themes and production detailing**
+
+Two of its criticisms are deliberately not being fixed. Asset breadth is low
+because an 18-part kit exists to prove the contract, not to be a content
+library — and under
+[`decisions/0008`](docs/decisions/0008-scope-and-replaceable-layers.md) anyone
+can supply their own. And validators will never establish unspecified intent;
+that is what layer 5 is for, not a deficiency in layers 0–4.
+
+---
+
 ## M4 — Layout intelligence and the intent layer
 
 Today an agent must still decide *where* a building goes. This milestone gives

@@ -7,13 +7,23 @@
 ![Assets](https://img.shields.io/badge/assets-18-informational)
 ![Dependencies](https://img.shields.io/badge/runtime%20dependencies-0-success)
 
-Give this repository to an AI agent and it stops guessing.
+**Tessera stops an agent guessing measurable placement facts. It does not stop
+it guessing what world to build.**
 
-Most of the cost of building a game world with an agent is not modelling. It is
-the correction loop: the agent places a wall, renders it, sees it floating,
-lowers it, renders again, notices the doorway is sealed by auto-generated
-collision, and starts over. Every one of those round-trips is a render, a
-screenshot, a visual estimate and a retry.
+That distinction is the honest version of this project and it is worth stating
+before anything else, because an earlier draft of this README claimed the agent
+"stops guessing" outright. It doesn't. An external evaluation put the correction
+better than we had:
+
+> Tessera stops an agent from guessing measurable placement facts. It does not
+> yet stop the agent from guessing what world should be built.
+
+What it *does* remove is the correction loop. The agent places a wall, renders
+it, sees it floating, lowers it, renders again, notices the doorway is sealed by
+auto-generated collision, and starts over. Every one of those round-trips is a
+render, a screenshot, a visual estimate and a retry — and every one of them is
+avoidable, because the answer was always a number somebody could have written
+down.
 
 Tessera removes that loop by shipping the *answers* alongside the assets — a
 versioned, engine-neutral placement contract that states, per asset, exactly how
@@ -242,6 +252,32 @@ is a wall with a decoration.
 
 ---
 
+## What it does not do
+
+Stated plainly, so nobody discovers it the expensive way.
+
+| Still yours to decide | Why |
+|---|---|
+| What to build, and how big | There is no intent layer yet. "A defensible checkpoint" is not a query Tessera can answer |
+| Room programme and circulation | No room semantics; `room` and `entrance` are designed in [`docs/remote-agents.md`](docs/remote-agents.md) but not built |
+| Where the entrance faces, which wall gets a window | Geometry permits any of them; purpose is not modelled |
+| Whether it looks finished | Rendering the workshop showed daylight through both gable ends. Every rule passed. A validator is not a substitute for looking once |
+| Roads, terrain, fences, gates, signage, lighting | Not in the kit. An 18-part structural kit proves the contract; it is not a content library |
+| Anything about gameplay | No spawns, loot, cover, AI, interaction or missions |
+
+The kit is deliberately small. Its job is to prove the contract, not to be
+enough assets.
+
+## Scope
+
+Scope is wide and every layer is replaceable — if you already have your own
+assets, validator, engine importer or level tooling, drop ours and keep the
+rest. What is not negotiable is coupling. See
+[`docs/conformance.md`](docs/conformance.md) for the levels you can claim
+independently, and
+[`docs/decisions/0008`](docs/decisions/0008-scope-and-replaceable-layers.md) for
+why breadth is allowed and coupling is not.
+
 ## For agents
 
 Read [`AGENTS.md`](AGENTS.md) first. It is written for you, not for a human
@@ -255,6 +291,7 @@ skimming for a quickstart.
 | [`docs/architecture.md`](docs/architecture.md) | How the pieces fit and why |
 | [`docs/placement-contract.md`](docs/placement-contract.md) | Every field, with the failure it prevents |
 | [`docs/conventions.md`](docs/conventions.md) | Units, axes, pivots, grid, naming |
+| [`docs/conformance.md`](docs/conformance.md) | The four levels you can claim independently, without using our code |
 | [`docs/remote-agents.md`](docs/remote-agents.md) | Phone and server agents: budgets, the repair loop, catalog pinning, the intent layer |
 | [`benchmarks/constrained_agent/`](benchmarks/constrained_agent/) | A real low-tool model's draft, run, classified and repaired |
 | [`docs/engine-support.md`](docs/engine-support.md) | What is verified and what is not |
