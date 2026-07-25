@@ -2,6 +2,30 @@
 
 SPDX-License-Identifier: CC0-1.0
 
+## Where this is right now
+
+**Done and verified.** The placement contract, the exact geometry kernel, 18
+original parts, 41 validation rules with agent-readable diagnostics, the
+reachability solver, the context-budgeted brief, three validated example
+buildings, and four verified targets — core, three.js and Blender in CI, Unreal
+against a real 5.6.1 install.
+
+**Next, in order.** Interior walls, doorways and corners come first: without
+them an interior room can be closed but not entered, which blocks every
+multi-room building — safe house, checkpoint, warehouse, village. Then the gable
+end wall and second-storey walls, which the renders exposed. Then the intent
+layer, which is the largest remaining reduction in agent reasoning but benefits
+from having more to reason about.
+
+**Read first if you are new here.** [`AGENTS.md`](AGENTS.md) if you are an
+agent. [`docs/decisions/0008`](docs/decisions/0008-scope-and-replaceable-layers.md)
+for why scope is wide and coupling is not.
+[`docs/conformance.md`](docs/conformance.md) for what compatibility means.
+[`benchmarks/constrained_agent/`](benchmarks/constrained_agent/) for how the
+project tests itself against a real agent.
+
+---
+
 Every milestone below has acceptance tests that either pass or do not. There are
 no items reading "support characters" or "add assets", because those cannot be
 finished — only abandoned.
@@ -259,12 +283,20 @@ Logged, in the review's own priority order:
       end-to-end saving is not
 - [ ] **10. More visual themes and production detailing**
 
-Two of its criticisms are deliberately not being fixed. Asset breadth is low
-because an 18-part kit exists to prove the contract, not to be a content
-library — and under
+On asset breadth: 3/10 is an accurate snapshot and **not a policy**. The kit
+will grow substantially — M3 alone adds traversal variants, interior walls and
+doorways, junction trim, more roof forms, roads, ground, openings and a second
+theme, and there is no ceiling after that. What is deliberate is the *ordering*:
+assets are ranked by how much agent guesswork they remove, not by count. Forty
+assets an agent places correctly on the first attempt are worth more than two
+hundred it has to be corrected on, and the eighteen that exist were chosen to
+prove the contract end to end rather than to look like a library. Growth is also
+not the only route — under
 [`decisions/0008`](docs/decisions/0008-scope-and-replaceable-layers.md) anyone
-can supply their own. And validators will never establish unspecified intent;
-that is what layer 5 is for, not a deficiency in layers 0–4.
+can supply their own kit and keep everything else.
+
+One criticism genuinely is not a defect: validators will never establish
+unspecified intent. That is what layer 5 is for, not a hole in layers 0–4.
 
 ---
 
