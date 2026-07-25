@@ -105,3 +105,63 @@ def test_report_renders_for_humans_and_machines(catalog, layout):
     assert "why" in text and "fix" in text
     import json
     json.dumps(report)  # must be serialisable
+
+
+# --------------------------------------------------------------- support rules
+# Both discovered by running a real constrained-agent draft. See
+# benchmarks/constrained_agent/README.md.
+
+def test_a_cantilevered_slab_is_rejected(catalog):
+    """A 4 x 4 floor slab held on one 4 x 0.2 wall edge falls over.
+
+    Before this rule existed it validated clean, because it technically rested
+    on something. Coverage alone cannot catch it: a genuine second-storey floor
+    bearing only on its perimeter walls has similar coverage and is correct.
+    The discriminator is whether the footprint centroid lies inside the convex
+    hull of the contact patches.
+    """
+    from tessera.assemble import Builder
+    b = Builder(catalog, "cantilever")
+    pad = b.ground("tsr:shell/foundation.pad.4m", 0, 0)
+    floor = b.ground("tsr:shell/floor.slab.4m", 0, 0, on=pad)
+    wall = b.ground("tsr:shell/wall.straight.4m", 0, 0, yaw=0, on=floor)
+    b.ground("tsr:shell/floor.slab.4m", 0, 0, on=wall, surface="top")
+    c = validate_layout(b.to_layout(), catalog)
+    assert "TSR_LAYOUT_UNBALANCED" in codes(c)
+    assert not c.ok
+
+
+def test_a_slab_balanced_on_a_workbench_warns_but_does_not_fail(catalog):
+    """It will not topple, so it is not a placement error -- but say something."""
+    from tessera.assemble import Builder
+    b = Builder(catalog, "implausible")
+    pad = b.ground("tsr:shell/foundation.pad.4m", 0, 0)
+    floor = b.ground("tsr:shell/floor.slab.4m", 0, 0, on=pad)
+    bench = b.ground("tsr:shell/prop.workbench", 2, 2, on=floor)
+    b.ground("tsr:shell/floor.slab.4m", 0, 0, on=bench, surface="worktop")
+    c = validate_layout(b.to_layout(), catalog)
+    assert "TSR_LAYOUT_UNDERSUPPORTED" in codes(c)
+    assert "TSR_LAYOUT_UNBALANCED" not in codes(c), "centrally balanced, so it stands"
+
+
+def test_a_real_second_storey_on_four_walls_passes(catalog):
+    """The case M3 depends on. A rule that failed this would be worse than none."""
+    from tessera.assemble import Builder
+    b = Builder(catalog, "second storey")
+    pad = b.ground("tsr:shell/foundation.pad.4m", 0, 0)
+    gnd = b.ground("tsr:shell/floor.slab.4m", 0, 0, on=pad)
+    south = b.ground("tsr:shell/wall.straight.4m", 0, 0, yaw=0, on=gnd)
+    b.ground("tsr:shell/wall.straight.4m", 4, 4, yaw=180, on=gnd)
+    b.ground("tsr:shell/wall.straight.4m", 0.2, 0, yaw=90, on=gnd)
+    b.ground("tsr:shell/wall.straight.4m", 3.8, 4, yaw=270, on=gnd)
+    upper = b.ground("tsr:shell/floor.slab.4m", 0, 0, on=south, surface="top")
+    c = validate_layout(b.to_layout(), catalog)
+    for d in c.diagnostics:
+        assert d.where.get("instance") != upper["id"], \
+            "a floor bearing on four perimeter walls must not be flagged: %s" % d.code
+
+
+def test_the_good_workshop_has_no_support_false_positives(catalog, layout):
+    c = validate_layout(layout, catalog)
+    for code in ("TSR_LAYOUT_UNBALANCED", "TSR_LAYOUT_UNDERSUPPORTED"):
+        assert code not in codes(c), "%s fired on a known-good scene" % code

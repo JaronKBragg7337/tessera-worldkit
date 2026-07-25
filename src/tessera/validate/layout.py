@@ -29,8 +29,86 @@ from .diagnostics import Collector
 
 #: Below this shared volume a clash is a modelling sliver, not a real overlap.
 CLASH_VOLUME_EPSILON = 1e-6
-#: Fraction of a footprint that must rest on something to count as supported.
+#: Fraction of a footprint that must rest on something to count as supported at
+#: all. Deliberately tiny: this only separates "unsupported" from "supported",
+#: and the real judgement is made by the two rules below.
 SUPPORT_COVERAGE = 0.02
+
+#: Below this fraction of contact the support is real but implausible -- a floor
+#: slab balanced on a workbench. A warning, not an error, because a genuine
+#: second-storey floor bearing only on its perimeter walls sits around 20% and
+#: is perfectly correct.
+PLAUSIBLE_COVERAGE = 0.15
+
+#: A support surface recessed by less than this still supports. Floor slabs have
+#: 3 cm decorative tile grooves and crates have a 2 cm lid recess; treating those
+#: as holes would fail correctly placed walls, which is how a stability rule
+#: becomes noise that people switch off.
+RECESS_TOLERANCE = 0.05
+
+
+def _rect_overlap(a, b):
+    """The shared XY rectangle of two boxes, or None."""
+    x0, y0 = max(a[0], b[0]), max(a[1], b[1])
+    x1, y1 = min(a[3], b[3]), min(a[4], b[4])
+    if x1 <= x0 or y1 <= y0:
+        return None
+    return (x0, y0, x1, y1)
+
+
+def _convex_hull(points):
+    """Andrew's monotone chain. Returns the hull in counter-clockwise order."""
+    pts = sorted(set(points))
+    if len(pts) < 3:
+        return pts
+
+    def cross(o, a, b):
+        return (a[0] - o[0]) * (b[1] - o[1]) - (a[1] - o[1]) * (b[0] - o[0])
+
+    lower = []
+    for p in pts:
+        while len(lower) >= 2 and cross(lower[-2], lower[-1], p) <= 0:
+            lower.pop()
+        lower.append(p)
+    upper = []
+    for p in reversed(pts):
+        while len(upper) >= 2 and cross(upper[-2], upper[-1], p) <= 0:
+            upper.pop()
+        upper.append(p)
+    return lower[:-1] + upper[:-1]
+
+
+def _point_in_hull(point, hull, tolerance=1e-6):
+    """True when the point is inside or on a counter-clockwise convex hull."""
+    if len(hull) < 3:
+        if len(hull) == 2:
+            (x0, y0), (x1, y1) = hull
+            cross = ((x1 - x0) * (point[1] - y0) - (y1 - y0) * (point[0] - x0))
+            if abs(cross) > tolerance:
+                return False
+            dot = ((point[0] - x0) * (x1 - x0) + (point[1] - y0) * (y1 - y0))
+            length = (x1 - x0) ** 2 + (y1 - y0) ** 2
+            return -tolerance <= dot <= length + tolerance
+        return bool(hull) and abs(hull[0][0] - point[0]) < tolerance \
+            and abs(hull[0][1] - point[1]) < tolerance
+    for i in range(len(hull)):
+        x0, y0 = hull[i]
+        x1, y1 = hull[(i + 1) % len(hull)]
+        if (x1 - x0) * (point[1] - y0) - (y1 - y0) * (point[0] - x0) < -tolerance:
+            return False
+    return True
+
+
+def _hull_distance(point, hull):
+    """How far outside the hull the point lies, in metres."""
+    worst = 0.0
+    for i in range(len(hull)):
+        x0, y0 = hull[i]
+        x1, y1 = hull[(i + 1) % len(hull)]
+        length = math.hypot(x1 - x0, y1 - y0) or 1.0
+        d = ((x1 - x0) * (point[1] - y0) - (y1 - y0) * (point[0] - x0)) / length
+        worst = min(worst, d)
+    return abs(worst)
 
 
 def _xy_overlap_area(a, b):
@@ -349,6 +427,9 @@ def validate_layout(layout: dict, catalog: dict,
 
         best = max(below, key=lambda x: x[1])
         gap = q(datum_z - best[1])
+        if gap <= CONTACT_EPSILON:
+            _check_support_is_adequate(c, inst, instances, datum_z, footprint,
+                                       fp_area, datum_label)
         if gap > CONTACT_EPSILON:
             c.error(code="TSR_LAYOUT_FLOATING", rule="layout.grounded",
                     what="Instance floats above its support.",
@@ -581,3 +662,92 @@ def validate_layout(layout: dict, catalog: dict,
 
     c.connection_stats = connection_stats
     return c
+
+
+def _check_support_is_adequate(c, inst, instances, datum_z, footprint, fp_area,
+                               datum_label):
+    """Is the thing actually held up, or merely touching something?
+
+    Two separate questions, because they have different answers and different
+    severities.
+
+    *Balance.* An object topples when the centroid of its footprint leaves the
+    convex hull of its contact patches. That is the real physical criterion, and
+    it is the only one that distinguishes a legitimate second-storey floor --
+    bearing only on four perimeter walls, centroid over thin air but well inside
+    the hull -- from a slab cantilevered off a single wall edge, which falls.
+    Testing the centroid against the support *boxes* instead would fail the
+    legitimate case and is the obvious wrong implementation.
+
+    *Plausibility.* A 4 x 4 m floor slab balanced centrally on a workbench does
+    not topple, so it is not a balance failure. It is still almost certainly not
+    what anyone meant, so it warns rather than fails.
+    """
+    contacts = []
+    supported_area = 0.0
+    supports = set()
+    for other in instances:
+        if other is inst:
+            continue
+        for ob in other.occupancy:
+            if ob[2] > datum_z + CONTACT_EPSILON:
+                continue
+            # A shallow recess still supports; a real drop does not.
+            if ob[5] < datum_z - RECESS_TOLERANCE:
+                continue
+            for f in footprint:
+                patch = _rect_overlap(f, ob)
+                if patch:
+                    contacts.append(patch)
+                    supported_area += (patch[2] - patch[0]) * (patch[3] - patch[1])
+                    supports.add(other.id)
+    if "terrain" in (inst.record["placement"].get("support", {}).get("rests_on") or []) \
+            and datum_z <= CONTACT_EPSILON:
+        return
+    if not contacts:
+        return
+
+    cx = sum(((f[0] + f[3]) / 2) * ((f[3] - f[0]) * (f[4] - f[1]))
+             for f in footprint) / fp_area
+    cy = sum(((f[1] + f[4]) / 2) * ((f[3] - f[0]) * (f[4] - f[1]))
+             for f in footprint) / fp_area
+
+    corners = []
+    for (x0, y0, x1, y1) in contacts:
+        corners += [(x0, y0), (x1, y0), (x1, y1), (x0, y1)]
+    hull = _convex_hull(corners)
+
+    w = {"instance": inst.id, "asset": inst.asset_id,
+         "position": list(inst.transform.position),
+         "supports": sorted(supports)[:4]}
+
+    if not _point_in_hull((cx, cy), hull):
+        overhang = q(_hull_distance((cx, cy), hull))
+        c.error(code="TSR_LAYOUT_UNBALANCED", rule="layout.support.balance",
+                what="Instance would topple: its weight is not over its support.",
+                where=w,
+                expected="footprint centroid inside the support contact hull",
+                actual="centroid (%.3f, %.3f) lies %.3f m outside it" % (cx, cy, overhang),
+                why=("It touches %s, but only near one edge. An object stays up "
+                     "when the centroid of its footprint is inside the convex "
+                     "hull of what it rests on; this one is cantilevered %.3f m "
+                     "past that, so it falls."
+                     % (", ".join(sorted(supports)[:3]) or "something", overhang)),
+                fix=("add support beneath the unsupported side, or move the "
+                     "instance so its centre sits over what is holding it"))
+        return
+
+    coverage = supported_area / fp_area
+    if coverage < PLAUSIBLE_COVERAGE:
+        c.warn(code="TSR_LAYOUT_UNDERSUPPORTED", rule="layout.support.balance",
+               what="Instance is balanced, but barely touching what holds it up.",
+               where=w,
+               expected="at least %.0f%% of the footprint in contact"
+                        % (PLAUSIBLE_COVERAGE * 100),
+               actual="%.1f%% (%.3f of %.3f m2) resting on %s"
+                      % (coverage * 100, supported_area, fp_area,
+                         ", ".join(sorted(supports)[:3])),
+               why=("It will not topple, so this is not a placement error -- but "
+                    "a large surface held up by a very small one is usually a "
+                    "sign the intended support was not the one it found."),
+               fix="check that this is resting on what you meant it to rest on")
