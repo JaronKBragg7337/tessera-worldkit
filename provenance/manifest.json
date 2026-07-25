@@ -1,7 +1,7 @@
 {
   "schema": "tessera.provenance/1",
-  "generated_utc": "2026-07-25T02:01:17+00:00",
-  "git_commit": null,
+  "generated_utc": "2026-07-25T02:03:23+00:00",
+  "git_commit": "9e3ea5725d489dc9e9fba75230ba9f04b65a3b5a",
   "declaration": "Every asset listed here was generated from scratch by the named function in this repository. No third-party mesh, texture, model, scan, photograph or asset library is read at any point in the generation pipeline. source_inputs is empty for every entry, and the validator fails any asset for which it is not.",
   "license": {
     "code_spdx": "0BSD",
@@ -559,7 +559,7 @@
     },
     {
       "path": "src/tessera/measure.py",
-      "sha256": "fd8bc74f7e1586440ac60468d05121fac0596fa99ef18f8cd1e43d8dd485b1ed"
+      "sha256": "a06e4289273179069be188aa94563679eaadc2170966155a673e9474235c6d71"
     },
     {
       "path": "src/tessera/mesh.py",

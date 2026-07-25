@@ -11,6 +11,7 @@ from __future__ import annotations
 
 import datetime as _dt
 import hashlib
+import os as _os
 
 from .boxset import BoxSet, box_size
 from .contract import (
@@ -28,6 +29,18 @@ AXIS_LETTER = ("x", "y", "z")
 
 
 def utcnow() -> str:
+    """Current UTC time, or a pinned one when SOURCE_DATE_EPOCH is set.
+
+    Timestamps are the only field in a catalog that is not a pure function of
+    the inputs, so they are the only thing that can make two identical builds
+    differ. Honouring the reproducible-builds convention means CI can assert a
+    genuinely byte-identical rebuild rather than a rebuild that is identical
+    apart from the parts nobody checked.
+    """
+    epoch = _os.environ.get("SOURCE_DATE_EPOCH")
+    if epoch:
+        return _dt.datetime.fromtimestamp(
+            int(epoch), _dt.timezone.utc).replace(microsecond=0).isoformat()
     return _dt.datetime.now(_dt.timezone.utc).replace(microsecond=0).isoformat()
 
 

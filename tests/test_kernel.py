@@ -76,3 +76,17 @@ def test_build_is_deterministic():
 def test_degenerate_box_is_refused():
     with pytest.raises(ValueError):
         BoxSet.from_box((0, 0, 0), (0, 1, 1))
+
+
+def test_timestamps_are_pinnable_for_reproducible_builds(monkeypatch):
+    """SOURCE_DATE_EPOCH must pin the only non-deterministic field.
+
+    Everything else in a catalog is a pure function of the inputs, so the
+    timestamp is the only thing that can make two identical builds differ.
+    """
+    from tessera.measure import utcnow
+    monkeypatch.setenv("SOURCE_DATE_EPOCH", "1700000000")
+    assert utcnow() == "2023-11-14T22:13:20+00:00"
+    assert utcnow() == utcnow()
+    monkeypatch.delenv("SOURCE_DATE_EPOCH")
+    assert utcnow().endswith("+00:00")

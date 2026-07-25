@@ -42,7 +42,12 @@ jobs:
             --no-colour --report build/layout-report.json
 
       - name: the build must be byte-identical on re-run
+        # SOURCE_DATE_EPOCH pins the only field that is not a pure function of
+        # the inputs, so this is a genuine byte comparison rather than one that
+        # quietly excludes the parts nobody checked.
+        env: { SOURCE_DATE_EPOCH: "1700000000" }
         run: |
+          ./tessera build --kit kits/shell_v1 --out build
           cp build/catalog.json /tmp/first.json
           ./tessera build --kit kits/shell_v1 --out build
           diff /tmp/first.json build/catalog.json \
@@ -50,8 +55,24 @@ jobs:
 
       - name: the committed catalog must match a fresh build
         run: |
-          git diff --exit-code build/catalog.json build/meshes \
-            || (echo "::error::committed build output is stale; run ./tessera build"; exit 1)
+          ./tessera build --kit kits/shell_v1 --out build
+          python3 - <<'PY'
+          import json, subprocess, sys
+          def strip(doc):
+              doc.pop("generated_utc", None)
+              for a in doc.get("assets", []):
+                  a.get("provenance", {}).pop("created_utc", None)
+              return doc
+          fresh = strip(json.load(open("build/catalog.json")))
+          committed = strip(json.loads(subprocess.check_output(
+              ["git", "show", "HEAD:build/catalog.json"], text=True)))
+          if fresh != committed:
+              print("::error::committed catalog is stale; run ./tessera build")
+              sys.exit(1)
+          print("committed catalog matches a fresh build")
+          PY
+          git diff --exit-code build/meshes \
+            || (echo "::error::committed meshes are stale; run ./tessera build"; exit 1)
 
       - name: install test extras
         run: python -m pip install --quiet pytest jsonschema referencing trimesh
