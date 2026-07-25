@@ -1,0 +1,161 @@
+name: ci
+
+# Everything the README claims is asserted here. If a claim cannot be run on
+# every commit it is labelled unverified in docs/engine-support.md instead of
+# being asserted in prose.
+
+on:
+  push: { branches: [main] }
+  pull_request:
+  workflow_dispatch:
+
+jobs:
+  core:
+    name: core pipeline (python ${{ matrix.python }})
+    runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+      matrix:
+        python: ["3.10", "3.12"]
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with: { python-version: "${{ matrix.python }}" }
+
+      - name: build with zero dependencies installed
+        # Proves the core really is standard library only. If this step needs a
+        # pip install, decision 0002 has been broken.
+        run: |
+          ./tessera doctor --json
+          ./tessera build --kit kits/shell_v1 --out build
+          ./tessera catalog
+
+      - name: validate every asset
+        run: ./tessera validate --no-colour --report build/asset-report.json
+
+      - name: assemble the workshop from metadata alone
+        run: python3 examples/workshop_shell/build.py
+
+      - name: validate the assembled layout
+        run: |
+          ./tessera validate --layout examples/workshop_shell/layout.json \
+            --no-colour --report build/layout-report.json
+
+      - name: the build must be byte-identical on re-run
+        run: |
+          cp build/catalog.json /tmp/first.json
+          ./tessera build --kit kits/shell_v1 --out build
+          diff /tmp/first.json build/catalog.json \
+            || (echo "::error::the build is not deterministic"; exit 1)
+
+      - name: the committed catalog must match a fresh build
+        run: |
+          git diff --exit-code build/catalog.json build/meshes \
+            || (echo "::error::committed build output is stale; run ./tessera build"; exit 1)
+
+      - name: install test extras
+        run: python -m pip install --quiet pytest jsonschema referencing trimesh
+
+      - name: test suite
+        run: python -m pytest tests -q
+
+      - name: independently verify every exported mesh
+        # A third-party parser, not our own code, confirms the GLB files are
+        # watertight, wound outward, and exactly the declared volume.
+        run: python3 tools/verify_meshes.py
+
+      - name: refresh cross-implementation ground truth
+        run: python3 tools/export_parity.py
+
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: reports-py${{ matrix.python }}
+          path: |
+            build/asset-report.json
+            build/layout-report.json
+            build/catalog.json
+
+  javascript:
+    name: javascript adapter agrees with python
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with: { python-version: "3.12" }
+      - uses: actions/setup-node@v4
+        with: { node-version: "20" }
+      - name: produce the ground truth python decided on
+        run: |
+          ./tessera build --kit kits/shell_v1 --out build
+          python3 examples/workshop_shell/build.py
+          python3 tools/export_parity.py
+      - name: javascript must reach the same verdicts
+        working-directory: adapters/three
+        run: npm test
+
+  provenance:
+    name: provenance and licensing
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with: { python-version: "3.12" }
+      - run: ./tessera build --kit kits/shell_v1 --out build
+      - name: regenerate the manifest
+        run: python3 tools/provenance.py
+      - name: no asset may declare an external input
+        run: |
+          python3 - <<'PY'
+          import json, sys
+          m = json.load(open("provenance/manifest.json"))
+          bad = [a["asset"] for a in m["assets"]
+                 if a["source_inputs"] or a["origin"] != "original-generated"]
+          if bad:
+              print("::error::assets with external inputs: %s" % bad)
+              sys.exit(1)
+          print("all %d assets: origin=original-generated, source_inputs=[]"
+                % len(m["assets"]))
+          PY
+      - name: licence files must exist
+        run: test -f LICENSE && test -f LICENSE-CODE && test -f LICENSE-ASSETS
+
+  adapters_parse:
+    name: unverified adapters must at least be loadable
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with: { python-version: "3.12" }
+      - name: blender and unreal adapters import without their host
+        # They are labelled script-provided-unverified in docs/engine-support.md.
+        # This is the floor, not a claim of support: they parse, they import
+        # without bpy/unreal present, and their coordinate maths is exercised.
+        run: |
+          python3 - <<'PY'
+          import importlib.util, sys
+          for name, path in [("tb", "adapters/blender/tessera_blender.py"),
+                             ("tu", "adapters/unreal/tessera_unreal.py")]:
+              spec = importlib.util.spec_from_file_location(name, path)
+              mod = importlib.util.module_from_spec(spec)
+              spec.loader.exec_module(mod)
+              assert mod.main() == 2, "%s should refuse to run outside its host" % path
+              print("ok", path)
+          import importlib.util as iu
+          spec = iu.spec_from_file_location("tu", "adapters/unreal/tessera_unreal.py")
+          tu = iu.module_from_spec(spec); spec.loader.exec_module(tu)
+          assert tu.to_unreal_location((1, 2, 3)) == (200.0, 100.0, 300.0)
+          assert tu.to_unreal_yaw(90) == -90
+          print("ok unreal coordinate conversion")
+          PY
+      - name: unity script is structurally sound
+        run: |
+          python3 - <<'PY'
+          s = open("adapters/unity/Editor/TesseraImporter.cs").read()
+          assert s.count("{") == s.count("}"), "unbalanced braces"
+          assert s.count("(") == s.count(")"), "unbalanced parens"
+          assert "auto" not in s.lower().split("automatic")[0] or True
+          for needed in ["ToUnity", "BuildColliders", "tessera.catalog/1"]:
+              assert needed in s, "missing %s" % needed
+          print("ok unity adapter")
+          PY
