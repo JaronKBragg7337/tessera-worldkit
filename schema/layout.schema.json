@@ -1,0 +1,66 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://tessera.dev/schema/layout.schema.json",
+  "title": "tessera.layout/1",
+  "description": "An arrangement of catalog assets. Transforms are in canonical Tessera space; connections say which connectors are claimed to be joined so a validator can check rather than infer.",
+  "type": "object",
+  "required": ["schema", "name", "space", "instances"],
+  "properties": {
+    "schema": {"const": "tessera.layout/1"},
+    "name": {"type": "string"},
+    "description": {"type": "string"},
+    "generator": {"type": "string"},
+    "catalog": {"type": "object"},
+    "space": {
+      "type": "object", "required": ["convention", "linear_unit", "angle_unit"],
+      "properties": {
+        "convention": {"const": "tessera.space/1"},
+        "linear_unit": {"const": "metre"},
+        "angle_unit": {"const": "degree"}
+      }
+    },
+    "bounds": {"type": "object"},
+    "instance_count": {"type": "integer"},
+    "assets_used": {"type": "array", "items": {"type": "string"}},
+    "placement_method": {
+      "type": "object",
+      "description": "How many instances were hand-placed versus solved from the contract. The headline metric of the whole project.",
+      "properties": {
+        "explicit": {"type": "integer"},
+        "solved_from_contract": {"type": "integer"}
+      }
+    },
+    "discovered_connections": {"type": "integer"},
+    "instances": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": ["id", "asset", "position", "rotation_degrees", "scale"],
+        "properties": {
+          "id": {"type": "string"},
+          "asset": {"type": "string"},
+          "position": {"type": "array", "items": {"type": "number"}, "minItems": 3, "maxItems": 3},
+          "rotation_degrees": {
+            "type": "array", "items": {"type": "number"}, "minItems": 3, "maxItems": 3,
+            "description": "[yaw about Z, pitch about Y, roll about X], applied ZYX-intrinsic."
+          },
+          "scale": {"type": "number"},
+          "connections": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "required": ["from", "to"],
+              "properties": {
+                "from": {"type": "string"},
+                "to": {
+                  "type": "object", "required": ["instance", "connector"],
+                  "properties": {"instance": {"type": "string"}, "connector": {"type": "string"}}
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+}

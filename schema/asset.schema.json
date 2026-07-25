@@ -1,0 +1,320 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://tessera.dev/schema/asset.schema.json",
+  "title": "tessera.asset/1",
+  "description": "One asset's placement contract. Every geometric field is measured from the solid at build time, never hand-declared, so it cannot drift from the mesh it describes.",
+  "type": "object",
+  "required": ["schema", "contract_version", "id", "name", "category", "semantic_role", "scale_class", "space", "dimensions", "pivot", "axes", "placement", "connectors", "occupancy", "clearance", "apertures", "collision", "materials", "geometry", "files", "engine", "provenance", "license", "validation"],
+  "properties": {
+    "schema": {"const": "tessera.asset/1"},
+    "contract_version": {"type": "string"},
+    "id": {"type": "string", "pattern": "^tsr:[a-z0-9_]+/[a-z0-9_.]+$",
+           "description": "Stable identifier. Never reused, never renamed in place."},
+    "name": {"type": "string"},
+    "category": {"enum": ["structure", "opening", "roof", "prop", "ground", "traversal"]},
+    "semantic_role": {"type": "string", "description": "Drives which placement rules apply and what the asset may rest on."},
+    "tags": {"type": "array", "items": {"type": "string"}},
+    "scale_class": {"enum": ["mini", "standard", "mega"],
+                    "description": "A module standard, not a multiplier. Assets in different classes never mate."},
+    "scale_factor": {"type": "number"},
+    "kit": {"type": "object"},
+
+    "space": {
+      "type": "object",
+      "required": ["convention", "handedness", "up", "forward", "right", "linear_unit", "angle_unit", "rotation_order"],
+      "properties": {
+        "convention": {"const": "tessera.space/1"},
+        "handedness": {"enum": ["right", "left"]},
+        "up": {"$ref": "#/$defs/vec3"},
+        "forward": {"$ref": "#/$defs/vec3"},
+        "right": {"$ref": "#/$defs/vec3"},
+        "linear_unit": {"const": "metre"},
+        "angle_unit": {"const": "degree"},
+        "rotation_order": {"const": "ZYX-intrinsic"}
+      }
+    },
+
+    "dimensions": {
+      "type": "object",
+      "required": ["bounds", "size", "grounded_bounds", "is_authored_grounded", "base_z_local", "top_z_local"],
+      "properties": {
+        "bounds": {"$ref": "#/$defs/bounds"},
+        "size": {"$ref": "#/$defs/vec3"},
+        "grounded_bounds": {"$ref": "#/$defs/bounds",
+          "description": "The bounds the asset would have if its base sat exactly on z = 0."},
+        "is_authored_grounded": {"type": "boolean"},
+        "base_z_local": {"type": "number"},
+        "top_z_local": {"type": "number"}
+      }
+    },
+
+    "pivot": {
+      "type": "object",
+      "required": ["origin_local", "convention", "rationale", "offset_from_bounds_min", "offset_from_footprint_centre", "base_offset_z"],
+      "properties": {
+        "origin_local": {"$ref": "#/$defs/vec3"},
+        "convention": {"type": "string"},
+        "rationale": {"type": "string", "description": "Why the origin is here. Prose an agent can read before deciding it knows better."},
+        "offset_from_bounds_min": {"$ref": "#/$defs/vec3"},
+        "offset_from_footprint_centre": {"$ref": "#/$defs/vec3"},
+        "base_offset_z": {"type": "number",
+          "description": "Place the origin at support_top + base_offset_z and the asset is grounded exactly. This single number eliminates the floating-object class of bug."}
+      }
+    },
+
+    "axes": {
+      "type": "object",
+      "required": ["forward", "up", "right", "ground_plane", "intended_ground_normal"],
+      "properties": {
+        "forward": {"$ref": "#/$defs/vec3"},
+        "up": {"$ref": "#/$defs/vec3"},
+        "right": {"$ref": "#/$defs/vec3"},
+        "ground_plane": {"type": "string"},
+        "intended_ground_normal": {"$ref": "#/$defs/vec3"}
+      }
+    },
+
+    "placement": {
+      "type": "object",
+      "required": ["grid", "allowed_rotations", "allowed_scaling", "prohibited_scaling", "constraints", "support", "footprint_rects", "footprint_area"],
+      "properties": {
+        "grid": {
+          "type": "object",
+          "required": ["module", "snap_xy", "snap_z", "policy", "rationale"],
+          "properties": {
+            "module": {"type": "number"},
+            "snap_xy": {"type": ["number", "null"], "description": "null means position is not grid-constrained."},
+            "snap_z": {"type": ["number", "null"]},
+            "yaw_step_degrees": {"type": ["number", "null"]},
+            "policy": {"enum": ["module", "module_xy", "mated", "free"]},
+            "rationale": {"type": "string"}
+          }
+        },
+        "allowed_rotations": {
+          "type": ["array", "null"],
+          "items": {"type": "number"},
+          "description": "Legal yaws in degrees. null means unrestricted. 90-degree steps keep occupancy and collision exact under rotation."
+        },
+        "allow_pitch_roll": {"type": "boolean"},
+        "allowed_scaling": {
+          "type": "object",
+          "required": ["uniform_only", "min", "max", "rationale"],
+          "properties": {
+            "uniform_only": {"type": "boolean"},
+            "min": {"type": "number"},
+            "max": {"type": "number"},
+            "rationale": {"type": "string"}
+          }
+        },
+        "prohibited_scaling": {"type": "array", "items": {"type": "string"}},
+        "constraints": {"type": "array"},
+        "support": {
+          "type": "object",
+          "required": ["requires_support"],
+          "properties": {
+            "requires_support": {"type": "boolean"},
+            "rests_on": {"type": "array", "items": {"type": "string"}},
+            "support_axis": {"type": "string"},
+            "may_float": {"type": "boolean", "description": "True for assets carried by a connection rather than by ground contact, such as a hung door leaf."},
+            "datum_connector": {"type": "string", "description": "When present, grounding is measured at this connector's plane rather than at the asset's lowest vertex. A roof panel's eave hangs below its bearing plane."},
+            "note": {"type": "string"}
+          }
+        },
+        "footprint_rects": {"type": "array", "items": {"$ref": "#/$defs/rect"}},
+        "footprint_area": {"type": "number"}
+      }
+    },
+
+    "connectors": {"type": "array", "items": {"$ref": "#/$defs/connector"}},
+
+    "occupancy": {
+      "type": "object",
+      "required": ["representation", "exact", "box_count", "volume", "boxes", "disjoint", "approximation_tolerance"],
+      "properties": {
+        "representation": {"const": "axis_aligned_box_set"},
+        "exact": {"type": "boolean"},
+        "box_count": {"type": "integer"},
+        "volume": {"type": "number"},
+        "boxes": {"type": "array", "items": {"$ref": "#/$defs/box6"}},
+        "disjoint": {"type": "boolean"},
+        "approximation_tolerance": {"type": "number",
+          "description": "How far the box set may fall short of the true solid. Zero for an exact decomposition. Consumers widen containment tests by this much."}
+      }
+    },
+
+    "clearance": {
+      "type": "object",
+      "required": ["representation", "box_count", "boxes", "purpose"],
+      "properties": {
+        "representation": {"const": "axis_aligned_box_set"},
+        "box_count": {"type": "integer"},
+        "boxes": {"type": "array", "items": {"$ref": "#/$defs/box6"}},
+        "purpose": {"type": "string"}
+      }
+    },
+
+    "apertures": {"type": "array", "items": {"$ref": "#/$defs/aperture"}},
+
+    "collision": {
+      "type": "object",
+      "required": ["mode", "source", "exact", "hull_count", "hulls", "preserves_apertures", "engine_hint"],
+      "properties": {
+        "mode": {"const": "convex_decomposition"},
+        "source": {"type": "string"},
+        "exact": {"type": "boolean"},
+        "hull_count": {"type": "integer"},
+        "hulls": {"type": "array", "items": {"$ref": "#/$defs/box6"}},
+        "preserves_apertures": {"type": "boolean"},
+        "auto_convex_would_seal_apertures": {"type": "boolean",
+          "description": "True when letting the engine generate collision would close a doorway. The single most common modular-kit trap."},
+        "engine_hint": {"type": "string"}
+      }
+    },
+
+    "materials": {"type": "array", "items": {"$ref": "#/$defs/material"}},
+    "lods": {"type": "array", "items": {"$ref": "#/$defs/lod"}},
+
+    "geometry": {
+      "type": "object",
+      "required": ["triangles", "vertices", "surface_area", "signed_volume", "watertight", "non_manifold_edges", "boundary_edges", "outward_winding", "sha256"],
+      "properties": {
+        "triangles": {"type": "integer"},
+        "vertices": {"type": "integer"},
+        "surface_area": {"type": "number"},
+        "signed_volume": {"type": "number"},
+        "watertight": {"type": "boolean"},
+        "non_manifold_edges": {"type": "integer"},
+        "boundary_edges": {"type": "integer"},
+        "outward_winding": {"type": "boolean"},
+        "sha256": {"type": "string", "pattern": "^[0-9a-f]{64}$"}
+      }
+    },
+
+    "files": {"type": "object"},
+    "engine": {"type": "object",
+      "required": ["unreal", "unity", "three", "blender"],
+      "description": "Per-engine import expectations. Documented so an adapter cannot invent its own."},
+    "provenance": {"$ref": "#/$defs/provenance"},
+    "license": {"$ref": "#/$defs/license"},
+    "validation": {"$ref": "#/$defs/validation"},
+    "notes": {"type": "string"}
+  },
+
+  "$defs": {
+    "vec3": {"type": "array", "items": {"type": "number"}, "minItems": 3, "maxItems": 3},
+    "rect": {"type": "array", "items": {"type": "number"}, "minItems": 4, "maxItems": 4},
+    "box6": {"type": "array", "items": {"type": "number"}, "minItems": 6, "maxItems": 6,
+             "description": "[min_x, min_y, min_z, max_x, max_y, max_z] in local metres."},
+    "bounds": {
+      "type": "object", "required": ["min", "max"],
+      "properties": {"min": {"$ref": "#/$defs/vec3"}, "max": {"$ref": "#/$defs/vec3"}}
+    },
+    "connector": {
+      "type": "object",
+      "required": ["id", "kind", "position", "normal", "tangent", "mating_mode", "role", "scale_class", "compatible_kinds", "incompatible_kinds", "tolerance", "required"],
+      "properties": {
+        "id": {"type": "string"},
+        "kind": {"type": "string"},
+        "position": {"$ref": "#/$defs/vec3"},
+        "normal": {"$ref": "#/$defs/vec3", "description": "Unit vector pointing OUT of the asset, along the direction a partner approaches from."},
+        "tangent": {"$ref": "#/$defs/vec3", "description": "Unit vector orthogonal to the normal. Fixes roll, so a mate is a complete rigid transform rather than a position plus an ambiguous spin."},
+        "mating_mode": {"enum": ["point", "surface"],
+          "description": "point: the two connector points must coincide. surface: the two planes must be coplanar and the smaller extent contained in the larger."},
+        "extent_half": {"type": ["array", "null"], "items": {"type": "number"},
+                        "description": "Half-extent in the (tangent, binormal) frame. Required for surface mates."},
+        "role": {"type": "string"},
+        "scale_class": {"enum": ["mini", "standard", "mega"]},
+        "compatible_kinds": {"type": "array", "items": {"type": "string"}},
+        "incompatible_kinds": {"type": "array", "items": {"type": "string"}},
+        "tolerance": {
+          "type": "object",
+          "required": ["position_metres", "angle_degrees", "roll_degrees"],
+          "properties": {
+            "position_metres": {"type": "number"},
+            "angle_degrees": {"type": "number", "description": "Maximum deviation from perfectly opposed normals."},
+            "roll_degrees": {"type": "number", "description": "Maximum deviation between mated tangents. Catches a piece that mates correctly but is spun 90 degrees about the join axis."}
+          }
+        },
+        "required": {"type": "boolean"},
+        "notes": {"type": "string"}
+      }
+    },
+    "aperture": {
+      "type": "object",
+      "required": ["id", "kind", "bounds", "traversal_axis", "clear_width", "clear_height", "traversable", "fits_capsule"],
+      "properties": {
+        "id": {"type": "string"},
+        "kind": {"enum": ["door", "window", "hatch", "vent", "passage"]},
+        "bounds": {"$ref": "#/$defs/bounds"},
+        "traversal_axis": {"enum": ["x", "y", "z"]},
+        "clear_width": {"type": "number"},
+        "clear_height": {"type": "number"},
+        "traversable": {"type": "boolean"},
+        "fits_capsule": {"type": "object"}
+      }
+    },
+    "material": {
+      "type": "object",
+      "required": ["slot", "name", "role", "base_color", "metallic", "roughness"],
+      "properties": {
+        "slot": {"type": "integer"},
+        "name": {"type": "string"},
+        "role": {"type": "string"},
+        "base_color": {"type": "array", "items": {"type": "number"}, "minItems": 4, "maxItems": 4},
+        "metallic": {"type": "number"},
+        "roughness": {"type": "number"}
+      }
+    },
+    "lod": {
+      "type": "object",
+      "required": ["level", "triangles", "screen_size"],
+      "properties": {
+        "level": {"type": "integer"},
+        "triangles": {"type": "integer"},
+        "screen_size": {"type": "number"},
+        "file": {"type": ["string", "null"]},
+        "generated_by": {"type": "string"}
+      }
+    },
+    "provenance": {
+      "type": "object",
+      "required": ["generator", "generator_version", "created_utc", "authored_by", "origin"],
+      "properties": {
+        "generator": {"type": "string"},
+        "generator_version": {"type": "string"},
+        "created_utc": {"type": "string"},
+        "authored_by": {"type": "string"},
+        "origin": {"enum": ["original-generated", "original-authored", "third-party"]},
+        "source_inputs": {"type": "array"},
+        "generated_files": {"type": "array", "items": {"type": "string"}},
+        "derived_from": {"type": "array"},
+        "third_party_review": {"type": "string"},
+        "notes": {"type": "string"}
+      }
+    },
+    "license": {
+      "type": "object",
+      "required": ["code_spdx", "assets_spdx", "attribution_required", "commercial_use", "redistribution"],
+      "properties": {
+        "code_spdx": {"const": "0BSD"},
+        "assets_spdx": {"const": "CC0-1.0"},
+        "applies_to": {"type": "string"},
+        "attribution_required": {"const": false},
+        "commercial_use": {"const": true},
+        "redistribution": {"const": true}
+      }
+    },
+    "validation": {
+      "type": "object",
+      "required": ["status"],
+      "properties": {
+        "status": {"enum": ["passed", "failed", "unvalidated"]},
+        "validator_version": {"type": "string"},
+        "checked_utc": {"type": "string"},
+        "checks_passed": {"type": "array"},
+        "checks_failed": {"type": "array"},
+        "coverage": {"type": "object"}
+      }
+    }
+  }
+}

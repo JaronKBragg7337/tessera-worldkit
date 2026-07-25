@@ -1,0 +1,21 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://tessera.dev/schema/catalog.schema.json",
+  "title": "tessera.catalog/1",
+  "description": "A kit: the config that produced it, the derived numbers an agent would otherwise have to compute, and every asset's contract.",
+  "type": "object",
+  "required": ["schema", "contract_version", "kit", "generated_utc", "space", "config", "derived", "asset_count", "totals", "assets"],
+  "properties": {
+    "schema": {"const": "tessera.catalog/1"},
+    "contract_version": {"type": "string"},
+    "kit": {"type": "object", "required": ["id", "version"],
+            "properties": {"id": {"type": "string"}, "version": {"type": "string"}}},
+    "generated_utc": {"type": "string"},
+    "space": {"type": "object"},
+    "config": {"type": "object", "description": "Every tunable that produced this kit, so a build is reproducible from the catalog alone."},
+    "derived": {"type": "object", "description": "Stack heights, spans and pitches computed once here rather than by every consumer."},
+    "asset_count": {"type": "integer"},
+    "totals": {"type": "object"},
+    "assets": {"type": "array", "items": {"$ref": "https://tessera.dev/schema/asset.schema.json"}}
+  }
+}

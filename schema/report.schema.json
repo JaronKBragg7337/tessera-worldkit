@@ -1,0 +1,57 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://tessera.dev/schema/report.schema.json",
+  "title": "tessera.report/1",
+  "description": "A validation result. Written for an agent first: every diagnostic carries the delta needed to fix it, so the correction loop is apply-and-revalidate rather than render-and-guess.",
+  "type": "object",
+  "required": ["schema", "validator_version", "generated_utc", "subject", "subject_kind", "status", "counts", "coverage", "by_code", "diagnostics"],
+  "properties": {
+    "schema": {"const": "tessera.report/1"},
+    "validator_version": {"type": "string"},
+    "generated_utc": {"type": "string"},
+    "subject": {"type": "string"},
+    "subject_kind": {"enum": ["catalog", "layout", "asset"]},
+    "status": {"enum": ["passed", "failed"]},
+    "counts": {"type": "object", "required": ["errors", "warnings", "info"]},
+    "coverage": {
+      "type": "object",
+      "required": ["checks_run", "checks_run_count", "rules_failed"],
+      "description": "\"No errors\" only means something alongside the list of rules that were actually evaluated.",
+      "properties": {
+        "checks_run": {"type": "array", "items": {"type": "string"}},
+        "checks_run_count": {"type": "integer"},
+        "rules_failed": {"type": "array", "items": {"type": "string"}}
+      }
+    },
+    "by_code": {"type": "object"},
+    "connections": {"type": "object"},
+    "diagnostics": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": ["code", "severity", "what", "where", "why", "expected", "actual", "fix", "rule"],
+        "properties": {
+          "code": {"type": "string", "pattern": "^TSR_[A-Z_]+$"},
+          "severity": {"enum": ["error", "warning", "info"]},
+          "what": {"type": "string", "description": "One sentence, no jargon."},
+          "where": {"type": "object", "description": "Instance, asset, connector, aperture and coordinates involved."},
+          "why": {"type": "string", "description": "The rule that broke and the reasoning behind it."},
+          "expected": {},
+          "actual": {},
+          "fix": {"type": "string", "description": "The corrective action in words."},
+          "fix_transform": {
+            "type": ["object", "null"],
+            "description": "The correction as data. An agent applies this and re-runs; it never has to render anything.",
+            "properties": {
+              "translate": {"type": "array", "items": {"type": "number"}, "minItems": 3, "maxItems": 3},
+              "set_rotation": {"type": "array", "items": {"type": "number"}, "minItems": 3, "maxItems": 3},
+              "rotate_z_by": {"type": "number"},
+              "set_scale": {"type": "number"}
+            }
+          },
+          "rule": {"type": "string"}
+        }
+      }
+    }
+  }
+}
