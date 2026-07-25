@@ -231,14 +231,36 @@ jobs:
           assert tu.to_unreal_yaw(90) == -90
           print("ok unreal coordinate conversion")
           PY
-      - name: unity script is structurally sound
+      - name: unity package and verification harness are structurally sound
         run: |
           python3 - <<'PY'
-          s = open("adapters/unity/Editor/TesseraImporter.cs").read()
-          assert s.count("{") == s.count("}"), "unbalanced braces"
-          assert s.count("(") == s.count(")"), "unbalanced parens"
-          assert "auto" not in s.lower().split("automatic")[0] or True
-          for needed in ["ToUnity", "BuildColliders", "tessera.catalog/1"]:
-              assert needed in s, "missing %s" % needed
-          print("ok unity adapter")
+          import json
+          from pathlib import Path
+
+          editor = Path("adapters/unity/Editor")
+          sources = {
+              "importer": (editor / "TesseraImporter.cs").read_text(),
+              "verify": (editor / "TesseraVerify.cs").read_text(),
+          }
+          for name, source in sources.items():
+              assert source.count("{") == source.count("}"), "%s braces" % name
+              assert source.count("(") == source.count(")"), "%s parens" % name
+
+          for needed in ["ToUnity", "BuildColliders", "tessera.catalog/1",
+                         "JsonConvert.DeserializeObject"]:
+              assert needed in sources["importer"], "missing %s" % needed
+          for needed in ["public static void Run()", "CheckBounds",
+                         "VerifyCollision", "VerifyLayout",
+                         "unity-verify-report.json"]:
+              assert needed in sources["verify"], "missing %s" % needed
+
+          package = json.load(open("adapters/unity/package.json"))
+          assert package["name"] == "org.tessera.worldkit"
+          assert package["dependencies"]["com.unity.nuget.newtonsoft-json"] == "3.2.1"
+          project = json.load(open(
+              "adapters/unity/verify-project/Packages/manifest.json"))
+          assert project["dependencies"]["org.tessera.worldkit"] == "file:../.."
+          gltf = project["dependencies"]["org.khronos.unitygltf"]
+          assert gltf.endswith("#release/2.14.1"), gltf
+          print("ok unity package and executable verification project")
           PY

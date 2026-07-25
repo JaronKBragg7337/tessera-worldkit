@@ -22,6 +22,7 @@
 using System;
 using System.Collections.Generic;
 using System.IO;
+using Newtonsoft.Json;
 using UnityEditor;
 using UnityEngine;
 
@@ -41,14 +42,18 @@ namespace Tessera
         public Dimensions dimensions; public Pivot pivot; public Files files;
         public Collision collision; public Aperture[] apertures;
     }
-    [Serializable] public class Catalog { public string schema; public Asset[] assets; }
+    [Serializable] public class Catalog {
+        public string schema; public string fingerprint; public int asset_count;
+        public Asset[] assets;
+    }
 
     [Serializable] public class Instance {
         public string id; public string asset; public float[] position;
         public float[] rotation_degrees; public float scale;
     }
     [Serializable] public class Layout {
-        public string schema; public string name; public Instance[] instances;
+        public string schema; public string name; public int instance_count;
+        public Instance[] instances;
     }
 
     public static class TesseraImporter
@@ -76,10 +81,27 @@ namespace Tessera
 
         public static Catalog LoadCatalog(string path)
         {
-            Catalog catalog = JsonUtility.FromJson<Catalog>(File.ReadAllText(path));
+            // JsonUtility does not support nested containers such as the
+            // float[][] used by collision.hulls. Json.NET is the Unity-maintained
+            // package dependency declared by this adapter's package.json.
+            Catalog catalog = JsonConvert.DeserializeObject<Catalog>(
+                File.ReadAllText(path));
+            if (catalog == null)
+                throw new Exception($"could not parse catalog {path}");
             if (catalog.schema != "tessera.catalog/1")
                 throw new Exception($"unsupported catalog schema {catalog.schema}");
             return catalog;
+        }
+
+        public static Layout LoadLayout(string path)
+        {
+            Layout layout = JsonConvert.DeserializeObject<Layout>(
+                File.ReadAllText(path));
+            if (layout == null)
+                throw new Exception($"could not parse layout {path}");
+            if (layout.schema != "tessera.layout/1")
+                throw new Exception($"unsupported layout schema {layout.schema}");
+            return layout;
         }
 
         [MenuItem("Tessera/Build Layout...")]
@@ -95,10 +117,10 @@ namespace Tessera
         /// Instantiate a layout. Prefabs are looked up by asset short name under
         /// Assets/Tessera/, which is where a glTF importer puts them by default.
         public static GameObject BuildLayout(string catalogPath, string layoutPath,
-                                             string prefabRoot = "Assets/Tessera")
+            string prefabRoot = "Assets/Tessera")
         {
             Catalog catalog = LoadCatalog(catalogPath);
-            Layout layout = JsonUtility.FromJson<Layout>(File.ReadAllText(layoutPath));
+            Layout layout = LoadLayout(layoutPath);
 
             var index = new Dictionary<string, Asset>();
             foreach (Asset a in catalog.assets) index[a.id] = a;

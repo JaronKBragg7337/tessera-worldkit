@@ -215,7 +215,8 @@ with an explicit verification status — see
 [`docs/engine-support.md`](docs/engine-support.md). Nothing is advertised as
 supported without an executable path. three.js and Blender are verified in CI;
 Unreal is verified against a real 5.6.1 install; Unity is not verified and says
-so.
+so. The Unity adapter and its batch-mode verification project are both in the
+repository; only an activated Unity licence is external to the clone.
 
 ---
 

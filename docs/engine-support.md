@@ -21,12 +21,12 @@ Each adapter has a verification status, and the status is the honest one:
 
 | Target | Adapter | Status | What is actually proven |
 |---|---|---|---|
-| **Engine-neutral core** | `src/tessera/` | `verified-in-ci` | 98 tests: kernel invariants, contract coherence, layout and asset rules, navigation, schema conformance, deterministic builds |
+| **Engine-neutral core** | `src/tessera/` | `verified-in-ci` | 100 tests: kernel invariants, contract coherence, layout and asset rules, navigation, adapter reproducibility, schema conformance, deterministic builds |
 | **JavaScript / three.js** | `adapters/three/` | `verified-in-ci` | 4 Node tests: the JS validator reaches the same verdict as Python on the known-good layout and on all 15 broken fixtures; transform conversions match the Python reference exactly; the grounding solver reproduces every assembled height |
 | **glTF / GLB output** | `src/tessera/export/glb.py` | `verified-in-ci` | every exported mesh is re-loaded by an independent third-party parser and confirmed watertight, winding-consistent, and of exactly the expected volume and extents |
 | **Blender** | `adapters/blender/tessera_blender.py` | `verified-in-ci` | 97 checks against **Blender 5.0.1** on every commit (also reproduced locally on 5.1.2): all 22 assets import with bounds matching the contract to ~1e-8 m, triangle counts survive, collision hulls are built one per declared hull, a doorway's collision is void where its aperture is, a 37-instance layout lands at its declared transforms to 1.9e-7 m, and FBX export keeps the `UCX_<mesh>_##` names Unreal binds collision by |
 | **Unreal Engine 5** | `adapters/unreal/tessera_unreal.py` | `verified-locally` | 114 checks against **Unreal Engine 5.6.1**, headless: all 22 assets import with bounds matching the contract to **0.0000 cm**, collision is rebuilt one hull per declared hull and persists, a 37-instance layout spawns at its declared transforms to **0.0000 cm**, and a doorway's collision is void where its aperture is. Not in CI: Unreal needs a licensed multi-gigabyte install, so it cannot follow Blender's pip route |
-| **Unity** | `adapters/unity/Editor/TesseraImporter.cs` | `script-provided-unverified` | reviewed and structurally checked. Unity 6000.4.11f1 **is** installed on the verification machine, but batch mode cannot start without a licence and the repository does not yet contain its documented verification entry point. See below |
+| **Unity** | `adapters/unity/Editor/TesseraImporter.cs` | `script-provided-unverified` | the importer, local UPM package, batch entry point, and minimal verification project are in the repository. Both C# sources compile against a strict API shim, but Unity 6000.4.11f1 batch mode cannot start without an activated licence, so none of this is claimed as real-engine verification. See below |
 
 ### Why Unity is still unverified
 
@@ -44,14 +44,29 @@ No licence is activated. Unlike Blender's pip route or Unreal's offline install,
 Unity requires signing in to a Unity account, which is a person's credentials and
 an interactive step — so it is not something to automate around.
 
-Signing in to Unity Hub and activating a Personal licence clears the external
-block. It is **not the only remaining step**: the repository currently contains
-the importer but not the previously documented `Tessera.TesseraVerify.Run`
-method or a self-contained Unity verification project. That command was
-aspirational, not executable, and has been removed until its entry point exists.
+The repository side of that gap is now closed. `adapters/unity` is a local UPM
+package, and `adapters/unity/verify-project` references it by a relative path.
+The project pins Khronos UnityGLTF 2.14.1, so the `.glb` import path is explicit
+and reproducible rather than a manual “install an importer” instruction. Run:
 
-Until that happens the row above stays `script-provided-unverified`, because a
-Unity adapter that has never been compiled is exactly as unproven as one that
+```powershell
+& 'C:\Program Files\Unity\Hub\Editor\6000.4.11f1\Editor\Unity.exe' `
+  -batchmode -nographics -quit `
+  -projectPath adapters/unity/verify-project `
+  -executeMethod Tessera.TesseraVerify.Run `
+  -tesseraRoot (Get-Location).Path `
+  -logFile unity-verify.log
+```
+
+The harness imports all 22 GLBs, checks renderer bounds and exact compound
+collision, proves traversable apertures are void, creates prefabs, builds the
+two-storey layout, checks every transform, and writes
+`build/unity-verify-report.json`. Signing in to Unity Hub and activating a
+Personal licence is now the only known external block, but the status remains
+unverified until the real editor produces that report with zero failures.
+
+Until that run happens the row above stays `script-provided-unverified`, because a
+Unity adapter that has never been compiled by Unity is exactly as unproven as one that
 has never been written — and Unreal has now demonstrated that unverified
 adapters carry real, invisible coordinate bugs.
 

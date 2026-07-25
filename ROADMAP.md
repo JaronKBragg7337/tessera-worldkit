@@ -88,12 +88,13 @@ that table read `verified-locally` or better.
 - [ ] Unreal: a `PlayerStart` outside the building pathing through the doorway
       to a point inside, so the aperture is proven at runtime and not only in
       the collision data.
-- [ ] **Unity — blocked on a licence and a missing verification harness.** Unity 6000.4.11f1 is
+- [ ] **Unity — blocked on a licence.** Unity 6000.4.11f1 is
       installed on the verification machine and batch mode refuses to start with
       "Found 0 entitlement groups and 0 free entitlements". One interactive sign
-      in to Unity Hub clears that external block, but the documented
-      `Tessera.TesseraVerify.Run` entry point is not yet in the repository; see
-      `docs/engine-support.md`. Then: all 22
+      in to Unity Hub clears that external block. The repository now contains
+      the `Tessera.TesseraVerify.Run` entry point and its self-contained
+      verification project; see `docs/engine-support.md`. A licensed run must
+      still prove that all 22
       GLBs import as prefabs, `BuildLayout` instantiates every instance, a
       `CharacterController` of the reference dimensions walks through the
       doorway in play mode, and no convex `MeshCollider` exists in the scene.

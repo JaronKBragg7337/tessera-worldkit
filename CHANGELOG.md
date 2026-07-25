@@ -33,6 +33,10 @@ the perimeter plinth.
 - **Five junction configuration checks** keep the trim length, rebate, receiver,
   and bay-line endpoints derived from the kit grid rather than encoded in
   geometry.
+- **A repository-owned Unity UPM package and verification project.**
+  `Tessera.TesseraVerify.Run` imports all 22 GLBs through pinned Khronos
+  UnityGLTF 2.14.1, checks bounds, collision and apertures, builds the two-storey
+  layout, and exits non-zero on failure.
 - **[`docs/decisions/0009-interior-pieces.md`](docs/decisions/0009-interior-pieces.md)**.
 - **[`docs/decisions/0010-wall-junction-bridges-to-the-bay-line.md`](docs/decisions/0010-wall-junction-bridges-to-the-bay-line.md)**.
 
@@ -45,9 +49,13 @@ the perimeter plinth.
   small enough to read as noise — or stopped short and left a 0.17 m slot. The
   dedicated 3.8 m junction now clears the lower plinth, solves its orientation
   from connectors, and ends on the next bay line.
-- **Unity verification was described as one sign-in away when the repository
-  did not contain the documented batch-mode entry point.** The adapter remains
-  unverified until both the licence and the verification harness exist.
+- **Unity's `JsonUtility` cannot deserialize the nested arrays in
+  `collision.hulls`.** The adapter now uses Unity's maintained Newtonsoft
+  package, so collision data reaches `BuildColliders()` intact.
+- **Unity verification was described as one sign-in away while the documented
+  batch entry point did not exist.** The missing project and harness now live in
+  the repository; the adapter remains unverified until a licensed editor run
+  produces a zero-failure report.
 
 ## [0.2.0] — 2026-07-25
 
