@@ -1,0 +1,1090 @@
+{
+  "schema": "tessera.layout/1",
+  "name": "Workshop Shell",
+  "description": "A sealed 12 x 12 m workshop shell: nine foundation pads, nine floor slabs, four L corners, a walkable doorway, a glazed window, two plain walls, a six-panel gable roof with ridge caps, and interior props. Every transform solved from the placement contract.",
+  "generator": "tessera.assemble.Builder",
+  "catalog": {
+    "kit": {
+      "id": "shell_v1",
+      "version": "1.0.0"
+    },
+    "contract_version": "1.0.0"
+  },
+  "space": {
+    "convention": "tessera.space/1",
+    "linear_unit": "metre",
+    "angle_unit": "degree"
+  },
+  "bounds": {
+    "min": [
+      -0.03,
+      -0.3,
+      0.0
+    ],
+    "max": [
+      12.03,
+      12.299999999999999,
+      6.3306
+    ]
+  },
+  "instance_count": 41,
+  "assets_used": [
+    "tsr:shell/door.leaf.1m2",
+    "tsr:shell/floor.slab.4m",
+    "tsr:shell/foundation.pad.4m",
+    "tsr:shell/prop.crate.small",
+    "tsr:shell/prop.workbench",
+    "tsr:shell/roof.panel.4m",
+    "tsr:shell/roof.ridge.4m",
+    "tsr:shell/wall.corner.4m",
+    "tsr:shell/wall.doorway.4m",
+    "tsr:shell/wall.straight.4m",
+    "tsr:shell/wall.window.4m",
+    "tsr:shell/window.leaf.1m8"
+  ],
+  "placement_method": {
+    "explicit": 0,
+    "solved_from_contract": 41
+  },
+  "instances": [
+    {
+      "id": "foundation_pad_4m_01",
+      "asset": "tsr:shell/foundation.pad.4m",
+      "position": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "rotation_degrees": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "scale": 1.0,
+      "connections": [
+        {
+          "from": "edge_pos_x",
+          "to": {
+            "instance": "foundation_pad_4m_04",
+            "connector": "edge_neg_x"
+          }
+        },
+        {
+          "from": "edge_pos_y",
+          "to": {
+            "instance": "foundation_pad_4m_02",
+            "connector": "edge_neg_y"
+          }
+        }
+      ]
+    },
+    {
+      "id": "foundation_pad_4m_02",
+      "asset": "tsr:shell/foundation.pad.4m",
+      "position": [
+        0.0,
+        4.0,
+        0.0
+      ],
+      "rotation_degrees": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "scale": 1.0,
+      "connections": [
+        {
+          "from": "edge_pos_x",
+          "to": {
+            "instance": "foundation_pad_4m_05",
+            "connector": "edge_neg_x"
+          }
+        },
+        {
+          "from": "edge_pos_y",
+          "to": {
+            "instance": "foundation_pad_4m_03",
+            "connector": "edge_neg_y"
+          }
+        }
+      ]
+    },
+    {
+      "id": "foundation_pad_4m_03",
+      "asset": "tsr:shell/foundation.pad.4m",
+      "position": [
+        0.0,
+        8.0,
+        0.0
+      ],
+      "rotation_degrees": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "scale": 1.0,
+      "connections": [
+        {
+          "from": "edge_pos_x",
+          "to": {
+            "instance": "foundation_pad_4m_06",
+            "connector": "edge_neg_x"
+          }
+        }
+      ]
+    },
+    {
+      "id": "foundation_pad_4m_04",
+      "asset": "tsr:shell/foundation.pad.4m",
+      "position": [
+        4.0,
+        0.0,
+        0.0
+      ],
+      "rotation_degrees": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "scale": 1.0,
+      "connections": [
+        {
+          "from": "edge_pos_x",
+          "to": {
+            "instance": "foundation_pad_4m_07",
+            "connector": "edge_neg_x"
+          }
+        },
+        {
+          "from": "edge_pos_y",
+          "to": {
+            "instance": "foundation_pad_4m_05",
+            "connector": "edge_neg_y"
+          }
+        }
+      ]
+    },
+    {
+      "id": "foundation_pad_4m_05",
+      "asset": "tsr:shell/foundation.pad.4m",
+      "position": [
+        4.0,
+        4.0,
+        0.0
+      ],
+      "rotation_degrees": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "scale": 1.0,
+      "connections": [
+        {
+          "from": "edge_pos_x",
+          "to": {
+            "instance": "foundation_pad_4m_08",
+            "connector": "edge_neg_x"
+          }
+        },
+        {
+          "from": "edge_pos_y",
+          "to": {
+            "instance": "foundation_pad_4m_06",
+            "connector": "edge_neg_y"
+          }
+        }
+      ]
+    },
+    {
+      "id": "foundation_pad_4m_06",
+      "asset": "tsr:shell/foundation.pad.4m",
+      "position": [
+        4.0,
+        8.0,
+        0.0
+      ],
+      "rotation_degrees": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "scale": 1.0,
+      "connections": [
+        {
+          "from": "edge_pos_x",
+          "to": {
+            "instance": "foundation_pad_4m_09",
+            "connector": "edge_neg_x"
+          }
+        }
+      ]
+    },
+    {
+      "id": "foundation_pad_4m_07",
+      "asset": "tsr:shell/foundation.pad.4m",
+      "position": [
+        8.0,
+        0.0,
+        0.0
+      ],
+      "rotation_degrees": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "scale": 1.0,
+      "connections": [
+        {
+          "from": "edge_pos_y",
+          "to": {
+            "instance": "foundation_pad_4m_08",
+            "connector": "edge_neg_y"
+          }
+        }
+      ]
+    },
+    {
+      "id": "foundation_pad_4m_08",
+      "asset": "tsr:shell/foundation.pad.4m",
+      "position": [
+        8.0,
+        4.0,
+        0.0
+      ],
+      "rotation_degrees": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "scale": 1.0,
+      "connections": [
+        {
+          "from": "edge_pos_y",
+          "to": {
+            "instance": "foundation_pad_4m_09",
+            "connector": "edge_neg_y"
+          }
+        }
+      ]
+    },
+    {
+      "id": "foundation_pad_4m_09",
+      "asset": "tsr:shell/foundation.pad.4m",
+      "position": [
+        8.0,
+        8.0,
+        0.0
+      ],
+      "rotation_degrees": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "scale": 1.0
+    },
+    {
+      "id": "floor_slab_4m_01",
+      "asset": "tsr:shell/floor.slab.4m",
+      "position": [
+        0.0,
+        0.0,
+        0.3
+      ],
+      "rotation_degrees": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "scale": 1.0,
+      "connections": [
+        {
+          "from": "edge_pos_x",
+          "to": {
+            "instance": "floor_slab_4m_04",
+            "connector": "edge_neg_x"
+          }
+        },
+        {
+          "from": "edge_pos_y",
+          "to": {
+            "instance": "floor_slab_4m_02",
+            "connector": "edge_neg_y"
+          }
+        }
+      ]
+    },
+    {
+      "id": "floor_slab_4m_02",
+      "asset": "tsr:shell/floor.slab.4m",
+      "position": [
+        0.0,
+        4.0,
+        0.3
+      ],
+      "rotation_degrees": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "scale": 1.0,
+      "connections": [
+        {
+          "from": "edge_pos_x",
+          "to": {
+            "instance": "floor_slab_4m_05",
+            "connector": "edge_neg_x"
+          }
+        },
+        {
+          "from": "edge_pos_y",
+          "to": {
+            "instance": "floor_slab_4m_03",
+            "connector": "edge_neg_y"
+          }
+        }
+      ]
+    },
+    {
+      "id": "floor_slab_4m_03",
+      "asset": "tsr:shell/floor.slab.4m",
+      "position": [
+        0.0,
+        8.0,
+        0.3
+      ],
+      "rotation_degrees": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "scale": 1.0,
+      "connections": [
+        {
+          "from": "edge_pos_x",
+          "to": {
+            "instance": "floor_slab_4m_06",
+            "connector": "edge_neg_x"
+          }
+        }
+      ]
+    },
+    {
+      "id": "floor_slab_4m_04",
+      "asset": "tsr:shell/floor.slab.4m",
+      "position": [
+        4.0,
+        0.0,
+        0.3
+      ],
+      "rotation_degrees": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "scale": 1.0,
+      "connections": [
+        {
+          "from": "edge_pos_x",
+          "to": {
+            "instance": "floor_slab_4m_07",
+            "connector": "edge_neg_x"
+          }
+        },
+        {
+          "from": "edge_pos_y",
+          "to": {
+            "instance": "floor_slab_4m_05",
+            "connector": "edge_neg_y"
+          }
+        }
+      ]
+    },
+    {
+      "id": "floor_slab_4m_05",
+      "asset": "tsr:shell/floor.slab.4m",
+      "position": [
+        4.0,
+        4.0,
+        0.3
+      ],
+      "rotation_degrees": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "scale": 1.0,
+      "connections": [
+        {
+          "from": "edge_pos_x",
+          "to": {
+            "instance": "floor_slab_4m_08",
+            "connector": "edge_neg_x"
+          }
+        },
+        {
+          "from": "edge_pos_y",
+          "to": {
+            "instance": "floor_slab_4m_06",
+            "connector": "edge_neg_y"
+          }
+        }
+      ]
+    },
+    {
+      "id": "floor_slab_4m_06",
+      "asset": "tsr:shell/floor.slab.4m",
+      "position": [
+        4.0,
+        8.0,
+        0.3
+      ],
+      "rotation_degrees": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "scale": 1.0,
+      "connections": [
+        {
+          "from": "edge_pos_x",
+          "to": {
+            "instance": "floor_slab_4m_09",
+            "connector": "edge_neg_x"
+          }
+        }
+      ]
+    },
+    {
+      "id": "floor_slab_4m_07",
+      "asset": "tsr:shell/floor.slab.4m",
+      "position": [
+        8.0,
+        0.0,
+        0.3
+      ],
+      "rotation_degrees": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "scale": 1.0,
+      "connections": [
+        {
+          "from": "edge_pos_y",
+          "to": {
+            "instance": "floor_slab_4m_08",
+            "connector": "edge_neg_y"
+          }
+        }
+      ]
+    },
+    {
+      "id": "floor_slab_4m_08",
+      "asset": "tsr:shell/floor.slab.4m",
+      "position": [
+        8.0,
+        4.0,
+        0.3
+      ],
+      "rotation_degrees": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "scale": 1.0,
+      "connections": [
+        {
+          "from": "edge_pos_y",
+          "to": {
+            "instance": "floor_slab_4m_09",
+            "connector": "edge_neg_y"
+          }
+        }
+      ]
+    },
+    {
+      "id": "floor_slab_4m_09",
+      "asset": "tsr:shell/floor.slab.4m",
+      "position": [
+        8.0,
+        8.0,
+        0.3
+      ],
+      "rotation_degrees": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "scale": 1.0
+    },
+    {
+      "id": "wall_corner_4m_01",
+      "asset": "tsr:shell/wall.corner.4m",
+      "position": [
+        0.0,
+        0.0,
+        0.5
+      ],
+      "rotation_degrees": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "scale": 1.0,
+      "connections": [
+        {
+          "from": "edge_pos_x",
+          "to": {
+            "instance": "wall_doorway_4m_01",
+            "connector": "edge_neg_x"
+          }
+        },
+        {
+          "from": "edge_pos_y",
+          "to": {
+            "instance": "wall_straight_4m_01",
+            "connector": "edge_neg_x"
+          }
+        }
+      ]
+    },
+    {
+      "id": "wall_corner_4m_02",
+      "asset": "tsr:shell/wall.corner.4m",
+      "position": [
+        12.0,
+        0.0,
+        0.5
+      ],
+      "rotation_degrees": [
+        90.0,
+        0.0,
+        0.0
+      ],
+      "scale": 1.0,
+      "connections": [
+        {
+          "from": "edge_pos_x",
+          "to": {
+            "instance": "wall_straight_4m_02",
+            "connector": "edge_pos_x"
+          }
+        },
+        {
+          "from": "edge_pos_y",
+          "to": {
+            "instance": "wall_doorway_4m_01",
+            "connector": "edge_pos_x"
+          }
+        }
+      ]
+    },
+    {
+      "id": "wall_corner_4m_03",
+      "asset": "tsr:shell/wall.corner.4m",
+      "position": [
+        12.0,
+        12.0,
+        0.5
+      ],
+      "rotation_degrees": [
+        180.0,
+        0.0,
+        0.0
+      ],
+      "scale": 1.0,
+      "connections": [
+        {
+          "from": "edge_pos_x",
+          "to": {
+            "instance": "wall_window_4m_01",
+            "connector": "edge_neg_x"
+          }
+        },
+        {
+          "from": "edge_pos_y",
+          "to": {
+            "instance": "wall_straight_4m_02",
+            "connector": "edge_neg_x"
+          }
+        }
+      ]
+    },
+    {
+      "id": "wall_corner_4m_04",
+      "asset": "tsr:shell/wall.corner.4m",
+      "position": [
+        0.0,
+        12.0,
+        0.5
+      ],
+      "rotation_degrees": [
+        270.0,
+        0.0,
+        0.0
+      ],
+      "scale": 1.0,
+      "connections": [
+        {
+          "from": "edge_pos_x",
+          "to": {
+            "instance": "wall_straight_4m_01",
+            "connector": "edge_pos_x"
+          }
+        },
+        {
+          "from": "edge_pos_y",
+          "to": {
+            "instance": "wall_window_4m_01",
+            "connector": "edge_pos_x"
+          }
+        }
+      ]
+    },
+    {
+      "id": "wall_doorway_4m_01",
+      "asset": "tsr:shell/wall.doorway.4m",
+      "position": [
+        4.0,
+        0.0,
+        0.5
+      ],
+      "rotation_degrees": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "scale": 1.0,
+      "connections": [
+        {
+          "from": "jamb_pos_y",
+          "to": {
+            "instance": "door_leaf_1m2_01",
+            "connector": "hinge_back"
+          }
+        }
+      ]
+    },
+    {
+      "id": "wall_window_4m_01",
+      "asset": "tsr:shell/wall.window.4m",
+      "position": [
+        8.0,
+        12.0,
+        0.5
+      ],
+      "rotation_degrees": [
+        180.0,
+        0.0,
+        0.0
+      ],
+      "scale": 1.0,
+      "connections": [
+        {
+          "from": "jamb_pos_y",
+          "to": {
+            "instance": "window_leaf_1m8_01",
+            "connector": "mount_back"
+          }
+        }
+      ]
+    },
+    {
+      "id": "wall_straight_4m_01",
+      "asset": "tsr:shell/wall.straight.4m",
+      "position": [
+        0.19999999999999998,
+        4.0,
+        0.5
+      ],
+      "rotation_degrees": [
+        90.0,
+        0.0,
+        0.0
+      ],
+      "scale": 1.0
+    },
+    {
+      "id": "wall_straight_4m_02",
+      "asset": "tsr:shell/wall.straight.4m",
+      "position": [
+        11.799999999999999,
+        8.0,
+        0.5
+      ],
+      "rotation_degrees": [
+        270.0,
+        0.0,
+        0.0
+      ],
+      "scale": 1.0
+    },
+    {
+      "id": "door_leaf_1m2_01",
+      "asset": "tsr:shell/door.leaf.1m2",
+      "position": [
+        6.58,
+        0.13,
+        0.51
+      ],
+      "rotation_degrees": [
+        180.0,
+        0.0,
+        0.0
+      ],
+      "scale": 1.0,
+      "connections": [
+        {
+          "from": "hinge",
+          "to": {
+            "instance": "wall_doorway_4m_01",
+            "connector": "jamb_neg_y"
+          }
+        }
+      ]
+    },
+    {
+      "id": "window_leaf_1m8_01",
+      "asset": "tsr:shell/window.leaf.1m8",
+      "position": [
+        5.12,
+        11.87,
+        1.52
+      ],
+      "rotation_degrees": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "scale": 1.0,
+      "connections": [
+        {
+          "from": "mount",
+          "to": {
+            "instance": "wall_window_4m_01",
+            "connector": "jamb_neg_y"
+          }
+        }
+      ]
+    },
+    {
+      "id": "roof_panel_4m_01",
+      "asset": "tsr:shell/roof.panel.4m",
+      "position": [
+        0.0,
+        0.0,
+        3.5
+      ],
+      "rotation_degrees": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "scale": 1.0,
+      "connections": [
+        {
+          "from": "ridge",
+          "to": {
+            "instance": "roof_panel_4m_04",
+            "connector": "ridge"
+          }
+        },
+        {
+          "from": "edge_pos_x",
+          "to": {
+            "instance": "roof_panel_4m_02",
+            "connector": "edge_neg_x"
+          }
+        }
+      ]
+    },
+    {
+      "id": "roof_panel_4m_02",
+      "asset": "tsr:shell/roof.panel.4m",
+      "position": [
+        4.0,
+        0.0,
+        3.5
+      ],
+      "rotation_degrees": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "scale": 1.0,
+      "connections": [
+        {
+          "from": "ridge",
+          "to": {
+            "instance": "roof_panel_4m_05",
+            "connector": "ridge"
+          }
+        },
+        {
+          "from": "edge_pos_x",
+          "to": {
+            "instance": "roof_panel_4m_03",
+            "connector": "edge_neg_x"
+          }
+        }
+      ]
+    },
+    {
+      "id": "roof_panel_4m_03",
+      "asset": "tsr:shell/roof.panel.4m",
+      "position": [
+        8.0,
+        0.0,
+        3.5
+      ],
+      "rotation_degrees": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "scale": 1.0,
+      "connections": [
+        {
+          "from": "ridge",
+          "to": {
+            "instance": "roof_panel_4m_06",
+            "connector": "ridge"
+          }
+        }
+      ]
+    },
+    {
+      "id": "roof_panel_4m_04",
+      "asset": "tsr:shell/roof.panel.4m",
+      "position": [
+        4.0,
+        12.0,
+        3.5
+      ],
+      "rotation_degrees": [
+        180.0,
+        0.0,
+        0.0
+      ],
+      "scale": 1.0,
+      "connections": [
+        {
+          "from": "ridge_cap",
+          "to": {
+            "instance": "roof_ridge_4m_01",
+            "connector": "seat"
+          }
+        },
+        {
+          "from": "edge_neg_x",
+          "to": {
+            "instance": "roof_panel_4m_05",
+            "connector": "edge_pos_x"
+          }
+        }
+      ]
+    },
+    {
+      "id": "roof_panel_4m_05",
+      "asset": "tsr:shell/roof.panel.4m",
+      "position": [
+        8.0,
+        12.0,
+        3.5
+      ],
+      "rotation_degrees": [
+        180.0,
+        0.0,
+        0.0
+      ],
+      "scale": 1.0,
+      "connections": [
+        {
+          "from": "ridge_cap",
+          "to": {
+            "instance": "roof_ridge_4m_02",
+            "connector": "seat"
+          }
+        },
+        {
+          "from": "edge_neg_x",
+          "to": {
+            "instance": "roof_panel_4m_06",
+            "connector": "edge_pos_x"
+          }
+        }
+      ]
+    },
+    {
+      "id": "roof_panel_4m_06",
+      "asset": "tsr:shell/roof.panel.4m",
+      "position": [
+        12.0,
+        12.0,
+        3.5
+      ],
+      "rotation_degrees": [
+        180.0,
+        0.0,
+        0.0
+      ],
+      "scale": 1.0,
+      "connections": [
+        {
+          "from": "ridge_cap",
+          "to": {
+            "instance": "roof_ridge_4m_03",
+            "connector": "seat"
+          }
+        }
+      ]
+    },
+    {
+      "id": "roof_ridge_4m_01",
+      "asset": "tsr:shell/roof.ridge.4m",
+      "position": [
+        0.04,
+        6.0,
+        6.199999999999999
+      ],
+      "rotation_degrees": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "scale": 1.0,
+      "connections": [
+        {
+          "from": "seat",
+          "to": {
+            "instance": "roof_panel_4m_01",
+            "connector": "ridge_cap"
+          }
+        },
+        {
+          "from": "edge_pos_x",
+          "to": {
+            "instance": "roof_ridge_4m_02",
+            "connector": "edge_neg_x"
+          }
+        }
+      ]
+    },
+    {
+      "id": "roof_ridge_4m_02",
+      "asset": "tsr:shell/roof.ridge.4m",
+      "position": [
+        4.0,
+        6.0,
+        6.199999999999999
+      ],
+      "rotation_degrees": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "scale": 1.0,
+      "connections": [
+        {
+          "from": "seat",
+          "to": {
+            "instance": "roof_panel_4m_02",
+            "connector": "ridge_cap"
+          }
+        },
+        {
+          "from": "edge_pos_x",
+          "to": {
+            "instance": "roof_ridge_4m_03",
+            "connector": "edge_neg_x"
+          }
+        }
+      ]
+    },
+    {
+      "id": "roof_ridge_4m_03",
+      "asset": "tsr:shell/roof.ridge.4m",
+      "position": [
+        8.0,
+        6.0,
+        6.199999999999999
+      ],
+      "rotation_degrees": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "scale": 1.0,
+      "connections": [
+        {
+          "from": "seat",
+          "to": {
+            "instance": "roof_panel_4m_03",
+            "connector": "ridge_cap"
+          }
+        }
+      ]
+    },
+    {
+      "id": "prop_workbench_01",
+      "asset": "tsr:shell/prop.workbench",
+      "position": [
+        9.4,
+        9.1,
+        0.5
+      ],
+      "rotation_degrees": [
+        180.0,
+        0.0,
+        0.0
+      ],
+      "scale": 1.0
+    },
+    {
+      "id": "prop_crate_small_01",
+      "asset": "tsr:shell/prop.crate.small",
+      "position": [
+        1.4,
+        9.6,
+        0.5
+      ],
+      "rotation_degrees": [
+        12.0,
+        0.0,
+        0.0
+      ],
+      "scale": 1.0
+    },
+    {
+      "id": "prop_crate_small_02",
+      "asset": "tsr:shell/prop.crate.small",
+      "position": [
+        2.15,
+        9.549999999999999,
+        0.5
+      ],
+      "rotation_degrees": [
+        -8.0,
+        0.0,
+        0.0
+      ],
+      "scale": 1.0
+    },
+    {
+      "id": "prop_crate_small_03",
+      "asset": "tsr:shell/prop.crate.small",
+      "position": [
+        2.15,
+        9.549999999999999,
+        1.0999999999999999
+      ],
+      "rotation_degrees": [
+        37.0,
+        0.0,
+        0.0
+      ],
+      "scale": 1.0
+    }
+  ],
+  "discovered_connections": 46
+}

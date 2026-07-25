@@ -1,0 +1,510 @@
+{
+  "generated_by": "tools/export_parity.py",
+  "reference": "python",
+  "js_covered_rules": [
+    "TSR_LAYOUT_APERTURE_BLOCKED",
+    "TSR_LAYOUT_BURIED",
+    "TSR_LAYOUT_FLOATING",
+    "TSR_LAYOUT_INTERSECTION",
+    "TSR_LAYOUT_UNKNOWN_ASSET",
+    "TSR_LAYOUT_UNSUPPORTED"
+  ],
+  "cases": {
+    "aperture_blocked": {
+      "code": "TSR_LAYOUT_APERTURE_BLOCKED",
+      "js_should_detect": true,
+      "python_codes": [
+        "TSR_LAYOUT_APERTURE_BLOCKED",
+        "TSR_LAYOUT_APERTURE_OCCUPIED_BY_LEAF",
+        "TSR_LAYOUT_CLEARANCE_VIOLATED",
+        "TSR_LAYOUT_INTERSECTION"
+      ],
+      "python_errors": 2
+    },
+    "bad_schema": {
+      "code": "TSR_LAYOUT_SCHEMA_MISMATCH",
+      "js_should_detect": false,
+      "python_codes": [
+        "TSR_LAYOUT_APERTURE_OCCUPIED_BY_LEAF",
+        "TSR_LAYOUT_SCHEMA_MISMATCH"
+      ],
+      "python_errors": 1
+    },
+    "buried": {
+      "code": "TSR_LAYOUT_BURIED",
+      "js_should_detect": true,
+      "python_codes": [
+        "TSR_LAYOUT_APERTURE_BLOCKED",
+        "TSR_LAYOUT_APERTURE_OCCUPIED_BY_LEAF",
+        "TSR_LAYOUT_BURIED",
+        "TSR_LAYOUT_CLEARANCE_VIOLATED",
+        "TSR_LAYOUT_CONNECTOR_GAP",
+        "TSR_LAYOUT_FLOATING",
+        "TSR_LAYOUT_INTERSECTION",
+        "TSR_LAYOUT_OFF_GRID_Z"
+      ],
+      "python_errors": 7
+    },
+    "connector_direction": {
+      "code": "TSR_LAYOUT_CONNECTOR_DIRECTION",
+      "js_should_detect": false,
+      "python_codes": [
+        "TSR_LAYOUT_APERTURE_OCCUPIED_BY_LEAF",
+        "TSR_LAYOUT_BURIED",
+        "TSR_LAYOUT_CONNECTOR_DIRECTION",
+        "TSR_LAYOUT_CONNECTOR_GAP",
+        "TSR_LAYOUT_FLOATING",
+        "TSR_LAYOUT_INTERSECTION"
+      ],
+      "python_errors": 12
+    },
+    "connector_gap": {
+      "code": "TSR_LAYOUT_CONNECTOR_GAP",
+      "js_should_detect": false,
+      "python_codes": [
+        "TSR_LAYOUT_APERTURE_OCCUPIED_BY_LEAF",
+        "TSR_LAYOUT_CONNECTOR_GAP",
+        "TSR_LAYOUT_INTERSECTION",
+        "TSR_LAYOUT_OFF_GRID"
+      ],
+      "python_errors": 5
+    },
+    "duplicate_instance": {
+      "code": "TSR_LAYOUT_DUPLICATE_INSTANCE",
+      "js_should_detect": false,
+      "python_codes": [
+        "TSR_LAYOUT_APERTURE_OCCUPIED_BY_LEAF",
+        "TSR_LAYOUT_DUPLICATE_INSTANCE",
+        "TSR_LAYOUT_UNKNOWN_CONNECTOR"
+      ],
+      "python_errors": 2
+    },
+    "floating": {
+      "code": "TSR_LAYOUT_FLOATING",
+      "js_should_detect": true,
+      "python_codes": [
+        "TSR_LAYOUT_APERTURE_OCCUPIED_BY_LEAF",
+        "TSR_LAYOUT_CONNECTOR_GAP",
+        "TSR_LAYOUT_FLOATING",
+        "TSR_LAYOUT_OFF_GRID_Z"
+      ],
+      "python_errors": 3
+    },
+    "illegal_rotation": {
+      "code": "TSR_LAYOUT_ILLEGAL_ROTATION",
+      "js_should_detect": false,
+      "python_codes": [
+        "TSR_LAYOUT_APERTURE_OCCUPIED_BY_LEAF",
+        "TSR_LAYOUT_CONNECTOR_DIRECTION",
+        "TSR_LAYOUT_CONNECTOR_GAP",
+        "TSR_LAYOUT_ILLEGAL_ROTATION",
+        "TSR_LAYOUT_INTERSECTION"
+      ],
+      "python_errors": 6
+    },
+    "illegal_scale": {
+      "code": "TSR_LAYOUT_ILLEGAL_SCALE",
+      "js_should_detect": false,
+      "python_codes": [
+        "TSR_LAYOUT_APERTURE_OCCUPIED_BY_LEAF",
+        "TSR_LAYOUT_BURIED",
+        "TSR_LAYOUT_CONNECTOR_GAP",
+        "TSR_LAYOUT_ILLEGAL_SCALE",
+        "TSR_LAYOUT_INTERSECTION"
+      ],
+      "python_errors": 7
+    },
+    "intersection": {
+      "code": "TSR_LAYOUT_INTERSECTION",
+      "js_should_detect": true,
+      "python_codes": [
+        "TSR_LAYOUT_APERTURE_OCCUPIED_BY_LEAF",
+        "TSR_LAYOUT_INTERSECTION"
+      ],
+      "python_errors": 1
+    },
+    "off_grid": {
+      "code": "TSR_LAYOUT_OFF_GRID",
+      "js_should_detect": false,
+      "python_codes": [
+        "TSR_LAYOUT_APERTURE_OCCUPIED_BY_LEAF",
+        "TSR_LAYOUT_CONNECTOR_GAP",
+        "TSR_LAYOUT_INTERSECTION",
+        "TSR_LAYOUT_OFF_GRID"
+      ],
+      "python_errors": 6
+    },
+    "pitched_over": {
+      "code": "TSR_LAYOUT_ILLEGAL_ROTATION",
+      "js_should_detect": false,
+      "python_codes": [
+        "TSR_LAYOUT_APERTURE_OCCUPIED_BY_LEAF",
+        "TSR_LAYOUT_BURIED",
+        "TSR_LAYOUT_CONNECTOR_DIRECTION",
+        "TSR_LAYOUT_CONNECTOR_GAP",
+        "TSR_LAYOUT_CONNECTOR_ROLL",
+        "TSR_LAYOUT_ILLEGAL_ROTATION",
+        "TSR_LAYOUT_INTERSECTION",
+        "TSR_LAYOUT_UNSUPPORTED"
+      ],
+      "python_errors": 13
+    },
+    "unknown_asset": {
+      "code": "TSR_LAYOUT_UNKNOWN_ASSET",
+      "js_should_detect": true,
+      "python_codes": [
+        "TSR_LAYOUT_APERTURE_OCCUPIED_BY_LEAF",
+        "TSR_LAYOUT_UNKNOWN_ASSET",
+        "TSR_LAYOUT_UNSUPPORTED"
+      ],
+      "python_errors": 2
+    },
+    "unknown_connector": {
+      "code": "TSR_LAYOUT_UNKNOWN_CONNECTOR",
+      "js_should_detect": false,
+      "python_codes": [
+        "TSR_LAYOUT_APERTURE_OCCUPIED_BY_LEAF",
+        "TSR_LAYOUT_UNKNOWN_CONNECTOR"
+      ],
+      "python_errors": 1
+    },
+    "unsupported": {
+      "code": "TSR_LAYOUT_UNSUPPORTED",
+      "js_should_detect": true,
+      "python_codes": [
+        "TSR_LAYOUT_APERTURE_OCCUPIED_BY_LEAF",
+        "TSR_LAYOUT_UNSUPPORTED"
+      ],
+      "python_errors": 1
+    }
+  },
+  "transforms": [
+    {
+      "position": [
+        0,
+        0,
+        0
+      ],
+      "rotation": [
+        0,
+        0,
+        0
+      ],
+      "scale": 1.0,
+      "input_point": [
+        2.0,
+        0.1,
+        1.5
+      ],
+      "expected_point": [
+        2.0,
+        0.1,
+        1.5
+      ],
+      "input_direction": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "expected_direction": [
+        1.0,
+        0.0,
+        0.0
+      ]
+    },
+    {
+      "position": [
+        4,
+        0,
+        0.5
+      ],
+      "rotation": [
+        90,
+        0,
+        0
+      ],
+      "scale": 1.0,
+      "input_point": [
+        2.0,
+        0.1,
+        1.5
+      ],
+      "expected_point": [
+        3.9,
+        2.0,
+        2.0
+      ],
+      "input_direction": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "expected_direction": [
+        0.0,
+        1.0,
+        0.0
+      ]
+    },
+    {
+      "position": [
+        12,
+        12,
+        3.5
+      ],
+      "rotation": [
+        180,
+        0,
+        0
+      ],
+      "scale": 1.0,
+      "input_point": [
+        2.0,
+        0.1,
+        1.5
+      ],
+      "expected_point": [
+        10.0,
+        11.9,
+        5.0
+      ],
+      "input_direction": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "expected_direction": [
+        -1.0,
+        0.0,
+        0.0
+      ]
+    },
+    {
+      "position": [
+        11.8,
+        8,
+        0.5
+      ],
+      "rotation": [
+        270,
+        0,
+        0
+      ],
+      "scale": 1.0,
+      "input_point": [
+        2.0,
+        0.1,
+        1.5
+      ],
+      "expected_point": [
+        11.9,
+        6.0,
+        2.0
+      ],
+      "input_direction": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "expected_direction": [
+        0.0,
+        -1.0,
+        0.0
+      ]
+    },
+    {
+      "position": [
+        1.4,
+        9.6,
+        0.5
+      ],
+      "rotation": [
+        37,
+        0,
+        0
+      ],
+      "scale": 1.0,
+      "input_point": [
+        2.0,
+        0.1,
+        1.5
+      ],
+      "expected_point": [
+        2.93709,
+        10.883494,
+        2.0
+      ],
+      "input_direction": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "expected_direction": [
+        0.798636,
+        0.601815,
+        0.0
+      ]
+    }
+  ],
+  "grounding": [
+    {
+      "asset": "tsr:shell/foundation.pad.4m",
+      "surface_z": 0.0,
+      "x": 0.0,
+      "y": 0.0,
+      "yaw": 0.0,
+      "expected_z": 0.0
+    },
+    {
+      "asset": "tsr:shell/foundation.pad.4m",
+      "surface_z": 0.0,
+      "x": 0.0,
+      "y": 4.0,
+      "yaw": 0.0,
+      "expected_z": 0.0
+    },
+    {
+      "asset": "tsr:shell/foundation.pad.4m",
+      "surface_z": 0.0,
+      "x": 0.0,
+      "y": 8.0,
+      "yaw": 0.0,
+      "expected_z": 0.0
+    },
+    {
+      "asset": "tsr:shell/foundation.pad.4m",
+      "surface_z": 0.0,
+      "x": 4.0,
+      "y": 0.0,
+      "yaw": 0.0,
+      "expected_z": 0.0
+    },
+    {
+      "asset": "tsr:shell/foundation.pad.4m",
+      "surface_z": 0.0,
+      "x": 4.0,
+      "y": 4.0,
+      "yaw": 0.0,
+      "expected_z": 0.0
+    },
+    {
+      "asset": "tsr:shell/foundation.pad.4m",
+      "surface_z": 0.0,
+      "x": 4.0,
+      "y": 8.0,
+      "yaw": 0.0,
+      "expected_z": 0.0
+    },
+    {
+      "asset": "tsr:shell/foundation.pad.4m",
+      "surface_z": 0.0,
+      "x": 8.0,
+      "y": 0.0,
+      "yaw": 0.0,
+      "expected_z": 0.0
+    },
+    {
+      "asset": "tsr:shell/foundation.pad.4m",
+      "surface_z": 0.0,
+      "x": 8.0,
+      "y": 4.0,
+      "yaw": 0.0,
+      "expected_z": 0.0
+    },
+    {
+      "asset": "tsr:shell/foundation.pad.4m",
+      "surface_z": 0.0,
+      "x": 8.0,
+      "y": 8.0,
+      "yaw": 0.0,
+      "expected_z": 0.0
+    },
+    {
+      "asset": "tsr:shell/floor.slab.4m",
+      "surface_z": 0.3,
+      "x": 0.0,
+      "y": 0.0,
+      "yaw": 0.0,
+      "expected_z": 0.3
+    },
+    {
+      "asset": "tsr:shell/floor.slab.4m",
+      "surface_z": 0.3,
+      "x": 0.0,
+      "y": 4.0,
+      "yaw": 0.0,
+      "expected_z": 0.3
+    },
+    {
+      "asset": "tsr:shell/floor.slab.4m",
+      "surface_z": 0.3,
+      "x": 0.0,
+      "y": 8.0,
+      "yaw": 0.0,
+      "expected_z": 0.3
+    },
+    {
+      "asset": "tsr:shell/floor.slab.4m",
+      "surface_z": 0.3,
+      "x": 4.0,
+      "y": 0.0,
+      "yaw": 0.0,
+      "expected_z": 0.3
+    },
+    {
+      "asset": "tsr:shell/floor.slab.4m",
+      "surface_z": 0.3,
+      "x": 4.0,
+      "y": 4.0,
+      "yaw": 0.0,
+      "expected_z": 0.3
+    },
+    {
+      "asset": "tsr:shell/floor.slab.4m",
+      "surface_z": 0.3,
+      "x": 4.0,
+      "y": 8.0,
+      "yaw": 0.0,
+      "expected_z": 0.3
+    },
+    {
+      "asset": "tsr:shell/floor.slab.4m",
+      "surface_z": 0.3,
+      "x": 8.0,
+      "y": 0.0,
+      "yaw": 0.0,
+      "expected_z": 0.3
+    },
+    {
+      "asset": "tsr:shell/floor.slab.4m",
+      "surface_z": 0.3,
+      "x": 8.0,
+      "y": 4.0,
+      "yaw": 0.0,
+      "expected_z": 0.3
+    },
+    {
+      "asset": "tsr:shell/floor.slab.4m",
+      "surface_z": 0.3,
+      "x": 8.0,
+      "y": 8.0,
+      "yaw": 0.0,
+      "expected_z": 0.3
+    },
+    {
+      "asset": "tsr:shell/wall.corner.4m",
+      "surface_z": 0.5,
+      "x": 0.0,
+      "y": 0.0,
+      "yaw": 0.0,
+      "expected_z": 0.5
+    },
+    {
+      "asset": "tsr:shell/wall.corner.4m",
+      "surface_z": 0.5,
+      "x": 12.0,
+      "y": 0.0,
+      "yaw": 90.0,
+      "expected_z": 0.5
+    }
+  ]
+}
