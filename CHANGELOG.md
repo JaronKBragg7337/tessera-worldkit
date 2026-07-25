@@ -6,6 +6,42 @@ Format: [Keep a Changelog](https://keepachangelog.com/en/1.1.0/).
 Versioning: the repository and the `tessera.asset/1` contract version separately;
 a breaking contract change is a new schema id, never a silent edit.
 
+## [0.2.0] — 2026-07-25
+
+Reachability becomes a measured property, and the traversal gap the
+constrained-agent benchmark exposed is closed.
+
+### Added
+
+- **Six traversal parts** — straight stair, entrance stoop, floor with a
+  stairwell, beam, column, railing. Column plus beam equals wall height exactly,
+  enforced by `config.validate()`.
+- **`src/tessera/navigate.py`** — character-aware flood fill over exact
+  occupancy. Conservative by construction: the character is tested as a box,
+  larger than the capsule it stands for, so any route it confirms is real.
+- **`layout.reachability`** — declared routes the validator proves or refutes,
+  plus `TSR_LAYOUT_UNREACHABLE` and `TSR_LAYOUT_STAIR_UNUSABLE`.
+- **`examples/safehouse_two_storey`** — the building the benchmark asked for,
+  with proven interior access.
+- **`tessera brief`** — the catalog at ~193 tokens per asset, with a round trip
+  that makes sufficiency testable.
+- **Catalog fingerprints and layout pinning**, so composing on one device and
+  executing on another fails loudly.
+- **`TSR_LAYOUT_UNBALANCED` / `TSR_LAYOUT_UNDERSUPPORTED`** — a slab cantilevered
+  off one wall edge used to validate clean.
+
+### Fixed
+
+- Support contact was thresholded **per box** rather than per instance, so any
+  support with detailing on it was discarded and whatever rested on it reported
+  as floating.
+- The step-up limit was 25 cm, which made every real staircase unclimbable.
+- An unbounded terrain plane made flood fill non-terminating.
+- Off-axis rotation inflates the footprint AABB, so plausibility judgements are
+  now skipped there rather than guessed.
+- `tessera brief` budget is per asset, not absolute, so kit growth is not
+  reported as a regression.
+
 ## [0.1.0] — 2026-07-25
 
 First release. Milestone M1 complete: the placement contract proven on a

@@ -128,7 +128,9 @@ so actually clears the error.
 | `validate/report.py` | One report, rendered for humans and for machines |
 | `export/glb.py` | Pure-Python glTF 2.0 binary writer |
 | `export/uv.py` | World-space UV0, packed UV1 |
-| `cli.py` | `build`, `validate`, `catalog`, `describe`, `assemble`, `doctor` |
+| `navigate.py` | Character-aware walkable graph over occupancy; reachability |
+| `brief.py` | The context-budgeted digest, and its round trip |
+| `cli.py` | `build`, `validate`, `catalog`, `describe`, `assemble`, `brief`, `doctor` |
 
 ## Why the validator has two implementations
 

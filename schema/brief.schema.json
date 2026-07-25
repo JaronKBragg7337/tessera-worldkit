@@ -4,51 +4,218 @@
   "title": "tessera.brief/1",
   "description": "A context-budgeted digest of a catalog, for agents that cannot afford ~30k tokens of reference material. Carries everything needed to place an asset and nothing else. Roughly 8% of the catalog's size; sufficiency is asserted by a test that assembles a full scene from a brief and validates it against the source catalog.",
   "type": "object",
-  "required": ["schema", "kit", "id_prefix", "fingerprint", "contract_version", "how_to_place", "grid", "stack", "character", "mates", "tolerance", "legend", "asset_count", "assets"],
+  "required": [
+    "schema",
+    "kit",
+    "id_prefix",
+    "fingerprint",
+    "contract_version",
+    "how_to_place",
+    "grid",
+    "stack",
+    "character",
+    "mates",
+    "tolerance",
+    "legend",
+    "asset_count",
+    "assets",
+    "storey"
+  ],
   "properties": {
-    "schema": {"const": "tessera.brief/1"},
-    "kit": {"type": "string", "description": "kit_id@version"},
-    "id_prefix": {"type": "string", "description": "Restores full asset ids from the shortened per-entry names. Carried rather than reconstructed, because the namespace is not always the kit id."},
-    "fingerprint": {"type": "string", "pattern": "^[0-9a-f]{64}$",
-      "description": "Identifies the exact catalog this was derived from. A layout composed against this brief should record it, so a mismatch at execution time is refused rather than silently accepted."},
-    "contract_version": {"type": "string"},
-    "full_catalog": {"type": "string"},
-    "how_to_place": {"type": "array", "items": {"type": "string"},
-      "description": "The placement rules in prose, because a digest with no instructions costs an agent more than it saves."},
-    "grid": {"type": "object", "required": ["module", "xy", "z"]},
-    "stack": {"type": "object", "description": "Named world heights, precomputed so nobody adds them up."},
-    "character": {"type": "object", "required": ["radius", "height"]},
-    "mates": {"type": "object", "description": "The connector compatibility table, carried once rather than per asset."},
-    "tolerance": {"type": "object", "required": ["position_metres", "angle_degrees", "roll_degrees"],
-      "description": "Defaults. Assets override per connector only where they differ."},
-    "legend": {"type": "object", "required": ["c", "mode", "ap", "omitted"],
+    "schema": {
+      "const": "tessera.brief/1"
+    },
+    "kit": {
+      "type": "string",
+      "description": "kit_id@version"
+    },
+    "id_prefix": {
+      "type": "string",
+      "description": "Restores full asset ids from the shortened per-entry names. Carried rather than reconstructed, because the namespace is not always the kit id."
+    },
+    "fingerprint": {
+      "type": "string",
+      "pattern": "^[0-9a-f]{64}$",
+      "description": "Identifies the exact catalog this was derived from. A layout composed against this brief should record it, so a mismatch at execution time is refused rather than silently accepted."
+    },
+    "contract_version": {
+      "type": "string"
+    },
+    "full_catalog": {
+      "type": "string"
+    },
+    "how_to_place": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      },
+      "description": "The placement rules in prose, because a digest with no instructions costs an agent more than it saves."
+    },
+    "grid": {
+      "type": "object",
+      "required": [
+        "module",
+        "xy",
+        "z"
+      ]
+    },
+    "stack": {
+      "type": "object",
+      "description": "Named world heights, precomputed so nobody adds them up."
+    },
+    "character": {
+      "type": "object",
+      "required": [
+        "radius",
+        "height",
+        "step_up"
+      ]
+    },
+    "mates": {
+      "type": "object",
+      "description": "The connector compatibility table, carried once rather than per asset."
+    },
+    "tolerance": {
+      "type": "object",
+      "required": [
+        "position_metres",
+        "angle_degrees",
+        "roll_degrees"
+      ],
+      "description": "Defaults. Assets override per connector only where they differ."
+    },
+    "legend": {
+      "type": "object",
+      "required": [
+        "c",
+        "mode",
+        "ap",
+        "omitted"
+      ],
       "properties": {
-        "c": {"type": "array", "items": {"type": "string"}, "description": "Field order of the packed connector arrays."},
-        "omitted": {"type": "string", "description": "What was dropped and how to recover it."}
-      }},
-    "asset_count": {"type": "integer"},
+        "c": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          },
+          "description": "Field order of the packed connector arrays."
+        },
+        "omitted": {
+          "type": "string",
+          "description": "What was dropped and how to recover it."
+        }
+      }
+    },
+    "asset_count": {
+      "type": "integer"
+    },
     "assets": {
       "type": "array",
       "items": {
         "type": "object",
-        "required": ["id", "role", "size", "base", "grid", "yaw", "scale", "c"],
+        "required": [
+          "id",
+          "role",
+          "size",
+          "base",
+          "grid",
+          "yaw",
+          "scale",
+          "c"
+        ],
         "properties": {
-          "id": {"type": "string", "description": "Short name; prefix with id_prefix for the full id."},
-          "role": {"type": "string"},
-          "size": {"type": "array", "items": {"type": "number"}, "minItems": 3, "maxItems": 3},
-          "base": {"type": "number", "description": "world_z = support_top + base. Present even when zero, because an absent field invites an assumption."},
-          "grid": {"enum": ["module", "module_xy", "mated", "free"]},
-          "yaw": {"type": ["array", "null"], "items": {"type": "number"}},
-          "scale": {"type": "array", "items": {"type": "number"}, "minItems": 2, "maxItems": 2},
-          "on": {"type": "array", "items": {"type": "string"}, "description": "Connector kinds this asset may rest on."},
-          "datum": {"type": "string", "description": "Ground this connector's plane rather than the asset's lowest point."},
-          "carried_by_connection": {"type": "boolean"},
-          "c": {"type": "array", "items": {"type": "array"}, "description": "Connectors, packed positionally per legend.c."},
-          "ap": {"type": "array", "items": {"type": "array"}, "description": "Apertures, packed positionally per legend.ap."},
-          "clear": {"type": "array", "items": {"type": "array"}},
-          "note": {"type": "string"}
+          "id": {
+            "type": "string",
+            "description": "Short name; prefix with id_prefix for the full id."
+          },
+          "role": {
+            "type": "string"
+          },
+          "size": {
+            "type": "array",
+            "items": {
+              "type": "number"
+            },
+            "minItems": 3,
+            "maxItems": 3
+          },
+          "base": {
+            "type": "number",
+            "description": "world_z = support_top + base. Present even when zero, because an absent field invites an assumption."
+          },
+          "grid": {
+            "enum": [
+              "module",
+              "module_xy",
+              "mated",
+              "free"
+            ]
+          },
+          "yaw": {
+            "type": [
+              "array",
+              "null"
+            ],
+            "items": {
+              "type": "number"
+            }
+          },
+          "scale": {
+            "type": "array",
+            "items": {
+              "type": "number"
+            },
+            "minItems": 2,
+            "maxItems": 2
+          },
+          "on": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            },
+            "description": "Connector kinds this asset may rest on."
+          },
+          "datum": {
+            "type": "string",
+            "description": "Ground this connector's plane rather than the asset's lowest point."
+          },
+          "carried_by_connection": {
+            "type": "boolean"
+          },
+          "c": {
+            "type": "array",
+            "items": {
+              "type": "array"
+            },
+            "description": "Connectors, packed positionally per legend.c."
+          },
+          "ap": {
+            "type": "array",
+            "items": {
+              "type": "array"
+            },
+            "description": "Apertures, packed positionally per legend.ap."
+          },
+          "clear": {
+            "type": "array",
+            "items": {
+              "type": "array"
+            }
+          },
+          "note": {
+            "type": "string"
+          }
         }
       }
+    },
+    "storey": {
+      "type": "object",
+      "required": [
+        "height",
+        "stair_steps",
+        "stair_run"
+      ],
+      "description": "Vertical module: how tall a storey is and what it takes to climb one."
     }
   }
 }

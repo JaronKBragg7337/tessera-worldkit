@@ -140,6 +140,11 @@ def build_brief(catalog, include_notes=False) -> dict:
             "grid=module means snap x and y to grid.xy and z to grid.z; module_xy means x and y only;"
             " mated and free are not position-constrained.",
             "yaw=null means any rotation is allowed. Never pitch or roll a modular piece.",
+            "A character can step up 'character.step_up' in one go and no more. A floor"
+            " higher than that above the ground outside needs a stoop, or the doorway is"
+            " unreachable however wide it is.",
+            "Declare routes in layout.reachability and the validator will prove or refute"
+            " them: [{'label':..,'from':[x,y,z],'to':[x,y,z],'must':true}].",
             "Send the finished layout to `tessera validate --layout` and apply every fix_transform.",
         ],
 
@@ -153,11 +158,19 @@ def build_brief(catalog, include_notes=False) -> dict:
             "foundation_top": catalog["derived"]["foundation_top_z"],
             "floor_top": catalog["derived"]["floor_top_z"],
             "wall_top": catalog["derived"]["wall_top_z"],
+            "second_floor_top": catalog["derived"]["second_floor_top_z"],
             "ridge": catalog["derived"]["ridge_z"],
+        },
+        "storey": {
+            "height": catalog["derived"]["storey_height"],
+            "stair_steps": catalog["derived"]["stair_steps"],
+            "stair_run": catalog["derived"]["stair_run"],
+            "stair_angle_degrees": catalog["derived"]["stair_angle_degrees"],
         },
         "character": {
             "radius": catalog["config"]["CHARACTER_RADIUS"],
             "height": catalog["config"]["CHARACTER_HEIGHT"],
+            "step_up": catalog["config"]["CHARACTER_STEP_UP"],
         },
         "mates": {k: list(v) for k, v in sorted(CONNECTOR_COMPATIBILITY.items())},
         "tolerance": {
@@ -258,8 +271,12 @@ def render_text(brief) -> str:
     add("GRID module %.2f  snap_xy %.2f  snap_z %.2f"
         % (brief["grid"]["module"], brief["grid"]["xy"], brief["grid"]["z"]))
     add("STACK " + "  ".join("%s=%.2f" % (k, v) for k, v in brief["stack"].items()))
-    add("CHARACTER radius %.2f height %.2f"
-        % (brief["character"]["radius"], brief["character"]["height"]))
+    add("CHARACTER radius %.2f height %.2f step_up %.2f"
+        % (brief["character"]["radius"], brief["character"]["height"],
+           brief["character"]["step_up"]))
+    add("STOREY height %.2f  stair %d steps over %.2f m at %.1f degrees"
+        % (brief["storey"]["height"], brief["storey"]["stair_steps"],
+           brief["storey"]["stair_run"], brief["storey"]["stair_angle_degrees"]))
     add("TOLERANCE pos %.3fm  angle %.1fdeg  roll %.1fdeg"
         % (brief["tolerance"]["position_metres"], brief["tolerance"]["angle_degrees"],
            brief["tolerance"]["roll_degrees"]))

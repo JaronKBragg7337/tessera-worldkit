@@ -5,7 +5,7 @@
     "id": "shell_v1",
     "version": "1.0.0"
   },
-  "generated_utc": "2026-07-25T05:31:49+00:00",
+  "generated_utc": "2026-07-25T11:27:19+00:00",
   "space": {
     "convention": "tessera.space/1",
     "linear_unit": "metre",
@@ -23,6 +23,8 @@
     ]
   },
   "config": {
+    "BEAM_DEPTH": 0.3,
+    "BEAM_WIDTH": 0.24,
     "BENCH_DEPTH": 0.7,
     "BENCH_HEIGHT": 0.9,
     "BENCH_LEG": 0.09,
@@ -30,6 +32,10 @@
     "BENCH_TOP_THICKNESS": 0.08,
     "CHARACTER_HEIGHT": 1.8,
     "CHARACTER_RADIUS": 0.35,
+    "CHARACTER_STEP_UP": 0.45,
+    "COLUMN_HEIGHT": 2.7,
+    "COLUMN_SIZE": 0.4,
+    "COMFORTABLE_STEP_UP": 0.25,
     "CRATE_SIZE": 0.6,
     "DOOR_HEIGHT": 2.2,
     "DOOR_LEAF_GAP": 0.02,
@@ -47,16 +53,32 @@
       0.18
     ],
     "MODULE": 4.0,
+    "OPENING_LENGTH": 2.6,
+    "OPENING_WIDTH": 1.5,
     "PANEL_DEPTH": 0.04,
     "PANEL_INSET": 0.25,
     "PLINTH_HEIGHT": 0.18,
     "PLINTH_PROUD": 0.03,
+    "RAILING_HEIGHT": 1.1,
+    "RAILING_POST": 0.07,
+    "RAILING_POSTS": 5,
+    "RAILING_RAIL": 0.05,
     "RIDGE_HALF_WIDTH": 0.28,
     "RIDGE_HEIGHT": 0.16,
     "ROOF_OVERHANG": 0.3,
     "ROOF_PITCH": 0.42,
     "ROOF_RUN": 6.0,
     "ROOF_THICKNESS": 0.18,
+    "STAIR_GOING": 0.25,
+    "STAIR_HEADROOM": 2.0,
+    "STAIR_RISE": 0.2,
+    "STAIR_STRINGER": 0.06,
+    "STAIR_WIDTH": 1.2,
+    "STOOP_GOING": 0.3,
+    "STOOP_RISE": 0.5,
+    "STOOP_STEPS": 2,
+    "STOOP_WIDTH": 1.2,
+    "STOREY_HEIGHT": 3.2,
     "TILE_GROOVE": 0.05,
     "TILE_GROOVE_DEPTH": 0.03,
     "WALL_HEIGHT": 3.0,
@@ -78,12 +100,17 @@
     "roof_pitch_degrees": 22.782,
     "door_head_z": 2.2,
     "window_head_z": 2.2,
-    "bay_module": 4.0
+    "bay_module": 4.0,
+    "storey_height": 3.2,
+    "second_floor_top_z": 3.7,
+    "stair_steps": 16,
+    "stair_run": 4.0,
+    "stair_angle_degrees": 38.66
   },
-  "asset_count": 12,
+  "asset_count": 18,
   "totals": {
-    "triangles": 2410,
-    "vertices": 1221
+    "triangles": 4510,
+    "vertices": 2275
   },
   "assets": [
     {
@@ -650,7 +677,7 @@
       "provenance": {
         "generator": "tessera.catalog/foundation_pad",
         "generator_version": "1.0.0+1.0.0",
-        "created_utc": "2026-07-25T05:31:49+00:00",
+        "created_utc": "2026-07-25T11:27:18+00:00",
         "authored_by": "Jaron K Bragg",
         "origin": "original-generated",
         "source_inputs": [],
@@ -1317,7 +1344,7 @@
       "provenance": {
         "generator": "tessera.catalog/floor_slab",
         "generator_version": "1.0.0+1.0.0",
-        "created_utc": "2026-07-25T05:31:49+00:00",
+        "created_utc": "2026-07-25T11:27:18+00:00",
         "authored_by": "Jaron K Bragg",
         "origin": "original-generated",
         "source_inputs": [],
@@ -1921,7 +1948,7 @@
       "provenance": {
         "generator": "tessera.catalog/wall_straight",
         "generator_version": "1.0.0+1.0.0",
-        "created_utc": "2026-07-25T05:31:49+00:00",
+        "created_utc": "2026-07-25T11:27:19+00:00",
         "authored_by": "Jaron K Bragg",
         "origin": "original-generated",
         "source_inputs": [],
@@ -2700,7 +2727,7 @@
       "provenance": {
         "generator": "tessera.catalog/wall_corner",
         "generator_version": "1.0.0+1.0.0",
-        "created_utc": "2026-07-25T05:31:49+00:00",
+        "created_utc": "2026-07-25T11:27:19+00:00",
         "authored_by": "Jaron K Bragg",
         "origin": "original-generated",
         "source_inputs": [],
@@ -3594,7 +3621,7 @@
       "provenance": {
         "generator": "tessera.catalog/wall_doorway",
         "generator_version": "1.0.0+1.0.0",
-        "created_utc": "2026-07-25T05:31:49+00:00",
+        "created_utc": "2026-07-25T11:27:19+00:00",
         "authored_by": "Jaron K Bragg",
         "origin": "original-generated",
         "source_inputs": [],
@@ -4149,7 +4176,7 @@
       "provenance": {
         "generator": "tessera.catalog/door_leaf",
         "generator_version": "1.0.0+1.0.0",
-        "created_utc": "2026-07-25T05:31:49+00:00",
+        "created_utc": "2026-07-25T11:27:19+00:00",
         "authored_by": "Jaron K Bragg",
         "origin": "original-generated",
         "source_inputs": [],
@@ -5020,7 +5047,7 @@
       "provenance": {
         "generator": "tessera.catalog/wall_window",
         "generator_version": "1.0.0+1.0.0",
-        "created_utc": "2026-07-25T05:31:49+00:00",
+        "created_utc": "2026-07-25T11:27:19+00:00",
         "authored_by": "Jaron K Bragg",
         "origin": "original-generated",
         "source_inputs": [],
@@ -6015,7 +6042,7 @@
       "provenance": {
         "generator": "tessera.catalog/window_leaf",
         "generator_version": "1.0.0+1.0.0",
-        "created_utc": "2026-07-25T05:31:49+00:00",
+        "created_utc": "2026-07-25T11:27:19+00:00",
         "authored_by": "Jaron K Bragg",
         "origin": "original-generated",
         "source_inputs": [],
@@ -7559,7 +7586,7 @@
       "provenance": {
         "generator": "tessera.catalog/roof_panel",
         "generator_version": "1.0.0+1.0.0",
-        "created_utc": "2026-07-25T05:31:49+00:00",
+        "created_utc": "2026-07-25T11:27:19+00:00",
         "authored_by": "Jaron K Bragg",
         "origin": "original-generated",
         "source_inputs": [],
@@ -8117,7 +8144,7 @@
       "provenance": {
         "generator": "tessera.catalog/roof_ridge",
         "generator_version": "1.0.0+1.0.0",
-        "created_utc": "2026-07-25T05:31:49+00:00",
+        "created_utc": "2026-07-25T11:27:19+00:00",
         "authored_by": "Jaron K Bragg",
         "origin": "original-generated",
         "source_inputs": [],
@@ -8839,7 +8866,7 @@
       "provenance": {
         "generator": "tessera.catalog/prop_crate",
         "generator_version": "1.0.0+1.0.0",
-        "created_utc": "2026-07-25T05:31:49+00:00",
+        "created_utc": "2026-07-25T11:27:19+00:00",
         "authored_by": "Jaron K Bragg",
         "origin": "original-generated",
         "source_inputs": [],
@@ -9420,7 +9447,7 @@
       "provenance": {
         "generator": "tessera.catalog/prop_workbench",
         "generator_version": "1.0.0+1.0.0",
-        "created_utc": "2026-07-25T05:31:49+00:00",
+        "created_utc": "2026-07-25T11:27:19+00:00",
         "authored_by": "Jaron K Bragg",
         "origin": "original-generated",
         "source_inputs": [],
@@ -9454,7 +9481,4535 @@
         "id": "shell_v1",
         "version": "1.0.0"
       }
+    },
+    {
+      "schema": "tessera.asset/1",
+      "contract_version": "1.0.0",
+      "id": "tsr:shell/stair.straight.4m",
+      "name": "Stair Straight 4 m",
+      "category": "traversal",
+      "semantic_role": "stair",
+      "tags": [
+        "modular",
+        "traversal",
+        "vertical"
+      ],
+      "scale_class": "standard",
+      "scale_factor": 1.0,
+      "space": {
+        "convention": "tessera.space/1",
+        "handedness": "right",
+        "up": [
+          0.0,
+          0.0,
+          1.0
+        ],
+        "forward": [
+          0.0,
+          1.0,
+          0.0
+        ],
+        "right": [
+          1.0,
+          0.0,
+          0.0
+        ],
+        "linear_unit": "metre",
+        "angle_unit": "degree",
+        "rotation_order": "ZYX-intrinsic"
+      },
+      "dimensions": {
+        "bounds": {
+          "min": [
+            -0.06,
+            0.0,
+            0.0
+          ],
+          "max": [
+            1.26,
+            4.0,
+            3.2
+          ]
+        },
+        "size": [
+          1.3199999999999998,
+          4.0,
+          3.1999999999999997
+        ],
+        "grounded_bounds": {
+          "min": [
+            -0.06,
+            0.0,
+            0.0
+          ],
+          "max": [
+            1.26,
+            4.0,
+            3.2
+          ]
+        },
+        "is_authored_grounded": true,
+        "base_z_local": 0.0,
+        "top_z_local": 3.1999999999999997
+      },
+      "pivot": {
+        "origin_local": [
+          0.0,
+          0.0,
+          0.0
+        ],
+        "convention": "bay_min_corner_on_base",
+        "rationale": "Origin at the minimum corner of the bay, on the asset's own base. One rule for every modular piece means an agent never has to branch: put the origin on the supporting surface at a grid corner and the piece is correctly placed. base_offset_z is 0 by construction.",
+        "offset_from_bounds_min": [
+          0.06,
+          0.0,
+          0.0
+        ],
+        "offset_from_footprint_centre": [
+          -0.6,
+          -2.0,
+          0.0
+        ],
+        "base_offset_z": 0.0
+      },
+      "axes": {
+        "forward": [
+          0.0,
+          1.0,
+          0.0
+        ],
+        "up": [
+          0.0,
+          0.0,
+          1.0
+        ],
+        "right": [
+          1.0,
+          0.0,
+          0.0
+        ],
+        "ground_plane": "z=0",
+        "intended_ground_normal": [
+          0.0,
+          0.0,
+          1.0
+        ]
+      },
+      "placement": {
+        "grid": {
+          "module": 4.0,
+          "snap_xy": 0.2,
+          "snap_z": 0.05,
+          "yaw_step_degrees": 90.0,
+          "policy": "module",
+          "rationale": "Modular pieces seam only on the bay grid they were authored on."
+        },
+        "allowed_rotations": [
+          0.0,
+          90.0,
+          180.0,
+          270.0
+        ],
+        "allowed_scaling": {
+          "uniform_only": true,
+          "min": 1.0,
+          "max": 1.0,
+          "rationale": "Step heights are tuned to the reference character."
+        },
+        "prohibited_scaling": [
+          "non-uniform",
+          "any scale other than 1.0"
+        ],
+        "constraints": [],
+        "support": {
+          "requires_support": true,
+          "rests_on": [
+            "floor_top",
+            "foundation_top"
+          ],
+          "support_axis": "z",
+          "may_float": false
+        },
+        "footprint_rects": [
+          [
+            0.0,
+            0.0,
+            1.2,
+            0.25
+          ],
+          [
+            0.0,
+            0.25,
+            1.2,
+            0.5
+          ],
+          [
+            0.0,
+            0.5,
+            1.2,
+            0.75
+          ],
+          [
+            0.0,
+            0.75,
+            1.2,
+            1.0
+          ],
+          [
+            0.0,
+            1.0,
+            1.2,
+            1.25
+          ],
+          [
+            0.0,
+            1.25,
+            1.2,
+            1.5
+          ],
+          [
+            0.0,
+            1.5,
+            1.2,
+            1.75
+          ],
+          [
+            0.0,
+            1.75,
+            1.2,
+            2.0
+          ],
+          [
+            0.0,
+            2.0,
+            1.2,
+            2.25
+          ],
+          [
+            0.0,
+            2.25,
+            1.2,
+            2.5
+          ],
+          [
+            0.0,
+            2.5,
+            1.2,
+            2.75
+          ],
+          [
+            0.0,
+            2.75,
+            1.2,
+            3.0
+          ],
+          [
+            0.0,
+            3.0,
+            1.2,
+            3.25
+          ],
+          [
+            0.0,
+            3.25,
+            1.2,
+            3.5
+          ],
+          [
+            0.0,
+            3.5,
+            1.2,
+            3.75
+          ],
+          [
+            0.0,
+            3.75,
+            1.2,
+            4.0
+          ],
+          [
+            -0.06,
+            0.0,
+            0.0,
+            4.0
+          ],
+          [
+            1.2,
+            0.0,
+            1.26,
+            4.0
+          ]
+        ],
+        "footprint_area": 5.279999999999999,
+        "allow_pitch_roll": false
+      },
+      "connectors": [
+        {
+          "id": "base",
+          "kind": "wall_base",
+          "position": [
+            0.6,
+            2.0,
+            0.0
+          ],
+          "normal": [
+            0.0,
+            0.0,
+            -1.0
+          ],
+          "tangent": [
+            0.0,
+            1.0,
+            0.0
+          ],
+          "mating_mode": "surface",
+          "extent_half": [
+            0.6,
+            2.0
+          ],
+          "role": "support",
+          "scale_class": "standard",
+          "compatible_kinds": [
+            "floor_top",
+            "foundation_top"
+          ],
+          "incompatible_kinds": [
+            "floor_edge",
+            "leaf_hinge",
+            "opening_jamb",
+            "prop_base",
+            "roof_bearing",
+            "roof_edge",
+            "roof_ridge",
+            "wall_base",
+            "wall_edge",
+            "wall_top"
+          ],
+          "tolerance": {
+            "position_metres": 0.001,
+            "angle_degrees": 1.0,
+            "roll_degrees": 1.0
+          },
+          "required": true,
+          "notes": ""
+        },
+        {
+          "id": "landing",
+          "kind": "floor_edge",
+          "position": [
+            0.6,
+            4.0,
+            3.2
+          ],
+          "normal": [
+            0.0,
+            1.0,
+            0.0
+          ],
+          "tangent": [
+            1.0,
+            0.0,
+            0.0
+          ],
+          "mating_mode": "point",
+          "extent_half": null,
+          "role": "seam",
+          "scale_class": "standard",
+          "compatible_kinds": [
+            "floor_edge",
+            "foundation_top"
+          ],
+          "incompatible_kinds": [
+            "floor_top",
+            "leaf_hinge",
+            "opening_jamb",
+            "prop_base",
+            "roof_bearing",
+            "roof_edge",
+            "roof_ridge",
+            "wall_base",
+            "wall_edge",
+            "wall_top"
+          ],
+          "tolerance": {
+            "position_metres": 0.001,
+            "angle_degrees": 1.0,
+            "roll_degrees": 1.0
+          },
+          "required": true,
+          "notes": "meets the edge of the floor it climbs to; the top tread is flush with that floor's walking surface"
+        },
+        {
+          "id": "foot",
+          "kind": "floor_edge",
+          "position": [
+            0.6,
+            0.0,
+            0.0
+          ],
+          "normal": [
+            0.0,
+            -1.0,
+            0.0
+          ],
+          "tangent": [
+            1.0,
+            0.0,
+            0.0
+          ],
+          "mating_mode": "point",
+          "extent_half": null,
+          "role": "seam",
+          "scale_class": "standard",
+          "compatible_kinds": [
+            "floor_edge",
+            "foundation_top"
+          ],
+          "incompatible_kinds": [
+            "floor_top",
+            "leaf_hinge",
+            "opening_jamb",
+            "prop_base",
+            "roof_bearing",
+            "roof_edge",
+            "roof_ridge",
+            "wall_base",
+            "wall_edge",
+            "wall_top"
+          ],
+          "tolerance": {
+            "position_metres": 0.001,
+            "angle_degrees": 1.0,
+            "roll_degrees": 1.0
+          },
+          "required": false,
+          "notes": ""
+        }
+      ],
+      "occupancy": {
+        "representation": "axis_aligned_box_set",
+        "exact": true,
+        "box_count": 18,
+        "volume": 8.256,
+        "boxes": [
+          [
+            0.0,
+            0.0,
+            0.0,
+            1.2,
+            0.25,
+            0.19999999999999998
+          ],
+          [
+            0.0,
+            0.25,
+            0.0,
+            1.2,
+            0.5,
+            0.39999999999999997
+          ],
+          [
+            0.0,
+            0.5,
+            0.0,
+            1.2,
+            0.75,
+            0.6
+          ],
+          [
+            0.0,
+            0.75,
+            0.0,
+            1.2,
+            1.0,
+            0.7999999999999999
+          ],
+          [
+            0.0,
+            1.0,
+            0.0,
+            1.2,
+            1.25,
+            1.0
+          ],
+          [
+            0.0,
+            1.25,
+            0.0,
+            1.2,
+            1.5,
+            1.2
+          ],
+          [
+            0.0,
+            1.5,
+            0.0,
+            1.2,
+            1.75,
+            1.4
+          ],
+          [
+            0.0,
+            1.75,
+            0.0,
+            1.2,
+            2.0,
+            1.5999999999999999
+          ],
+          [
+            0.0,
+            2.0,
+            0.0,
+            1.2,
+            2.25,
+            1.7999999999999998
+          ],
+          [
+            0.0,
+            2.25,
+            0.0,
+            1.2,
+            2.5,
+            2.0
+          ],
+          [
+            0.0,
+            2.5,
+            0.0,
+            1.2,
+            2.75,
+            2.1999999999999997
+          ],
+          [
+            0.0,
+            2.75,
+            0.0,
+            1.2,
+            3.0,
+            2.4
+          ],
+          [
+            0.0,
+            3.0,
+            0.0,
+            1.2,
+            3.25,
+            2.6
+          ],
+          [
+            0.0,
+            3.25,
+            0.0,
+            1.2,
+            3.5,
+            2.8
+          ],
+          [
+            0.0,
+            3.5,
+            0.0,
+            1.2,
+            3.75,
+            3.0
+          ],
+          [
+            0.0,
+            3.75,
+            0.0,
+            1.2,
+            4.0,
+            3.1999999999999997
+          ],
+          [
+            -0.06,
+            0.0,
+            0.0,
+            0.0,
+            4.0,
+            0.19999999999999998
+          ],
+          [
+            1.2,
+            0.0,
+            0.0,
+            1.26,
+            4.0,
+            0.19999999999999998
+          ]
+        ],
+        "disjoint": true,
+        "approximation_tolerance": 0.0
+      },
+      "clearance": {
+        "representation": "axis_aligned_box_set",
+        "box_count": 16,
+        "boxes": [
+          [
+            0.0,
+            0.0,
+            0.19999999999999998,
+            1.2,
+            0.25,
+            2.1999999999999997
+          ],
+          [
+            0.0,
+            0.25,
+            0.39999999999999997,
+            1.2,
+            0.5,
+            2.4
+          ],
+          [
+            0.0,
+            0.5,
+            0.6,
+            1.2,
+            0.75,
+            2.6
+          ],
+          [
+            0.0,
+            0.75,
+            0.7999999999999999,
+            1.2,
+            1.0,
+            2.8
+          ],
+          [
+            0.0,
+            1.0,
+            1.0,
+            1.2,
+            1.25,
+            3.0
+          ],
+          [
+            0.0,
+            1.25,
+            1.2,
+            1.2,
+            1.5,
+            3.1999999999999997
+          ],
+          [
+            0.0,
+            1.5,
+            1.4,
+            1.2,
+            1.75,
+            3.4
+          ],
+          [
+            0.0,
+            1.75,
+            1.5999999999999999,
+            1.2,
+            2.0,
+            3.5999999999999996
+          ],
+          [
+            0.0,
+            2.0,
+            1.7999999999999998,
+            1.2,
+            2.25,
+            3.8
+          ],
+          [
+            0.0,
+            2.25,
+            2.0,
+            1.2,
+            2.5,
+            4.0
+          ],
+          [
+            0.0,
+            2.5,
+            2.1999999999999997,
+            1.2,
+            2.75,
+            4.2
+          ],
+          [
+            0.0,
+            2.75,
+            2.4,
+            1.2,
+            3.0,
+            4.3999999999999995
+          ],
+          [
+            0.0,
+            3.0,
+            2.6,
+            1.2,
+            3.25,
+            4.6
+          ],
+          [
+            0.0,
+            3.25,
+            2.8,
+            1.2,
+            3.5,
+            4.8
+          ],
+          [
+            0.0,
+            3.5,
+            3.0,
+            1.2,
+            3.75,
+            5.0
+          ],
+          [
+            0.0,
+            3.75,
+            3.1999999999999997,
+            1.2,
+            4.0,
+            5.2
+          ]
+        ],
+        "purpose": "volumes that must remain free for the asset to function"
+      },
+      "apertures": [],
+      "collision": {
+        "mode": "convex_decomposition",
+        "source": "occupancy_box_set",
+        "exact": true,
+        "hull_count": 18,
+        "hulls": [
+          [
+            0.0,
+            0.0,
+            0.0,
+            1.2,
+            0.25,
+            0.19999999999999998
+          ],
+          [
+            0.0,
+            0.25,
+            0.0,
+            1.2,
+            0.5,
+            0.39999999999999997
+          ],
+          [
+            0.0,
+            0.5,
+            0.0,
+            1.2,
+            0.75,
+            0.6
+          ],
+          [
+            0.0,
+            0.75,
+            0.0,
+            1.2,
+            1.0,
+            0.7999999999999999
+          ],
+          [
+            0.0,
+            1.0,
+            0.0,
+            1.2,
+            1.25,
+            1.0
+          ],
+          [
+            0.0,
+            1.25,
+            0.0,
+            1.2,
+            1.5,
+            1.2
+          ],
+          [
+            0.0,
+            1.5,
+            0.0,
+            1.2,
+            1.75,
+            1.4
+          ],
+          [
+            0.0,
+            1.75,
+            0.0,
+            1.2,
+            2.0,
+            1.5999999999999999
+          ],
+          [
+            0.0,
+            2.0,
+            0.0,
+            1.2,
+            2.25,
+            1.7999999999999998
+          ],
+          [
+            0.0,
+            2.25,
+            0.0,
+            1.2,
+            2.5,
+            2.0
+          ],
+          [
+            0.0,
+            2.5,
+            0.0,
+            1.2,
+            2.75,
+            2.1999999999999997
+          ],
+          [
+            0.0,
+            2.75,
+            0.0,
+            1.2,
+            3.0,
+            2.4
+          ],
+          [
+            0.0,
+            3.0,
+            0.0,
+            1.2,
+            3.25,
+            2.6
+          ],
+          [
+            0.0,
+            3.25,
+            0.0,
+            1.2,
+            3.5,
+            2.8
+          ],
+          [
+            0.0,
+            3.5,
+            0.0,
+            1.2,
+            3.75,
+            3.0
+          ],
+          [
+            0.0,
+            3.75,
+            0.0,
+            1.2,
+            4.0,
+            3.1999999999999997
+          ],
+          [
+            -0.06,
+            0.0,
+            0.0,
+            0.0,
+            4.0,
+            0.19999999999999998
+          ],
+          [
+            1.2,
+            0.0,
+            0.0,
+            1.26,
+            4.0,
+            0.19999999999999998
+          ]
+        ],
+        "preserves_apertures": true,
+        "auto_convex_would_seal_apertures": false,
+        "engine_hint": "import as convex hulls; do NOT let the engine auto-generate"
+      },
+      "materials": [
+        {
+          "slot": 0,
+          "name": "M_Concrete",
+          "role": "structure",
+          "base_color": [
+            0.62,
+            0.61,
+            0.58,
+            1.0
+          ],
+          "metallic": 0.0,
+          "roughness": 0.85
+        }
+      ],
+      "lods": [],
+      "geometry": {
+        "triangles": 822,
+        "vertices": 413,
+        "surface_area": 31.887999999999998,
+        "signed_volume": 8.256,
+        "watertight": true,
+        "non_manifold_edges": 0,
+        "boundary_edges": 0,
+        "outward_winding": true,
+        "sha256": "1e4e9b2450c6a309d8d39ee924ddd0d003930b3ec154a0a8ab28532c94f946ab"
+      },
+      "files": {
+        "glb": "meshes/stair.straight.4m.glb",
+        "obj": "meshes/stair.straight.4m.obj",
+        "mtl": "meshes/stair.straight.4m.mtl"
+      },
+      "engine": {
+        "unreal": {
+          "import_uniform_scale": 1.0,
+          "unit_conversion": "1 metre -> 100 uu (applied by the adapter)",
+          "combine_meshes": false,
+          "generate_lightmap_uvs": false,
+          "import_normals": "Import Normals and Tangents",
+          "auto_generate_collision": false,
+          "collision_source": "UCX_ hulls from occupancy",
+          "note": "auto collision seals apertures; use the shipped hulls"
+        },
+        "unity": {
+          "scale_factor": 1.0,
+          "convert_units": true,
+          "normals": "Import",
+          "generate_colliders": false,
+          "collision_source": "compound BoxCollider set from occupancy"
+        },
+        "three": {
+          "format": "glb",
+          "up_axis": "+Y",
+          "conversion": "canonical Z-up right-handed -> glTF Y-up right-handed"
+        },
+        "blender": {
+          "format": "glb",
+          "conversion": "identity"
+        }
+      },
+      "provenance": {
+        "generator": "tessera.catalog/stair_straight",
+        "generator_version": "1.0.0+1.0.0",
+        "created_utc": "2026-07-25T11:27:19+00:00",
+        "authored_by": "Jaron K Bragg",
+        "origin": "original-generated",
+        "source_inputs": [],
+        "generated_files": [
+          "meshes/stair.straight.4m.glb",
+          "meshes/stair.straight.4m.mtl",
+          "meshes/stair.straight.4m.obj"
+        ],
+        "derived_from": [],
+        "third_party_review": "none-required",
+        "notes": "Generated from scratch by the named function using only the Tessera geometry kernel. No third-party mesh, texture or model file is read at any point in this pipeline."
+      },
+      "license": {
+        "code_spdx": "0BSD",
+        "assets_spdx": "CC0-1.0",
+        "applies_to": "assets",
+        "attribution_required": false,
+        "commercial_use": true,
+        "redistribution": true
+      },
+      "validation": {
+        "status": "unvalidated",
+        "validator_version": "",
+        "checked_utc": "",
+        "checks_passed": [],
+        "checks_failed": [],
+        "coverage": {}
+      },
+      "notes": "16 steps of 0.20 m rise and 0.25 m going, climbing 3.20 m over a 4.00 m run at 38.66 degrees. Collision is one hull per tread.",
+      "kit": {
+        "id": "shell_v1",
+        "version": "1.0.0"
+      }
+    },
+    {
+      "schema": "tessera.asset/1",
+      "contract_version": "1.0.0",
+      "id": "tsr:shell/floor.opening.4m",
+      "name": "Floor Slab with Stairwell 4 m",
+      "category": "structure",
+      "semantic_role": "floor",
+      "tags": [
+        "modular",
+        "traversal",
+        "walkable"
+      ],
+      "scale_class": "standard",
+      "scale_factor": 1.0,
+      "space": {
+        "convention": "tessera.space/1",
+        "handedness": "right",
+        "up": [
+          0.0,
+          0.0,
+          1.0
+        ],
+        "forward": [
+          0.0,
+          1.0,
+          0.0
+        ],
+        "right": [
+          1.0,
+          0.0,
+          0.0
+        ],
+        "linear_unit": "metre",
+        "angle_unit": "degree",
+        "rotation_order": "ZYX-intrinsic"
+      },
+      "dimensions": {
+        "bounds": {
+          "min": [
+            0.0,
+            0.0,
+            0.0
+          ],
+          "max": [
+            4.0,
+            4.0,
+            0.2
+          ]
+        },
+        "size": [
+          4.0,
+          4.0,
+          0.19999999999999998
+        ],
+        "grounded_bounds": {
+          "min": [
+            0.0,
+            0.0,
+            0.0
+          ],
+          "max": [
+            4.0,
+            4.0,
+            0.2
+          ]
+        },
+        "is_authored_grounded": true,
+        "base_z_local": 0.0,
+        "top_z_local": 0.19999999999999998
+      },
+      "pivot": {
+        "origin_local": [
+          0.0,
+          0.0,
+          0.0
+        ],
+        "convention": "bay_min_corner_on_base",
+        "rationale": "Origin at the minimum corner of the bay, on the asset's own base. One rule for every modular piece means an agent never has to branch: put the origin on the supporting surface at a grid corner and the piece is correctly placed. base_offset_z is 0 by construction.",
+        "offset_from_bounds_min": [
+          0.0,
+          0.0,
+          0.0
+        ],
+        "offset_from_footprint_centre": [
+          -2.0,
+          -2.0,
+          0.0
+        ],
+        "base_offset_z": 0.0
+      },
+      "axes": {
+        "forward": [
+          0.0,
+          1.0,
+          0.0
+        ],
+        "up": [
+          0.0,
+          0.0,
+          1.0
+        ],
+        "right": [
+          1.0,
+          0.0,
+          0.0
+        ],
+        "ground_plane": "z=0",
+        "intended_ground_normal": [
+          0.0,
+          0.0,
+          1.0
+        ]
+      },
+      "placement": {
+        "grid": {
+          "module": 4.0,
+          "snap_xy": 0.2,
+          "snap_z": 0.05,
+          "yaw_step_degrees": 90.0,
+          "policy": "module",
+          "rationale": "Modular pieces seam only on the bay grid they were authored on."
+        },
+        "allowed_rotations": [
+          0.0,
+          90.0,
+          180.0,
+          270.0
+        ],
+        "allowed_scaling": {
+          "uniform_only": true,
+          "min": 1.0,
+          "max": 1.0,
+          "rationale": "Modular pieces are a dimensional standard. Scaling one moves its connectors off the grid and stops it seaming with every other piece in the kit."
+        },
+        "prohibited_scaling": [
+          "non-uniform",
+          "any scale other than 1.0"
+        ],
+        "constraints": [],
+        "support": {
+          "requires_support": true,
+          "rests_on": [
+            "wall_top",
+            "foundation_top",
+            "floor_top"
+          ],
+          "support_axis": "z",
+          "may_float": false
+        },
+        "footprint_rects": [
+          [
+            0.0,
+            0.0,
+            0.3,
+            1.9749999999999999
+          ],
+          [
+            1.7999999999999998,
+            0.0,
+            1.9749999999999999,
+            1.9749999999999999
+          ],
+          [
+            0.3,
+            0.0,
+            1.7999999999999998,
+            1.4
+          ],
+          [
+            0.0,
+            2.025,
+            0.3,
+            4.0
+          ],
+          [
+            1.7999999999999998,
+            2.025,
+            1.9749999999999999,
+            4.0
+          ],
+          [
+            0.0,
+            1.9749999999999999,
+            0.3,
+            2.025
+          ],
+          [
+            1.7999999999999998,
+            1.9749999999999999,
+            1.9749999999999999,
+            2.025
+          ],
+          [
+            2.025,
+            0.0,
+            4.0,
+            1.9749999999999999
+          ],
+          [
+            2.025,
+            2.025,
+            4.0,
+            4.0
+          ],
+          [
+            2.025,
+            1.9749999999999999,
+            4.0,
+            2.025
+          ],
+          [
+            1.9749999999999999,
+            0.0,
+            2.025,
+            4.0
+          ]
+        ],
+        "footprint_area": 12.1,
+        "allow_pitch_roll": false
+      },
+      "connectors": [
+        {
+          "id": "top",
+          "kind": "floor_top",
+          "position": [
+            2.0,
+            1.0,
+            0.2
+          ],
+          "normal": [
+            0.0,
+            0.0,
+            1.0
+          ],
+          "tangent": [
+            1.0,
+            0.0,
+            0.0
+          ],
+          "mating_mode": "surface",
+          "extent_half": [
+            2.0,
+            1.0
+          ],
+          "role": "support",
+          "scale_class": "standard",
+          "compatible_kinds": [
+            "wall_base",
+            "prop_base"
+          ],
+          "incompatible_kinds": [
+            "floor_edge",
+            "floor_top",
+            "foundation_top",
+            "leaf_hinge",
+            "opening_jamb",
+            "roof_bearing",
+            "roof_edge",
+            "roof_ridge",
+            "wall_edge",
+            "wall_top"
+          ],
+          "tolerance": {
+            "position_metres": 0.001,
+            "angle_degrees": 1.0,
+            "roll_degrees": 1.0
+          },
+          "required": true,
+          "notes": "walkable area excludes the stairwell; the extent covers the solid half only"
+        },
+        {
+          "id": "stairwell",
+          "kind": "floor_edge",
+          "position": [
+            1.05,
+            4.0,
+            0.1
+          ],
+          "normal": [
+            0.0,
+            1.0,
+            0.0
+          ],
+          "tangent": [
+            1.0,
+            0.0,
+            0.0
+          ],
+          "mating_mode": "point",
+          "extent_half": null,
+          "role": "seam",
+          "scale_class": "standard",
+          "compatible_kinds": [
+            "floor_edge",
+            "foundation_top"
+          ],
+          "incompatible_kinds": [
+            "floor_top",
+            "leaf_hinge",
+            "opening_jamb",
+            "prop_base",
+            "roof_bearing",
+            "roof_edge",
+            "roof_ridge",
+            "wall_base",
+            "wall_edge",
+            "wall_top"
+          ],
+          "tolerance": {
+            "position_metres": 0.001,
+            "angle_degrees": 1.0,
+            "roll_degrees": 1.0
+          },
+          "required": false,
+          "notes": "the stair's landing connector mates here"
+        },
+        {
+          "id": "edge_neg_x",
+          "kind": "floor_edge",
+          "position": [
+            0.0,
+            2.0,
+            0.1
+          ],
+          "normal": [
+            -1.0,
+            0.0,
+            0.0
+          ],
+          "tangent": [
+            0.0,
+            1.0,
+            0.0
+          ],
+          "mating_mode": "point",
+          "extent_half": null,
+          "role": "generic",
+          "scale_class": "standard",
+          "compatible_kinds": [
+            "floor_edge",
+            "foundation_top"
+          ],
+          "incompatible_kinds": [
+            "floor_top",
+            "leaf_hinge",
+            "opening_jamb",
+            "prop_base",
+            "roof_bearing",
+            "roof_edge",
+            "roof_ridge",
+            "wall_base",
+            "wall_edge",
+            "wall_top"
+          ],
+          "tolerance": {
+            "position_metres": 0.001,
+            "angle_degrees": 1.0,
+            "roll_degrees": 1.0
+          },
+          "required": false,
+          "notes": ""
+        },
+        {
+          "id": "edge_pos_x",
+          "kind": "floor_edge",
+          "position": [
+            4.0,
+            2.0,
+            0.1
+          ],
+          "normal": [
+            1.0,
+            0.0,
+            0.0
+          ],
+          "tangent": [
+            0.0,
+            1.0,
+            0.0
+          ],
+          "mating_mode": "point",
+          "extent_half": null,
+          "role": "generic",
+          "scale_class": "standard",
+          "compatible_kinds": [
+            "floor_edge",
+            "foundation_top"
+          ],
+          "incompatible_kinds": [
+            "floor_top",
+            "leaf_hinge",
+            "opening_jamb",
+            "prop_base",
+            "roof_bearing",
+            "roof_edge",
+            "roof_ridge",
+            "wall_base",
+            "wall_edge",
+            "wall_top"
+          ],
+          "tolerance": {
+            "position_metres": 0.001,
+            "angle_degrees": 1.0,
+            "roll_degrees": 1.0
+          },
+          "required": false,
+          "notes": ""
+        },
+        {
+          "id": "edge_neg_y",
+          "kind": "floor_edge",
+          "position": [
+            2.0,
+            0.0,
+            0.1
+          ],
+          "normal": [
+            0.0,
+            -1.0,
+            0.0
+          ],
+          "tangent": [
+            1.0,
+            0.0,
+            0.0
+          ],
+          "mating_mode": "point",
+          "extent_half": null,
+          "role": "generic",
+          "scale_class": "standard",
+          "compatible_kinds": [
+            "floor_edge",
+            "foundation_top"
+          ],
+          "incompatible_kinds": [
+            "floor_top",
+            "leaf_hinge",
+            "opening_jamb",
+            "prop_base",
+            "roof_bearing",
+            "roof_edge",
+            "roof_ridge",
+            "wall_base",
+            "wall_edge",
+            "wall_top"
+          ],
+          "tolerance": {
+            "position_metres": 0.001,
+            "angle_degrees": 1.0,
+            "roll_degrees": 1.0
+          },
+          "required": false,
+          "notes": ""
+        }
+      ],
+      "occupancy": {
+        "representation": "axis_aligned_box_set",
+        "exact": true,
+        "box_count": 11,
+        "volume": 2.410325,
+        "boxes": [
+          [
+            0.0,
+            0.0,
+            0.0,
+            0.3,
+            1.9749999999999999,
+            0.19999999999999998
+          ],
+          [
+            1.7999999999999998,
+            0.0,
+            0.0,
+            1.9749999999999999,
+            1.9749999999999999,
+            0.19999999999999998
+          ],
+          [
+            0.3,
+            0.0,
+            0.0,
+            1.7999999999999998,
+            1.4,
+            0.19999999999999998
+          ],
+          [
+            0.0,
+            2.025,
+            0.0,
+            0.3,
+            4.0,
+            0.19999999999999998
+          ],
+          [
+            1.7999999999999998,
+            2.025,
+            0.0,
+            1.9749999999999999,
+            4.0,
+            0.19999999999999998
+          ],
+          [
+            0.0,
+            1.9749999999999999,
+            0.0,
+            0.3,
+            2.025,
+            0.16999999999999998
+          ],
+          [
+            1.7999999999999998,
+            1.9749999999999999,
+            0.0,
+            1.9749999999999999,
+            2.025,
+            0.16999999999999998
+          ],
+          [
+            2.025,
+            0.0,
+            0.0,
+            4.0,
+            1.9749999999999999,
+            0.19999999999999998
+          ],
+          [
+            2.025,
+            2.025,
+            0.0,
+            4.0,
+            4.0,
+            0.19999999999999998
+          ],
+          [
+            2.025,
+            1.9749999999999999,
+            0.0,
+            4.0,
+            2.025,
+            0.16999999999999998
+          ],
+          [
+            1.9749999999999999,
+            0.0,
+            0.0,
+            2.025,
+            4.0,
+            0.16999999999999998
+          ]
+        ],
+        "disjoint": true,
+        "approximation_tolerance": 0.0
+      },
+      "clearance": {
+        "representation": "axis_aligned_box_set",
+        "box_count": 0,
+        "boxes": [],
+        "purpose": "volumes that must remain free for the asset to function"
+      },
+      "apertures": [
+        {
+          "id": "stairwell",
+          "kind": "passage",
+          "bounds": {
+            "min": [
+              0.3,
+              1.4,
+              -0.01
+            ],
+            "max": [
+              1.8,
+              4.0,
+              0.21
+            ]
+          },
+          "traversal_axis": "z",
+          "clear_width": 1.5,
+          "clear_height": 2.6,
+          "traversable": true,
+          "fits_capsule": {
+            "radius": 0.75,
+            "height": 2.6,
+            "admits_reference_character": true,
+            "reference_character": {
+              "radius": 0.35,
+              "height": 1.8
+            }
+          }
+        }
+      ],
+      "collision": {
+        "mode": "convex_decomposition",
+        "source": "occupancy_box_set",
+        "exact": true,
+        "hull_count": 11,
+        "hulls": [
+          [
+            0.0,
+            0.0,
+            0.0,
+            0.3,
+            1.9749999999999999,
+            0.19999999999999998
+          ],
+          [
+            1.7999999999999998,
+            0.0,
+            0.0,
+            1.9749999999999999,
+            1.9749999999999999,
+            0.19999999999999998
+          ],
+          [
+            0.3,
+            0.0,
+            0.0,
+            1.7999999999999998,
+            1.4,
+            0.19999999999999998
+          ],
+          [
+            0.0,
+            2.025,
+            0.0,
+            0.3,
+            4.0,
+            0.19999999999999998
+          ],
+          [
+            1.7999999999999998,
+            2.025,
+            0.0,
+            1.9749999999999999,
+            4.0,
+            0.19999999999999998
+          ],
+          [
+            0.0,
+            1.9749999999999999,
+            0.0,
+            0.3,
+            2.025,
+            0.16999999999999998
+          ],
+          [
+            1.7999999999999998,
+            1.9749999999999999,
+            0.0,
+            1.9749999999999999,
+            2.025,
+            0.16999999999999998
+          ],
+          [
+            2.025,
+            0.0,
+            0.0,
+            4.0,
+            1.9749999999999999,
+            0.19999999999999998
+          ],
+          [
+            2.025,
+            2.025,
+            0.0,
+            4.0,
+            4.0,
+            0.19999999999999998
+          ],
+          [
+            2.025,
+            1.9749999999999999,
+            0.0,
+            4.0,
+            2.025,
+            0.16999999999999998
+          ],
+          [
+            1.9749999999999999,
+            0.0,
+            0.0,
+            2.025,
+            4.0,
+            0.16999999999999998
+          ]
+        ],
+        "preserves_apertures": true,
+        "auto_convex_would_seal_apertures": true,
+        "engine_hint": "import as convex hulls; do NOT let the engine auto-generate"
+      },
+      "materials": [
+        {
+          "slot": 0,
+          "name": "M_Concrete",
+          "role": "structure",
+          "base_color": [
+            0.62,
+            0.61,
+            0.58,
+            1.0
+          ],
+          "metallic": 0.0,
+          "roughness": 0.85
+        }
+      ],
+      "lods": [],
+      "geometry": {
+        "triangles": 210,
+        "vertices": 107,
+        "surface_area": 28.814999999999998,
+        "signed_volume": 2.410325,
+        "watertight": true,
+        "non_manifold_edges": 0,
+        "boundary_edges": 0,
+        "outward_winding": true,
+        "sha256": "3f133aaaee4a2b62222e4d91387fa70a36ad7048ada3e51cd569f897a11d5e23"
+      },
+      "files": {
+        "glb": "meshes/floor.opening.4m.glb",
+        "obj": "meshes/floor.opening.4m.obj",
+        "mtl": "meshes/floor.opening.4m.mtl"
+      },
+      "engine": {
+        "unreal": {
+          "import_uniform_scale": 1.0,
+          "unit_conversion": "1 metre -> 100 uu (applied by the adapter)",
+          "combine_meshes": false,
+          "generate_lightmap_uvs": false,
+          "import_normals": "Import Normals and Tangents",
+          "auto_generate_collision": false,
+          "collision_source": "UCX_ hulls from occupancy",
+          "note": "auto collision seals apertures; use the shipped hulls"
+        },
+        "unity": {
+          "scale_factor": 1.0,
+          "convert_units": true,
+          "normals": "Import",
+          "generate_colliders": false,
+          "collision_source": "compound BoxCollider set from occupancy"
+        },
+        "three": {
+          "format": "glb",
+          "up_axis": "+Y",
+          "conversion": "canonical Z-up right-handed -> glTF Y-up right-handed"
+        },
+        "blender": {
+          "format": "glb",
+          "conversion": "identity"
+        }
+      },
+      "provenance": {
+        "generator": "tessera.catalog/floor_opening",
+        "generator_version": "1.0.0+1.0.0",
+        "created_utc": "2026-07-25T11:27:19+00:00",
+        "authored_by": "Jaron K Bragg",
+        "origin": "original-generated",
+        "source_inputs": [],
+        "generated_files": [
+          "meshes/floor.opening.4m.glb",
+          "meshes/floor.opening.4m.mtl",
+          "meshes/floor.opening.4m.obj"
+        ],
+        "derived_from": [],
+        "third_party_review": "none-required",
+        "notes": "Generated from scratch by the named function using only the Tessera geometry kernel. No third-party mesh, texture or model file is read at any point in this pipeline."
+      },
+      "license": {
+        "code_spdx": "0BSD",
+        "assets_spdx": "CC0-1.0",
+        "applies_to": "assets",
+        "attribution_required": false,
+        "commercial_use": true,
+        "redistribution": true
+      },
+      "validation": {
+        "status": "unvalidated",
+        "validator_version": "",
+        "checked_utc": "",
+        "checks_passed": [],
+        "checks_failed": [],
+        "coverage": {}
+      },
+      "notes": "Stairwell opening is 1.50 x 2.60 m through the slab. Walking surface is the top at z = 0.20 local.",
+      "kit": {
+        "id": "shell_v1",
+        "version": "1.0.0"
+      }
+    },
+    {
+      "schema": "tessera.asset/1",
+      "contract_version": "1.0.0",
+      "id": "tsr:shell/beam.4m",
+      "name": "Beam 4 m",
+      "category": "structure",
+      "semantic_role": "beam",
+      "tags": [
+        "modular",
+        "spanning"
+      ],
+      "scale_class": "standard",
+      "scale_factor": 1.0,
+      "space": {
+        "convention": "tessera.space/1",
+        "handedness": "right",
+        "up": [
+          0.0,
+          0.0,
+          1.0
+        ],
+        "forward": [
+          0.0,
+          1.0,
+          0.0
+        ],
+        "right": [
+          1.0,
+          0.0,
+          0.0
+        ],
+        "linear_unit": "metre",
+        "angle_unit": "degree",
+        "rotation_order": "ZYX-intrinsic"
+      },
+      "dimensions": {
+        "bounds": {
+          "min": [
+            0.0,
+            0.0,
+            0.0
+          ],
+          "max": [
+            4.0,
+            0.24,
+            0.3
+          ]
+        },
+        "size": [
+          4.0,
+          0.24,
+          0.3
+        ],
+        "grounded_bounds": {
+          "min": [
+            0.0,
+            0.0,
+            0.0
+          ],
+          "max": [
+            4.0,
+            0.24,
+            0.3
+          ]
+        },
+        "is_authored_grounded": true,
+        "base_z_local": 0.0,
+        "top_z_local": 0.3
+      },
+      "pivot": {
+        "origin_local": [
+          0.0,
+          0.0,
+          0.0
+        ],
+        "convention": "bay_min_corner_on_base",
+        "rationale": "Origin at the minimum corner of the bay, on the asset's own base. One rule for every modular piece means an agent never has to branch: put the origin on the supporting surface at a grid corner and the piece is correctly placed. base_offset_z is 0 by construction.",
+        "offset_from_bounds_min": [
+          0.0,
+          0.0,
+          0.0
+        ],
+        "offset_from_footprint_centre": [
+          -2.0,
+          -0.12,
+          0.0
+        ],
+        "base_offset_z": 0.0
+      },
+      "axes": {
+        "forward": [
+          0.0,
+          1.0,
+          0.0
+        ],
+        "up": [
+          0.0,
+          0.0,
+          1.0
+        ],
+        "right": [
+          1.0,
+          0.0,
+          0.0
+        ],
+        "ground_plane": "z=0",
+        "intended_ground_normal": [
+          0.0,
+          0.0,
+          1.0
+        ]
+      },
+      "placement": {
+        "grid": {
+          "module": 4.0,
+          "snap_xy": 0.2,
+          "snap_z": 0.05,
+          "yaw_step_degrees": 90.0,
+          "policy": "module",
+          "rationale": "Modular pieces seam only on the bay grid they were authored on."
+        },
+        "allowed_rotations": [
+          0.0,
+          90.0,
+          180.0,
+          270.0
+        ],
+        "allowed_scaling": {
+          "uniform_only": true,
+          "min": 1.0,
+          "max": 1.0,
+          "rationale": "Modular pieces are a dimensional standard. Scaling one moves its connectors off the grid and stops it seaming with every other piece in the kit."
+        },
+        "prohibited_scaling": [
+          "non-uniform",
+          "any scale other than 1.0"
+        ],
+        "constraints": [],
+        "support": {
+          "requires_support": true,
+          "rests_on": [
+            "wall_top",
+            "column_top"
+          ],
+          "support_axis": "z",
+          "may_float": false,
+          "point_bearing": true
+        },
+        "footprint_rects": [
+          [
+            0.0,
+            0.0,
+            0.7799999999999999,
+            0.24
+          ],
+          [
+            1.22,
+            0.0,
+            1.78,
+            0.24
+          ],
+          [
+            2.2199999999999998,
+            0.0,
+            2.78,
+            0.24
+          ],
+          [
+            3.2199999999999998,
+            0.0,
+            4.0,
+            0.24
+          ],
+          [
+            2.78,
+            0.049999999999999996,
+            3.2199999999999998,
+            0.19
+          ],
+          [
+            2.78,
+            0.19,
+            3.2199999999999998,
+            0.24
+          ],
+          [
+            2.78,
+            0.0,
+            3.2199999999999998,
+            0.049999999999999996
+          ],
+          [
+            1.78,
+            0.049999999999999996,
+            2.2199999999999998,
+            0.19
+          ],
+          [
+            1.78,
+            0.19,
+            2.2199999999999998,
+            0.24
+          ],
+          [
+            1.78,
+            0.0,
+            2.2199999999999998,
+            0.049999999999999996
+          ],
+          [
+            0.7799999999999999,
+            0.049999999999999996,
+            1.22,
+            0.19
+          ],
+          [
+            0.7799999999999999,
+            0.19,
+            1.22,
+            0.24
+          ],
+          [
+            0.7799999999999999,
+            0.0,
+            1.22,
+            0.049999999999999996
+          ]
+        ],
+        "footprint_area": 0.96,
+        "allow_pitch_roll": false
+      },
+      "connectors": [
+        {
+          "id": "bearing",
+          "kind": "roof_bearing",
+          "position": [
+            2.0,
+            0.12,
+            0.0
+          ],
+          "normal": [
+            0.0,
+            0.0,
+            -1.0
+          ],
+          "tangent": [
+            1.0,
+            0.0,
+            0.0
+          ],
+          "mating_mode": "surface",
+          "extent_half": [
+            2.0,
+            0.12
+          ],
+          "role": "support",
+          "scale_class": "standard",
+          "compatible_kinds": [
+            "wall_top"
+          ],
+          "incompatible_kinds": [
+            "floor_edge",
+            "floor_top",
+            "foundation_top",
+            "leaf_hinge",
+            "opening_jamb",
+            "prop_base",
+            "roof_bearing",
+            "roof_edge",
+            "roof_ridge",
+            "wall_base",
+            "wall_edge"
+          ],
+          "tolerance": {
+            "position_metres": 0.001,
+            "angle_degrees": 1.0,
+            "roll_degrees": 1.0
+          },
+          "required": true,
+          "notes": "rests on a wall_top like a roof panel does"
+        },
+        {
+          "id": "top",
+          "kind": "floor_top",
+          "position": [
+            2.0,
+            0.12,
+            0.3
+          ],
+          "normal": [
+            0.0,
+            0.0,
+            1.0
+          ],
+          "tangent": [
+            1.0,
+            0.0,
+            0.0
+          ],
+          "mating_mode": "surface",
+          "extent_half": [
+            2.0,
+            0.12
+          ],
+          "role": "support",
+          "scale_class": "standard",
+          "compatible_kinds": [
+            "wall_base",
+            "prop_base"
+          ],
+          "incompatible_kinds": [
+            "floor_edge",
+            "floor_top",
+            "foundation_top",
+            "leaf_hinge",
+            "opening_jamb",
+            "roof_bearing",
+            "roof_edge",
+            "roof_ridge",
+            "wall_edge",
+            "wall_top"
+          ],
+          "tolerance": {
+            "position_metres": 0.001,
+            "angle_degrees": 1.0,
+            "roll_degrees": 1.0
+          },
+          "required": false,
+          "notes": "carries a floor slab"
+        },
+        {
+          "id": "edge_neg_x",
+          "kind": "wall_edge",
+          "position": [
+            0.0,
+            0.12,
+            0.15
+          ],
+          "normal": [
+            -1.0,
+            0.0,
+            0.0
+          ],
+          "tangent": [
+            0.0,
+            0.0,
+            1.0
+          ],
+          "mating_mode": "point",
+          "extent_half": null,
+          "role": "generic",
+          "scale_class": "standard",
+          "compatible_kinds": [
+            "wall_edge"
+          ],
+          "incompatible_kinds": [
+            "floor_edge",
+            "floor_top",
+            "foundation_top",
+            "leaf_hinge",
+            "opening_jamb",
+            "prop_base",
+            "roof_bearing",
+            "roof_edge",
+            "roof_ridge",
+            "wall_base",
+            "wall_top"
+          ],
+          "tolerance": {
+            "position_metres": 0.001,
+            "angle_degrees": 1.0,
+            "roll_degrees": 1.0
+          },
+          "required": false,
+          "notes": ""
+        },
+        {
+          "id": "edge_pos_x",
+          "kind": "wall_edge",
+          "position": [
+            4.0,
+            0.12,
+            0.15
+          ],
+          "normal": [
+            1.0,
+            0.0,
+            0.0
+          ],
+          "tangent": [
+            0.0,
+            0.0,
+            1.0
+          ],
+          "mating_mode": "point",
+          "extent_half": null,
+          "role": "generic",
+          "scale_class": "standard",
+          "compatible_kinds": [
+            "wall_edge"
+          ],
+          "incompatible_kinds": [
+            "floor_edge",
+            "floor_top",
+            "foundation_top",
+            "leaf_hinge",
+            "opening_jamb",
+            "prop_base",
+            "roof_bearing",
+            "roof_edge",
+            "roof_ridge",
+            "wall_base",
+            "wall_top"
+          ],
+          "tolerance": {
+            "position_metres": 0.001,
+            "angle_degrees": 1.0,
+            "roll_degrees": 1.0
+          },
+          "required": false,
+          "notes": ""
+        }
+      ],
+      "occupancy": {
+        "representation": "axis_aligned_box_set",
+        "exact": true,
+        "box_count": 19,
+        "volume": 0.26688,
+        "boxes": [
+          [
+            0.0,
+            0.0,
+            0.0,
+            0.7799999999999999,
+            0.24,
+            0.3
+          ],
+          [
+            1.22,
+            0.0,
+            0.0,
+            1.78,
+            0.24,
+            0.3
+          ],
+          [
+            2.2199999999999998,
+            0.0,
+            0.0,
+            2.78,
+            0.24,
+            0.3
+          ],
+          [
+            3.2199999999999998,
+            0.0,
+            0.0,
+            4.0,
+            0.24,
+            0.3
+          ],
+          [
+            2.78,
+            0.049999999999999996,
+            0.0,
+            3.2199999999999998,
+            0.19,
+            0.3
+          ],
+          [
+            2.78,
+            0.19,
+            0.0,
+            3.2199999999999998,
+            0.24,
+            0.06999999999999999
+          ],
+          [
+            2.78,
+            0.19,
+            0.22999999999999998,
+            3.2199999999999998,
+            0.24,
+            0.3
+          ],
+          [
+            2.78,
+            0.0,
+            0.0,
+            3.2199999999999998,
+            0.049999999999999996,
+            0.06999999999999999
+          ],
+          [
+            2.78,
+            0.0,
+            0.22999999999999998,
+            3.2199999999999998,
+            0.049999999999999996,
+            0.3
+          ],
+          [
+            1.78,
+            0.049999999999999996,
+            0.0,
+            2.2199999999999998,
+            0.19,
+            0.3
+          ],
+          [
+            1.78,
+            0.19,
+            0.0,
+            2.2199999999999998,
+            0.24,
+            0.06999999999999999
+          ],
+          [
+            1.78,
+            0.19,
+            0.22999999999999998,
+            2.2199999999999998,
+            0.24,
+            0.3
+          ],
+          [
+            1.78,
+            0.0,
+            0.0,
+            2.2199999999999998,
+            0.049999999999999996,
+            0.06999999999999999
+          ],
+          [
+            1.78,
+            0.0,
+            0.22999999999999998,
+            2.2199999999999998,
+            0.049999999999999996,
+            0.3
+          ],
+          [
+            0.7799999999999999,
+            0.049999999999999996,
+            0.0,
+            1.22,
+            0.19,
+            0.3
+          ],
+          [
+            0.7799999999999999,
+            0.19,
+            0.0,
+            1.22,
+            0.24,
+            0.06999999999999999
+          ],
+          [
+            0.7799999999999999,
+            0.19,
+            0.22999999999999998,
+            1.22,
+            0.24,
+            0.3
+          ],
+          [
+            0.7799999999999999,
+            0.0,
+            0.0,
+            1.22,
+            0.049999999999999996,
+            0.06999999999999999
+          ],
+          [
+            0.7799999999999999,
+            0.0,
+            0.22999999999999998,
+            1.22,
+            0.049999999999999996,
+            0.3
+          ]
+        ],
+        "disjoint": true,
+        "approximation_tolerance": 0.0
+      },
+      "clearance": {
+        "representation": "axis_aligned_box_set",
+        "box_count": 0,
+        "boxes": [],
+        "purpose": "volumes that must remain free for the asset to function"
+      },
+      "apertures": [],
+      "collision": {
+        "mode": "convex_decomposition",
+        "source": "occupancy_box_set",
+        "exact": true,
+        "hull_count": 19,
+        "hulls": [
+          [
+            0.0,
+            0.0,
+            0.0,
+            0.7799999999999999,
+            0.24,
+            0.3
+          ],
+          [
+            1.22,
+            0.0,
+            0.0,
+            1.78,
+            0.24,
+            0.3
+          ],
+          [
+            2.2199999999999998,
+            0.0,
+            0.0,
+            2.78,
+            0.24,
+            0.3
+          ],
+          [
+            3.2199999999999998,
+            0.0,
+            0.0,
+            4.0,
+            0.24,
+            0.3
+          ],
+          [
+            2.78,
+            0.049999999999999996,
+            0.0,
+            3.2199999999999998,
+            0.19,
+            0.3
+          ],
+          [
+            2.78,
+            0.19,
+            0.0,
+            3.2199999999999998,
+            0.24,
+            0.06999999999999999
+          ],
+          [
+            2.78,
+            0.19,
+            0.22999999999999998,
+            3.2199999999999998,
+            0.24,
+            0.3
+          ],
+          [
+            2.78,
+            0.0,
+            0.0,
+            3.2199999999999998,
+            0.049999999999999996,
+            0.06999999999999999
+          ],
+          [
+            2.78,
+            0.0,
+            0.22999999999999998,
+            3.2199999999999998,
+            0.049999999999999996,
+            0.3
+          ],
+          [
+            1.78,
+            0.049999999999999996,
+            0.0,
+            2.2199999999999998,
+            0.19,
+            0.3
+          ],
+          [
+            1.78,
+            0.19,
+            0.0,
+            2.2199999999999998,
+            0.24,
+            0.06999999999999999
+          ],
+          [
+            1.78,
+            0.19,
+            0.22999999999999998,
+            2.2199999999999998,
+            0.24,
+            0.3
+          ],
+          [
+            1.78,
+            0.0,
+            0.0,
+            2.2199999999999998,
+            0.049999999999999996,
+            0.06999999999999999
+          ],
+          [
+            1.78,
+            0.0,
+            0.22999999999999998,
+            2.2199999999999998,
+            0.049999999999999996,
+            0.3
+          ],
+          [
+            0.7799999999999999,
+            0.049999999999999996,
+            0.0,
+            1.22,
+            0.19,
+            0.3
+          ],
+          [
+            0.7799999999999999,
+            0.19,
+            0.0,
+            1.22,
+            0.24,
+            0.06999999999999999
+          ],
+          [
+            0.7799999999999999,
+            0.19,
+            0.22999999999999998,
+            1.22,
+            0.24,
+            0.3
+          ],
+          [
+            0.7799999999999999,
+            0.0,
+            0.0,
+            1.22,
+            0.049999999999999996,
+            0.06999999999999999
+          ],
+          [
+            0.7799999999999999,
+            0.0,
+            0.22999999999999998,
+            1.22,
+            0.049999999999999996,
+            0.3
+          ]
+        ],
+        "preserves_apertures": true,
+        "auto_convex_would_seal_apertures": false,
+        "engine_hint": "import as convex hulls; do NOT let the engine auto-generate"
+      },
+      "materials": [
+        {
+          "slot": 0,
+          "name": "M_Steel",
+          "role": "structure",
+          "base_color": [
+            0.55,
+            0.57,
+            0.6,
+            1.0
+          ],
+          "metallic": 1.0,
+          "roughness": 0.42
+        }
+      ],
+      "lods": [],
+      "geometry": {
+        "triangles": 216,
+        "vertices": 110,
+        "surface_area": 4.824,
+        "signed_volume": 0.26688,
+        "watertight": true,
+        "non_manifold_edges": 0,
+        "boundary_edges": 0,
+        "outward_winding": true,
+        "sha256": "ae6b3a5b964ce91f7613fae127d023d87b2da249b2bd9f0848fc38affd54a7ed"
+      },
+      "files": {
+        "glb": "meshes/beam.4m.glb",
+        "obj": "meshes/beam.4m.obj",
+        "mtl": "meshes/beam.4m.mtl"
+      },
+      "engine": {
+        "unreal": {
+          "import_uniform_scale": 1.0,
+          "unit_conversion": "1 metre -> 100 uu (applied by the adapter)",
+          "combine_meshes": false,
+          "generate_lightmap_uvs": false,
+          "import_normals": "Import Normals and Tangents",
+          "auto_generate_collision": false,
+          "collision_source": "UCX_ hulls from occupancy",
+          "note": "auto collision seals apertures; use the shipped hulls"
+        },
+        "unity": {
+          "scale_factor": 1.0,
+          "convert_units": true,
+          "normals": "Import",
+          "generate_colliders": false,
+          "collision_source": "compound BoxCollider set from occupancy"
+        },
+        "three": {
+          "format": "glb",
+          "up_axis": "+Y",
+          "conversion": "canonical Z-up right-handed -> glTF Y-up right-handed"
+        },
+        "blender": {
+          "format": "glb",
+          "conversion": "identity"
+        }
+      },
+      "provenance": {
+        "generator": "tessera.catalog/beam",
+        "generator_version": "1.0.0+1.0.0",
+        "created_utc": "2026-07-25T11:27:19+00:00",
+        "authored_by": "Jaron K Bragg",
+        "origin": "original-generated",
+        "source_inputs": [],
+        "generated_files": [
+          "meshes/beam.4m.glb",
+          "meshes/beam.4m.mtl",
+          "meshes/beam.4m.obj"
+        ],
+        "derived_from": [],
+        "third_party_review": "none-required",
+        "notes": "Generated from scratch by the named function using only the Tessera geometry kernel. No third-party mesh, texture or model file is read at any point in this pipeline."
+      },
+      "license": {
+        "code_spdx": "0BSD",
+        "assets_spdx": "CC0-1.0",
+        "applies_to": "assets",
+        "attribution_required": false,
+        "commercial_use": true,
+        "redistribution": true
+      },
+      "validation": {
+        "status": "unvalidated",
+        "validator_version": "",
+        "checked_utc": "",
+        "checks_passed": [],
+        "checks_failed": [],
+        "coverage": {}
+      },
+      "notes": "Spans one bay between two supports, bearing only at its ends. Its top finishes level with the wall top so the floor above lands on one continuous plane.",
+      "kit": {
+        "id": "shell_v1",
+        "version": "1.0.0"
+      }
+    },
+    {
+      "schema": "tessera.asset/1",
+      "contract_version": "1.0.0",
+      "id": "tsr:shell/railing.4m",
+      "name": "Railing 4 m",
+      "category": "traversal",
+      "semantic_role": "railing",
+      "tags": [
+        "modular",
+        "safety"
+      ],
+      "scale_class": "standard",
+      "scale_factor": 1.0,
+      "space": {
+        "convention": "tessera.space/1",
+        "handedness": "right",
+        "up": [
+          0.0,
+          0.0,
+          1.0
+        ],
+        "forward": [
+          0.0,
+          1.0,
+          0.0
+        ],
+        "right": [
+          1.0,
+          0.0,
+          0.0
+        ],
+        "linear_unit": "metre",
+        "angle_unit": "degree",
+        "rotation_order": "ZYX-intrinsic"
+      },
+      "dimensions": {
+        "bounds": {
+          "min": [
+            0.0,
+            0.0,
+            0.0
+          ],
+          "max": [
+            4.0,
+            0.07,
+            1.1
+          ]
+        },
+        "size": [
+          4.0,
+          0.06999999999999999,
+          1.0999999999999999
+        ],
+        "grounded_bounds": {
+          "min": [
+            0.0,
+            0.0,
+            0.0
+          ],
+          "max": [
+            4.0,
+            0.07,
+            1.1
+          ]
+        },
+        "is_authored_grounded": true,
+        "base_z_local": 0.0,
+        "top_z_local": 1.0999999999999999
+      },
+      "pivot": {
+        "origin_local": [
+          0.0,
+          0.0,
+          0.0
+        ],
+        "convention": "bay_min_corner_on_base",
+        "rationale": "Origin at the minimum corner of the bay, on the asset's own base. One rule for every modular piece means an agent never has to branch: put the origin on the supporting surface at a grid corner and the piece is correctly placed. base_offset_z is 0 by construction.",
+        "offset_from_bounds_min": [
+          0.0,
+          0.0,
+          0.0
+        ],
+        "offset_from_footprint_centre": [
+          -2.0,
+          -0.034999999999999996,
+          0.0
+        ],
+        "base_offset_z": 0.0
+      },
+      "axes": {
+        "forward": [
+          0.0,
+          1.0,
+          0.0
+        ],
+        "up": [
+          0.0,
+          0.0,
+          1.0
+        ],
+        "right": [
+          1.0,
+          0.0,
+          0.0
+        ],
+        "ground_plane": "z=0",
+        "intended_ground_normal": [
+          0.0,
+          0.0,
+          1.0
+        ]
+      },
+      "placement": {
+        "grid": {
+          "module": 4.0,
+          "snap_xy": 0.2,
+          "snap_z": 0.05,
+          "yaw_step_degrees": 90.0,
+          "policy": "module",
+          "rationale": "Modular pieces seam only on the bay grid they were authored on."
+        },
+        "allowed_rotations": [
+          0.0,
+          90.0,
+          180.0,
+          270.0
+        ],
+        "allowed_scaling": {
+          "uniform_only": true,
+          "min": 1.0,
+          "max": 1.0,
+          "rationale": "Step heights are tuned to the reference character."
+        },
+        "prohibited_scaling": [
+          "non-uniform",
+          "any scale other than 1.0"
+        ],
+        "constraints": [],
+        "support": {
+          "requires_support": true,
+          "rests_on": [
+            "floor_top",
+            "foundation_top"
+          ],
+          "support_axis": "z",
+          "may_float": false
+        },
+        "footprint_rects": [
+          [
+            0.0,
+            0.049999999999999996,
+            0.06999999999999999,
+            0.06999999999999999
+          ],
+          [
+            0.0,
+            0.04,
+            0.06999999999999999,
+            0.049999999999999996
+          ],
+          [
+            0.0,
+            0.0,
+            0.06999999999999999,
+            0.04
+          ],
+          [
+            0.9824999999999999,
+            0.049999999999999996,
+            1.0525,
+            0.06999999999999999
+          ],
+          [
+            0.9824999999999999,
+            0.04,
+            1.0525,
+            0.049999999999999996
+          ],
+          [
+            0.9824999999999999,
+            0.0,
+            1.0525,
+            0.04
+          ],
+          [
+            1.9649999999999999,
+            0.049999999999999996,
+            2.0349999999999997,
+            0.06999999999999999
+          ],
+          [
+            1.9649999999999999,
+            0.04,
+            2.0349999999999997,
+            0.049999999999999996
+          ],
+          [
+            1.9649999999999999,
+            0.0,
+            2.0349999999999997,
+            0.04
+          ],
+          [
+            2.9475,
+            0.049999999999999996,
+            3.0175,
+            0.06999999999999999
+          ],
+          [
+            2.9475,
+            0.04,
+            3.0175,
+            0.049999999999999996
+          ],
+          [
+            2.9475,
+            0.0,
+            3.0175,
+            0.04
+          ],
+          [
+            3.9299999999999997,
+            0.049999999999999996,
+            4.0,
+            0.06999999999999999
+          ],
+          [
+            3.9299999999999997,
+            0.04,
+            4.0,
+            0.049999999999999996
+          ],
+          [
+            3.9299999999999997,
+            0.0,
+            4.0,
+            0.04
+          ]
+        ],
+        "footprint_area": 0.024499999999999997,
+        "allow_pitch_roll": false
+      },
+      "connectors": [
+        {
+          "id": "base",
+          "kind": "prop_base",
+          "position": [
+            2.0,
+            0.035,
+            0.0
+          ],
+          "normal": [
+            0.0,
+            0.0,
+            -1.0
+          ],
+          "tangent": [
+            1.0,
+            0.0,
+            0.0
+          ],
+          "mating_mode": "surface",
+          "extent_half": [
+            2.0,
+            0.035
+          ],
+          "role": "support",
+          "scale_class": "standard",
+          "compatible_kinds": [
+            "floor_top",
+            "foundation_top"
+          ],
+          "incompatible_kinds": [
+            "floor_edge",
+            "leaf_hinge",
+            "opening_jamb",
+            "prop_base",
+            "roof_bearing",
+            "roof_edge",
+            "roof_ridge",
+            "wall_base",
+            "wall_edge",
+            "wall_top"
+          ],
+          "tolerance": {
+            "position_metres": 0.001,
+            "angle_degrees": 1.0,
+            "roll_degrees": 1.0
+          },
+          "required": true,
+          "notes": ""
+        },
+        {
+          "id": "edge_neg_x",
+          "kind": "wall_edge",
+          "position": [
+            0.0,
+            0.035,
+            0.55
+          ],
+          "normal": [
+            -1.0,
+            0.0,
+            0.0
+          ],
+          "tangent": [
+            0.0,
+            0.0,
+            1.0
+          ],
+          "mating_mode": "point",
+          "extent_half": null,
+          "role": "generic",
+          "scale_class": "standard",
+          "compatible_kinds": [
+            "wall_edge"
+          ],
+          "incompatible_kinds": [
+            "floor_edge",
+            "floor_top",
+            "foundation_top",
+            "leaf_hinge",
+            "opening_jamb",
+            "prop_base",
+            "roof_bearing",
+            "roof_edge",
+            "roof_ridge",
+            "wall_base",
+            "wall_top"
+          ],
+          "tolerance": {
+            "position_metres": 0.001,
+            "angle_degrees": 1.0,
+            "roll_degrees": 1.0
+          },
+          "required": false,
+          "notes": ""
+        },
+        {
+          "id": "edge_pos_x",
+          "kind": "wall_edge",
+          "position": [
+            4.0,
+            0.035,
+            0.55
+          ],
+          "normal": [
+            1.0,
+            0.0,
+            0.0
+          ],
+          "tangent": [
+            0.0,
+            0.0,
+            1.0
+          ],
+          "mating_mode": "point",
+          "extent_half": null,
+          "role": "generic",
+          "scale_class": "standard",
+          "compatible_kinds": [
+            "wall_edge"
+          ],
+          "incompatible_kinds": [
+            "floor_edge",
+            "floor_top",
+            "foundation_top",
+            "leaf_hinge",
+            "opening_jamb",
+            "prop_base",
+            "roof_bearing",
+            "roof_edge",
+            "roof_ridge",
+            "wall_base",
+            "wall_top"
+          ],
+          "tolerance": {
+            "position_metres": 0.001,
+            "angle_degrees": 1.0,
+            "roll_degrees": 1.0
+          },
+          "required": false,
+          "notes": ""
+        }
+      ],
+      "occupancy": {
+        "representation": "axis_aligned_box_set",
+        "exact": true,
+        "box_count": 22,
+        "volume": 0.041915,
+        "boxes": [
+          [
+            0.0,
+            0.049999999999999996,
+            0.0,
+            0.06999999999999999,
+            0.06999999999999999,
+            1.0999999999999999
+          ],
+          [
+            0.0,
+            0.04,
+            0.0,
+            0.06999999999999999,
+            0.049999999999999996,
+            1.05
+          ],
+          [
+            0.0,
+            0.0,
+            0.0,
+            0.06999999999999999,
+            0.04,
+            0.495
+          ],
+          [
+            0.0,
+            0.0,
+            0.535,
+            0.06999999999999999,
+            0.04,
+            1.05
+          ],
+          [
+            0.9824999999999999,
+            0.049999999999999996,
+            0.0,
+            1.0525,
+            0.06999999999999999,
+            1.0999999999999999
+          ],
+          [
+            0.9824999999999999,
+            0.04,
+            0.0,
+            1.0525,
+            0.049999999999999996,
+            1.05
+          ],
+          [
+            0.9824999999999999,
+            0.0,
+            0.0,
+            1.0525,
+            0.04,
+            0.495
+          ],
+          [
+            0.9824999999999999,
+            0.0,
+            0.535,
+            1.0525,
+            0.04,
+            1.05
+          ],
+          [
+            1.9649999999999999,
+            0.049999999999999996,
+            0.0,
+            2.0349999999999997,
+            0.06999999999999999,
+            1.0999999999999999
+          ],
+          [
+            1.9649999999999999,
+            0.04,
+            0.0,
+            2.0349999999999997,
+            0.049999999999999996,
+            1.05
+          ],
+          [
+            1.9649999999999999,
+            0.0,
+            0.0,
+            2.0349999999999997,
+            0.04,
+            0.495
+          ],
+          [
+            1.9649999999999999,
+            0.0,
+            0.535,
+            2.0349999999999997,
+            0.04,
+            1.05
+          ],
+          [
+            2.9475,
+            0.049999999999999996,
+            0.0,
+            3.0175,
+            0.06999999999999999,
+            1.0999999999999999
+          ],
+          [
+            2.9475,
+            0.04,
+            0.0,
+            3.0175,
+            0.049999999999999996,
+            1.05
+          ],
+          [
+            2.9475,
+            0.0,
+            0.0,
+            3.0175,
+            0.04,
+            0.495
+          ],
+          [
+            2.9475,
+            0.0,
+            0.535,
+            3.0175,
+            0.04,
+            1.05
+          ],
+          [
+            3.9299999999999997,
+            0.049999999999999996,
+            0.0,
+            4.0,
+            0.06999999999999999,
+            1.0999999999999999
+          ],
+          [
+            3.9299999999999997,
+            0.04,
+            0.0,
+            4.0,
+            0.049999999999999996,
+            1.05
+          ],
+          [
+            3.9299999999999997,
+            0.0,
+            0.0,
+            4.0,
+            0.04,
+            0.495
+          ],
+          [
+            3.9299999999999997,
+            0.0,
+            0.535,
+            4.0,
+            0.04,
+            1.05
+          ],
+          [
+            0.0,
+            0.0,
+            1.05,
+            4.0,
+            0.049999999999999996,
+            1.0999999999999999
+          ],
+          [
+            0.0,
+            0.0,
+            0.495,
+            4.0,
+            0.04,
+            0.535
+          ]
+        ],
+        "disjoint": true,
+        "approximation_tolerance": 0.0
+      },
+      "clearance": {
+        "representation": "axis_aligned_box_set",
+        "box_count": 0,
+        "boxes": [],
+        "purpose": "volumes that must remain free for the asset to function"
+      },
+      "apertures": [],
+      "collision": {
+        "mode": "convex_decomposition",
+        "source": "occupancy_box_set",
+        "exact": true,
+        "hull_count": 22,
+        "hulls": [
+          [
+            0.0,
+            0.049999999999999996,
+            0.0,
+            0.06999999999999999,
+            0.06999999999999999,
+            1.0999999999999999
+          ],
+          [
+            0.0,
+            0.04,
+            0.0,
+            0.06999999999999999,
+            0.049999999999999996,
+            1.05
+          ],
+          [
+            0.0,
+            0.0,
+            0.0,
+            0.06999999999999999,
+            0.04,
+            0.495
+          ],
+          [
+            0.0,
+            0.0,
+            0.535,
+            0.06999999999999999,
+            0.04,
+            1.05
+          ],
+          [
+            0.9824999999999999,
+            0.049999999999999996,
+            0.0,
+            1.0525,
+            0.06999999999999999,
+            1.0999999999999999
+          ],
+          [
+            0.9824999999999999,
+            0.04,
+            0.0,
+            1.0525,
+            0.049999999999999996,
+            1.05
+          ],
+          [
+            0.9824999999999999,
+            0.0,
+            0.0,
+            1.0525,
+            0.04,
+            0.495
+          ],
+          [
+            0.9824999999999999,
+            0.0,
+            0.535,
+            1.0525,
+            0.04,
+            1.05
+          ],
+          [
+            1.9649999999999999,
+            0.049999999999999996,
+            0.0,
+            2.0349999999999997,
+            0.06999999999999999,
+            1.0999999999999999
+          ],
+          [
+            1.9649999999999999,
+            0.04,
+            0.0,
+            2.0349999999999997,
+            0.049999999999999996,
+            1.05
+          ],
+          [
+            1.9649999999999999,
+            0.0,
+            0.0,
+            2.0349999999999997,
+            0.04,
+            0.495
+          ],
+          [
+            1.9649999999999999,
+            0.0,
+            0.535,
+            2.0349999999999997,
+            0.04,
+            1.05
+          ],
+          [
+            2.9475,
+            0.049999999999999996,
+            0.0,
+            3.0175,
+            0.06999999999999999,
+            1.0999999999999999
+          ],
+          [
+            2.9475,
+            0.04,
+            0.0,
+            3.0175,
+            0.049999999999999996,
+            1.05
+          ],
+          [
+            2.9475,
+            0.0,
+            0.0,
+            3.0175,
+            0.04,
+            0.495
+          ],
+          [
+            2.9475,
+            0.0,
+            0.535,
+            3.0175,
+            0.04,
+            1.05
+          ],
+          [
+            3.9299999999999997,
+            0.049999999999999996,
+            0.0,
+            4.0,
+            0.06999999999999999,
+            1.0999999999999999
+          ],
+          [
+            3.9299999999999997,
+            0.04,
+            0.0,
+            4.0,
+            0.049999999999999996,
+            1.05
+          ],
+          [
+            3.9299999999999997,
+            0.0,
+            0.0,
+            4.0,
+            0.04,
+            0.495
+          ],
+          [
+            3.9299999999999997,
+            0.0,
+            0.535,
+            4.0,
+            0.04,
+            1.05
+          ],
+          [
+            0.0,
+            0.0,
+            1.05,
+            4.0,
+            0.049999999999999996,
+            1.0999999999999999
+          ],
+          [
+            0.0,
+            0.0,
+            0.495,
+            4.0,
+            0.04,
+            0.535
+          ]
+        ],
+        "preserves_apertures": true,
+        "auto_convex_would_seal_apertures": false,
+        "engine_hint": "import as convex hulls; do NOT let the engine auto-generate"
+      },
+      "materials": [
+        {
+          "slot": 0,
+          "name": "M_Steel",
+          "role": "structure",
+          "base_color": [
+            0.55,
+            0.57,
+            0.6,
+            1.0
+          ],
+          "metallic": 1.0,
+          "roughness": 0.42
+        }
+      ],
+      "lods": [],
+      "geometry": {
+        "triangles": 468,
+        "vertices": 228,
+        "surface_area": 2.8702,
+        "signed_volume": 0.041915,
+        "watertight": true,
+        "non_manifold_edges": 0,
+        "boundary_edges": 0,
+        "outward_winding": true,
+        "sha256": "f98ddfa74ae0328e1ec0bf40aaf1e16f8f9394ccde1776257a5aacb795990ff2"
+      },
+      "files": {
+        "glb": "meshes/railing.4m.glb",
+        "obj": "meshes/railing.4m.obj",
+        "mtl": "meshes/railing.4m.mtl"
+      },
+      "engine": {
+        "unreal": {
+          "import_uniform_scale": 1.0,
+          "unit_conversion": "1 metre -> 100 uu (applied by the adapter)",
+          "combine_meshes": false,
+          "generate_lightmap_uvs": false,
+          "import_normals": "Import Normals and Tangents",
+          "auto_generate_collision": false,
+          "collision_source": "UCX_ hulls from occupancy",
+          "note": "auto collision seals apertures; use the shipped hulls"
+        },
+        "unity": {
+          "scale_factor": 1.0,
+          "convert_units": true,
+          "normals": "Import",
+          "generate_colliders": false,
+          "collision_source": "compound BoxCollider set from occupancy"
+        },
+        "three": {
+          "format": "glb",
+          "up_axis": "+Y",
+          "conversion": "canonical Z-up right-handed -> glTF Y-up right-handed"
+        },
+        "blender": {
+          "format": "glb",
+          "conversion": "identity"
+        }
+      },
+      "provenance": {
+        "generator": "tessera.catalog/railing",
+        "generator_version": "1.0.0+1.0.0",
+        "created_utc": "2026-07-25T11:27:19+00:00",
+        "authored_by": "Jaron K Bragg",
+        "origin": "original-generated",
+        "source_inputs": [],
+        "generated_files": [
+          "meshes/railing.4m.glb",
+          "meshes/railing.4m.mtl",
+          "meshes/railing.4m.obj"
+        ],
+        "derived_from": [],
+        "third_party_review": "none-required",
+        "notes": "Generated from scratch by the named function using only the Tessera geometry kernel. No third-party mesh, texture or model file is read at any point in this pipeline."
+      },
+      "license": {
+        "code_spdx": "0BSD",
+        "assets_spdx": "CC0-1.0",
+        "applies_to": "assets",
+        "attribution_required": false,
+        "commercial_use": true,
+        "redistribution": true
+      },
+      "validation": {
+        "status": "unvalidated",
+        "validator_version": "",
+        "checked_utc": "",
+        "checks_passed": [],
+        "checks_failed": [],
+        "coverage": {}
+      },
+      "notes": "1.10 m high. Blocks a fall without blocking a sight line.",
+      "kit": {
+        "id": "shell_v1",
+        "version": "1.0.0"
+      }
+    },
+    {
+      "schema": "tessera.asset/1",
+      "contract_version": "1.0.0",
+      "id": "tsr:shell/column.3m",
+      "name": "Column",
+      "category": "structure",
+      "semantic_role": "column",
+      "tags": [
+        "bearing",
+        "modular"
+      ],
+      "scale_class": "standard",
+      "scale_factor": 1.0,
+      "space": {
+        "convention": "tessera.space/1",
+        "handedness": "right",
+        "up": [
+          0.0,
+          0.0,
+          1.0
+        ],
+        "forward": [
+          0.0,
+          1.0,
+          0.0
+        ],
+        "right": [
+          1.0,
+          0.0,
+          0.0
+        ],
+        "linear_unit": "metre",
+        "angle_unit": "degree",
+        "rotation_order": "ZYX-intrinsic"
+      },
+      "dimensions": {
+        "bounds": {
+          "min": [
+            -0.04,
+            -0.04,
+            0.0
+          ],
+          "max": [
+            0.44,
+            0.44,
+            2.7
+          ]
+        },
+        "size": [
+          0.48,
+          0.48,
+          2.6999999999999997
+        ],
+        "grounded_bounds": {
+          "min": [
+            -0.04,
+            -0.04,
+            0.0
+          ],
+          "max": [
+            0.44,
+            0.44,
+            2.7
+          ]
+        },
+        "is_authored_grounded": true,
+        "base_z_local": 0.0,
+        "top_z_local": 2.6999999999999997
+      },
+      "pivot": {
+        "origin_local": [
+          0.0,
+          0.0,
+          0.0
+        ],
+        "convention": "bay_min_corner_on_base",
+        "rationale": "Origin at the minimum corner of the bay, on the asset's own base. One rule for every modular piece means an agent never has to branch: put the origin on the supporting surface at a grid corner and the piece is correctly placed. base_offset_z is 0 by construction.",
+        "offset_from_bounds_min": [
+          0.04,
+          0.04,
+          0.0
+        ],
+        "offset_from_footprint_centre": [
+          -0.19999999999999998,
+          -0.19999999999999998,
+          0.0
+        ],
+        "base_offset_z": 0.0
+      },
+      "axes": {
+        "forward": [
+          0.0,
+          1.0,
+          0.0
+        ],
+        "up": [
+          0.0,
+          0.0,
+          1.0
+        ],
+        "right": [
+          1.0,
+          0.0,
+          0.0
+        ],
+        "ground_plane": "z=0",
+        "intended_ground_normal": [
+          0.0,
+          0.0,
+          1.0
+        ]
+      },
+      "placement": {
+        "grid": {
+          "module": 4.0,
+          "snap_xy": 0.2,
+          "snap_z": 0.05,
+          "yaw_step_degrees": 90.0,
+          "policy": "module",
+          "rationale": "Modular pieces seam only on the bay grid they were authored on."
+        },
+        "allowed_rotations": [
+          0.0,
+          90.0,
+          180.0,
+          270.0
+        ],
+        "allowed_scaling": {
+          "uniform_only": true,
+          "min": 1.0,
+          "max": 1.0,
+          "rationale": "Modular pieces are a dimensional standard. Scaling one moves its connectors off the grid and stops it seaming with every other piece in the kit."
+        },
+        "prohibited_scaling": [
+          "non-uniform",
+          "any scale other than 1.0"
+        ],
+        "constraints": [],
+        "support": {
+          "requires_support": true,
+          "rests_on": [
+            "floor_top",
+            "foundation_top"
+          ],
+          "support_axis": "z",
+          "may_float": false
+        },
+        "footprint_rects": [
+          [
+            -0.04,
+            -0.04,
+            0.44,
+            0.44
+          ]
+        ],
+        "footprint_area": 0.2304,
+        "allow_pitch_roll": false
+      },
+      "connectors": [
+        {
+          "id": "base",
+          "kind": "wall_base",
+          "position": [
+            0.2,
+            0.2,
+            0.0
+          ],
+          "normal": [
+            0.0,
+            0.0,
+            -1.0
+          ],
+          "tangent": [
+            1.0,
+            0.0,
+            0.0
+          ],
+          "mating_mode": "surface",
+          "extent_half": [
+            0.2,
+            0.2
+          ],
+          "role": "support",
+          "scale_class": "standard",
+          "compatible_kinds": [
+            "floor_top",
+            "foundation_top"
+          ],
+          "incompatible_kinds": [
+            "floor_edge",
+            "leaf_hinge",
+            "opening_jamb",
+            "prop_base",
+            "roof_bearing",
+            "roof_edge",
+            "roof_ridge",
+            "wall_base",
+            "wall_edge",
+            "wall_top"
+          ],
+          "tolerance": {
+            "position_metres": 0.001,
+            "angle_degrees": 1.0,
+            "roll_degrees": 1.0
+          },
+          "required": true,
+          "notes": ""
+        },
+        {
+          "id": "top",
+          "kind": "wall_top",
+          "position": [
+            0.2,
+            0.2,
+            2.7
+          ],
+          "normal": [
+            0.0,
+            0.0,
+            1.0
+          ],
+          "tangent": [
+            1.0,
+            0.0,
+            0.0
+          ],
+          "mating_mode": "surface",
+          "extent_half": [
+            0.2,
+            0.2
+          ],
+          "role": "bearing",
+          "scale_class": "standard",
+          "compatible_kinds": [
+            "roof_bearing"
+          ],
+          "incompatible_kinds": [
+            "floor_edge",
+            "floor_top",
+            "foundation_top",
+            "leaf_hinge",
+            "opening_jamb",
+            "prop_base",
+            "roof_edge",
+            "roof_ridge",
+            "wall_base",
+            "wall_edge",
+            "wall_top"
+          ],
+          "tolerance": {
+            "position_metres": 0.001,
+            "angle_degrees": 1.0,
+            "roll_degrees": 1.0
+          },
+          "required": true,
+          "notes": "carries a beam's bearing connector"
+        }
+      ],
+      "occupancy": {
+        "representation": "axis_aligned_box_set",
+        "exact": true,
+        "box_count": 11,
+        "volume": 0.38667599999999996,
+        "boxes": [
+          [
+            0.049999999999999996,
+            0.0,
+            0.06,
+            0.349,
+            0.39999999999999997,
+            2.6399999999999997
+          ],
+          [
+            0.349,
+            0.0,
+            0.06,
+            0.39999999999999997,
+            0.09,
+            2.6399999999999997
+          ],
+          [
+            0.349,
+            0.31,
+            0.06,
+            0.39999999999999997,
+            0.39999999999999997,
+            2.6399999999999997
+          ],
+          [
+            0.349,
+            0.09,
+            0.06,
+            0.39999999999999997,
+            0.31,
+            0.13999999999999999
+          ],
+          [
+            0.349,
+            0.09,
+            2.56,
+            0.39999999999999997,
+            0.31,
+            2.6399999999999997
+          ],
+          [
+            0.0,
+            0.0,
+            0.06,
+            0.049999999999999996,
+            0.09,
+            2.6399999999999997
+          ],
+          [
+            0.0,
+            0.31,
+            0.06,
+            0.049999999999999996,
+            0.39999999999999997,
+            2.6399999999999997
+          ],
+          [
+            0.0,
+            0.09,
+            0.06,
+            0.049999999999999996,
+            0.31,
+            0.13999999999999999
+          ],
+          [
+            0.0,
+            0.09,
+            2.56,
+            0.049999999999999996,
+            0.31,
+            2.6399999999999997
+          ],
+          [
+            -0.04,
+            -0.04,
+            0.0,
+            0.44,
+            0.44,
+            0.06
+          ],
+          [
+            -0.04,
+            -0.04,
+            2.6399999999999997,
+            0.44,
+            0.44,
+            2.6999999999999997
+          ]
+        ],
+        "disjoint": true,
+        "approximation_tolerance": 0.0
+      },
+      "clearance": {
+        "representation": "axis_aligned_box_set",
+        "box_count": 0,
+        "boxes": [],
+        "purpose": "volumes that must remain free for the asset to function"
+      },
+      "apertures": [],
+      "collision": {
+        "mode": "convex_decomposition",
+        "source": "occupancy_box_set",
+        "exact": true,
+        "hull_count": 11,
+        "hulls": [
+          [
+            0.049999999999999996,
+            0.0,
+            0.06,
+            0.349,
+            0.39999999999999997,
+            2.6399999999999997
+          ],
+          [
+            0.349,
+            0.0,
+            0.06,
+            0.39999999999999997,
+            0.09,
+            2.6399999999999997
+          ],
+          [
+            0.349,
+            0.31,
+            0.06,
+            0.39999999999999997,
+            0.39999999999999997,
+            2.6399999999999997
+          ],
+          [
+            0.349,
+            0.09,
+            0.06,
+            0.39999999999999997,
+            0.31,
+            0.13999999999999999
+          ],
+          [
+            0.349,
+            0.09,
+            2.56,
+            0.39999999999999997,
+            0.31,
+            2.6399999999999997
+          ],
+          [
+            0.0,
+            0.0,
+            0.06,
+            0.049999999999999996,
+            0.09,
+            2.6399999999999997
+          ],
+          [
+            0.0,
+            0.31,
+            0.06,
+            0.049999999999999996,
+            0.39999999999999997,
+            2.6399999999999997
+          ],
+          [
+            0.0,
+            0.09,
+            0.06,
+            0.049999999999999996,
+            0.31,
+            0.13999999999999999
+          ],
+          [
+            0.0,
+            0.09,
+            2.56,
+            0.049999999999999996,
+            0.31,
+            2.6399999999999997
+          ],
+          [
+            -0.04,
+            -0.04,
+            0.0,
+            0.44,
+            0.44,
+            0.06
+          ],
+          [
+            -0.04,
+            -0.04,
+            2.6399999999999997,
+            0.44,
+            0.44,
+            2.6999999999999997
+          ]
+        ],
+        "preserves_apertures": true,
+        "auto_convex_would_seal_apertures": false,
+        "engine_hint": "import as convex hulls; do NOT let the engine auto-generate"
+      },
+      "materials": [
+        {
+          "slot": 0,
+          "name": "M_Steel",
+          "role": "structure",
+          "base_color": [
+            0.55,
+            0.57,
+            0.6,
+            1.0
+          ],
+          "metallic": 1.0,
+          "roughness": 0.42
+        }
+      ],
+      "lods": [],
+      "geometry": {
+        "triangles": 304,
+        "vertices": 154,
+        "surface_area": 5.4932799999999995,
+        "signed_volume": 0.38667599999999996,
+        "watertight": true,
+        "non_manifold_edges": 0,
+        "boundary_edges": 0,
+        "outward_winding": true,
+        "sha256": "8b4a45ff8a5bb9add16bafa770d24d90357f8f562da704c2618220505ae6b9c6"
+      },
+      "files": {
+        "glb": "meshes/column.3m.glb",
+        "obj": "meshes/column.3m.obj",
+        "mtl": "meshes/column.3m.mtl"
+      },
+      "engine": {
+        "unreal": {
+          "import_uniform_scale": 1.0,
+          "unit_conversion": "1 metre -> 100 uu (applied by the adapter)",
+          "combine_meshes": false,
+          "generate_lightmap_uvs": false,
+          "import_normals": "Import Normals and Tangents",
+          "auto_generate_collision": false,
+          "collision_source": "UCX_ hulls from occupancy",
+          "note": "auto collision seals apertures; use the shipped hulls"
+        },
+        "unity": {
+          "scale_factor": 1.0,
+          "convert_units": true,
+          "normals": "Import",
+          "generate_colliders": false,
+          "collision_source": "compound BoxCollider set from occupancy"
+        },
+        "three": {
+          "format": "glb",
+          "up_axis": "+Y",
+          "conversion": "canonical Z-up right-handed -> glTF Y-up right-handed"
+        },
+        "blender": {
+          "format": "glb",
+          "conversion": "identity"
+        }
+      },
+      "provenance": {
+        "generator": "tessera.catalog/column",
+        "generator_version": "1.0.0+1.0.0",
+        "created_utc": "2026-07-25T11:27:19+00:00",
+        "authored_by": "Jaron K Bragg",
+        "origin": "original-generated",
+        "source_inputs": [],
+        "generated_files": [
+          "meshes/column.3m.glb",
+          "meshes/column.3m.mtl",
+          "meshes/column.3m.obj"
+        ],
+        "derived_from": [],
+        "third_party_review": "none-required",
+        "notes": "Generated from scratch by the named function using only the Tessera geometry kernel. No third-party mesh, texture or model file is read at any point in this pipeline."
+      },
+      "license": {
+        "code_spdx": "0BSD",
+        "assets_spdx": "CC0-1.0",
+        "applies_to": "assets",
+        "attribution_required": false,
+        "commercial_use": true,
+        "redistribution": true
+      },
+      "validation": {
+        "status": "unvalidated",
+        "validator_version": "",
+        "checked_utc": "",
+        "checks_passed": [],
+        "checks_failed": [],
+        "coverage": {}
+      },
+      "notes": "2.70 m tall -- exactly WALL_HEIGHT minus BEAM_DEPTH, so column plus beam finishes level with the wall top.",
+      "kit": {
+        "id": "shell_v1",
+        "version": "1.0.0"
+      }
+    },
+    {
+      "schema": "tessera.asset/1",
+      "contract_version": "1.0.0",
+      "id": "tsr:shell/stair.stoop.1m2",
+      "name": "Entrance Stoop",
+      "category": "traversal",
+      "semantic_role": "stair",
+      "tags": [
+        "entrance",
+        "traversal"
+      ],
+      "scale_class": "standard",
+      "scale_factor": 1.0,
+      "space": {
+        "convention": "tessera.space/1",
+        "handedness": "right",
+        "up": [
+          0.0,
+          0.0,
+          1.0
+        ],
+        "forward": [
+          0.0,
+          1.0,
+          0.0
+        ],
+        "right": [
+          1.0,
+          0.0,
+          0.0
+        ],
+        "linear_unit": "metre",
+        "angle_unit": "degree",
+        "rotation_order": "ZYX-intrinsic"
+      },
+      "dimensions": {
+        "bounds": {
+          "min": [
+            -0.05,
+            0.0,
+            0.0
+          ],
+          "max": [
+            1.25,
+            0.6,
+            0.5
+          ]
+        },
+        "size": [
+          1.3,
+          0.6,
+          0.5
+        ],
+        "grounded_bounds": {
+          "min": [
+            -0.05,
+            0.0,
+            0.0
+          ],
+          "max": [
+            1.25,
+            0.6,
+            0.5
+          ]
+        },
+        "is_authored_grounded": true,
+        "base_z_local": 0.0,
+        "top_z_local": 0.5
+      },
+      "pivot": {
+        "origin_local": [
+          0.0,
+          0.0,
+          0.0
+        ],
+        "convention": "bay_min_corner_on_base",
+        "rationale": "Origin at the minimum corner of the bay, on the asset's own base. One rule for every modular piece means an agent never has to branch: put the origin on the supporting surface at a grid corner and the piece is correctly placed. base_offset_z is 0 by construction.",
+        "offset_from_bounds_min": [
+          0.049999999999999996,
+          0.0,
+          0.0
+        ],
+        "offset_from_footprint_centre": [
+          -0.6,
+          -0.3,
+          0.0
+        ],
+        "base_offset_z": 0.0
+      },
+      "axes": {
+        "forward": [
+          0.0,
+          1.0,
+          0.0
+        ],
+        "up": [
+          0.0,
+          0.0,
+          1.0
+        ],
+        "right": [
+          1.0,
+          0.0,
+          0.0
+        ],
+        "ground_plane": "z=0",
+        "intended_ground_normal": [
+          0.0,
+          0.0,
+          1.0
+        ]
+      },
+      "placement": {
+        "grid": {
+          "module": 4.0,
+          "snap_xy": 0.2,
+          "snap_z": 0.05,
+          "yaw_step_degrees": 90.0,
+          "policy": "module",
+          "rationale": "Modular pieces seam only on the bay grid they were authored on."
+        },
+        "allowed_rotations": [
+          0.0,
+          90.0,
+          180.0,
+          270.0
+        ],
+        "allowed_scaling": {
+          "uniform_only": true,
+          "min": 1.0,
+          "max": 1.0,
+          "rationale": "Step heights are tuned to the reference character."
+        },
+        "prohibited_scaling": [
+          "non-uniform",
+          "any scale other than 1.0"
+        ],
+        "constraints": [],
+        "support": {
+          "requires_support": true,
+          "rests_on": [
+            "terrain",
+            "foundation_top"
+          ],
+          "support_axis": "z",
+          "may_float": false
+        },
+        "footprint_rects": [
+          [
+            0.0,
+            0.0,
+            1.2,
+            0.3
+          ],
+          [
+            0.0,
+            0.3,
+            1.2,
+            0.6
+          ],
+          [
+            -0.049999999999999996,
+            0.0,
+            0.0,
+            0.6
+          ],
+          [
+            1.2,
+            0.0,
+            1.25,
+            0.6
+          ]
+        ],
+        "footprint_area": 0.7799999999999999,
+        "allow_pitch_roll": false
+      },
+      "connectors": [
+        {
+          "id": "base",
+          "kind": "prop_base",
+          "position": [
+            0.6,
+            0.3,
+            0.0
+          ],
+          "normal": [
+            0.0,
+            0.0,
+            -1.0
+          ],
+          "tangent": [
+            0.0,
+            1.0,
+            0.0
+          ],
+          "mating_mode": "surface",
+          "extent_half": [
+            0.6,
+            0.3
+          ],
+          "role": "support",
+          "scale_class": "standard",
+          "compatible_kinds": [
+            "floor_top",
+            "foundation_top"
+          ],
+          "incompatible_kinds": [
+            "floor_edge",
+            "leaf_hinge",
+            "opening_jamb",
+            "prop_base",
+            "roof_bearing",
+            "roof_edge",
+            "roof_ridge",
+            "wall_base",
+            "wall_edge",
+            "wall_top"
+          ],
+          "tolerance": {
+            "position_metres": 0.001,
+            "angle_degrees": 1.0,
+            "roll_degrees": 1.0
+          },
+          "required": true,
+          "notes": ""
+        },
+        {
+          "id": "foot",
+          "kind": "floor_edge",
+          "position": [
+            0.6,
+            0.0,
+            0.0
+          ],
+          "normal": [
+            0.0,
+            -1.0,
+            0.0
+          ],
+          "tangent": [
+            1.0,
+            0.0,
+            0.0
+          ],
+          "mating_mode": "point",
+          "extent_half": null,
+          "role": "seam",
+          "scale_class": "standard",
+          "compatible_kinds": [
+            "floor_edge",
+            "foundation_top"
+          ],
+          "incompatible_kinds": [
+            "floor_top",
+            "leaf_hinge",
+            "opening_jamb",
+            "prop_base",
+            "roof_bearing",
+            "roof_edge",
+            "roof_ridge",
+            "wall_base",
+            "wall_edge",
+            "wall_top"
+          ],
+          "tolerance": {
+            "position_metres": 0.001,
+            "angle_degrees": 1.0,
+            "roll_degrees": 1.0
+          },
+          "required": false,
+          "notes": "the approach side; the stair-usability check probes from here"
+        },
+        {
+          "id": "landing",
+          "kind": "floor_edge",
+          "position": [
+            0.6,
+            0.6,
+            0.5
+          ],
+          "normal": [
+            0.0,
+            1.0,
+            0.0
+          ],
+          "tangent": [
+            1.0,
+            0.0,
+            0.0
+          ],
+          "mating_mode": "point",
+          "extent_half": null,
+          "role": "seam",
+          "scale_class": "standard",
+          "compatible_kinds": [
+            "floor_edge",
+            "foundation_top"
+          ],
+          "incompatible_kinds": [
+            "floor_top",
+            "leaf_hinge",
+            "opening_jamb",
+            "prop_base",
+            "roof_bearing",
+            "roof_edge",
+            "roof_ridge",
+            "wall_base",
+            "wall_edge",
+            "wall_top"
+          ],
+          "tolerance": {
+            "position_metres": 0.001,
+            "angle_degrees": 1.0,
+            "roll_degrees": 1.0
+          },
+          "required": true,
+          "notes": "the top step is level with the floor inside the doorway"
+        }
+      ],
+      "occupancy": {
+        "representation": "axis_aligned_box_set",
+        "exact": true,
+        "box_count": 4,
+        "volume": 0.27749999999999997,
+        "boxes": [
+          [
+            0.0,
+            0.0,
+            0.0,
+            1.2,
+            0.3,
+            0.25
+          ],
+          [
+            0.0,
+            0.3,
+            0.0,
+            1.2,
+            0.6,
+            0.5
+          ],
+          [
+            -0.049999999999999996,
+            0.0,
+            0.0,
+            0.0,
+            0.6,
+            0.125
+          ],
+          [
+            1.2,
+            0.0,
+            0.0,
+            1.25,
+            0.6,
+            0.125
+          ]
+        ],
+        "disjoint": true,
+        "approximation_tolerance": 0.0
+      },
+      "clearance": {
+        "representation": "axis_aligned_box_set",
+        "box_count": 1,
+        "boxes": [
+          [
+            0.0,
+            0.0,
+            0.5,
+            1.2,
+            0.6,
+            2.3
+          ]
+        ],
+        "purpose": "volumes that must remain free for the asset to function"
+      },
+      "apertures": [],
+      "collision": {
+        "mode": "convex_decomposition",
+        "source": "occupancy_box_set",
+        "exact": true,
+        "hull_count": 4,
+        "hulls": [
+          [
+            0.0,
+            0.0,
+            0.0,
+            1.2,
+            0.3,
+            0.25
+          ],
+          [
+            0.0,
+            0.3,
+            0.0,
+            1.2,
+            0.6,
+            0.5
+          ],
+          [
+            -0.049999999999999996,
+            0.0,
+            0.0,
+            0.0,
+            0.6,
+            0.125
+          ],
+          [
+            1.2,
+            0.0,
+            0.0,
+            1.25,
+            0.6,
+            0.125
+          ]
+        ],
+        "preserves_apertures": true,
+        "auto_convex_would_seal_apertures": false,
+        "engine_hint": "import as convex hulls; do NOT let the engine auto-generate"
+      },
+      "materials": [
+        {
+          "slot": 0,
+          "name": "M_Concrete",
+          "role": "structure",
+          "base_color": [
+            0.62,
+            0.61,
+            0.58,
+            1.0
+          ],
+          "metallic": 0.0,
+          "roughness": 0.85
+        }
+      ],
+      "lods": [],
+      "geometry": {
+        "triangles": 80,
+        "vertices": 42,
+        "surface_area": 3.235,
+        "signed_volume": 0.27749999999999997,
+        "watertight": true,
+        "non_manifold_edges": 0,
+        "boundary_edges": 0,
+        "outward_winding": true,
+        "sha256": "7dee5538d623b4a1f103e1314d7a465bc5040b01182b5b81b900f0d45c77911e"
+      },
+      "files": {
+        "glb": "meshes/stair.stoop.1m2.glb",
+        "obj": "meshes/stair.stoop.1m2.obj",
+        "mtl": "meshes/stair.stoop.1m2.mtl"
+      },
+      "engine": {
+        "unreal": {
+          "import_uniform_scale": 1.0,
+          "unit_conversion": "1 metre -> 100 uu (applied by the adapter)",
+          "combine_meshes": false,
+          "generate_lightmap_uvs": false,
+          "import_normals": "Import Normals and Tangents",
+          "auto_generate_collision": false,
+          "collision_source": "UCX_ hulls from occupancy",
+          "note": "auto collision seals apertures; use the shipped hulls"
+        },
+        "unity": {
+          "scale_factor": 1.0,
+          "convert_units": true,
+          "normals": "Import",
+          "generate_colliders": false,
+          "collision_source": "compound BoxCollider set from occupancy"
+        },
+        "three": {
+          "format": "glb",
+          "up_axis": "+Y",
+          "conversion": "canonical Z-up right-handed -> glTF Y-up right-handed"
+        },
+        "blender": {
+          "format": "glb",
+          "conversion": "identity"
+        }
+      },
+      "provenance": {
+        "generator": "tessera.catalog/stair_stoop",
+        "generator_version": "1.0.0+1.0.0",
+        "created_utc": "2026-07-25T11:27:19+00:00",
+        "authored_by": "Jaron K Bragg",
+        "origin": "original-generated",
+        "source_inputs": [],
+        "generated_files": [
+          "meshes/stair.stoop.1m2.glb",
+          "meshes/stair.stoop.1m2.mtl",
+          "meshes/stair.stoop.1m2.obj"
+        ],
+        "derived_from": [],
+        "third_party_review": "none-required",
+        "notes": "Generated from scratch by the named function using only the Tessera geometry kernel. No third-party mesh, texture or model file is read at any point in this pipeline."
+      },
+      "license": {
+        "code_spdx": "0BSD",
+        "assets_spdx": "CC0-1.0",
+        "applies_to": "assets",
+        "attribution_required": false,
+        "commercial_use": true,
+        "redistribution": true
+      },
+      "validation": {
+        "status": "unvalidated",
+        "validator_version": "",
+        "checked_utc": "",
+        "checks_passed": [],
+        "checks_failed": [],
+        "coverage": {}
+      },
+      "notes": "2 steps of 0.25 m rising 0.50 m to meet the floor inside. Sits on terrain in front of a doorway.",
+      "kit": {
+        "id": "shell_v1",
+        "version": "1.0.0"
+      }
     }
   ],
-  "fingerprint": "0e52a8027687785f4805a0bb2083c45b22b289366631afb1bf598149e7713319"
+  "fingerprint": "2694a0892c21182d98e23cf523d566e4a392b8c1b2fe2af1a13600bb632525fc"
 }

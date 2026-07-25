@@ -1,7 +1,7 @@
 {
   "schema": "tessera.provenance/1",
-  "generated_utc": "2026-07-25T05:31:50+00:00",
-  "git_commit": "084cff7cc4c734e0d3ec90992ee511fb9a399192",
+  "generated_utc": "2026-07-25T11:27:20+00:00",
+  "git_commit": "a555681cef5d4cc70c8151ebe5029554829521db",
   "declaration": "Every asset listed here was generated from scratch by the named function in this repository. No third-party mesh, texture, model, scan, photograph or asset library is read at any point in the generation pipeline. source_inputs is empty for every entry, and the validator fails any asset for which it is not.",
   "license": {
     "code_spdx": "0BSD",
@@ -73,7 +73,7 @@
       "code_copied": "none - concepts only, reimplemented in Python and JS"
     }
   ],
-  "asset_count": 12,
+  "asset_count": 18,
   "assets": [
     {
       "asset": "tsr:shell/foundation.pad.4m",
@@ -530,6 +530,234 @@
           "bytes": 58
         }
       ]
+    },
+    {
+      "asset": "tsr:shell/stair.straight.4m",
+      "origin": "original-generated",
+      "generator": "tessera.catalog/stair_straight",
+      "generator_version": "1.0.0+1.0.0",
+      "authored_by": "Jaron K Bragg",
+      "source_inputs": [],
+      "third_party_review": "none-required",
+      "geometry_sha256": "1e4e9b2450c6a309d8d39ee924ddd0d003930b3ec154a0a8ab28532c94f946ab",
+      "license": {
+        "code_spdx": "0BSD",
+        "assets_spdx": "CC0-1.0",
+        "applies_to": "assets",
+        "attribution_required": false,
+        "commercial_use": true,
+        "redistribution": true
+      },
+      "files": [
+        {
+          "role": "glb",
+          "path": "build/meshes/stair.straight.4m.glb",
+          "sha256": "096386092a84e78f2458c4067893e9534cea319a29da1a1b305ed19e3f9b153b",
+          "bytes": 109788
+        },
+        {
+          "role": "obj",
+          "path": "build/meshes/stair.straight.4m.obj",
+          "sha256": "6ea6e1c75e5e84ff85864ee167fe1afc0a0cfe0beda906bec939aa5390871f55",
+          "bytes": 30600
+        },
+        {
+          "role": "mtl",
+          "path": "build/meshes/stair.straight.4m.mtl",
+          "sha256": "3a87536d94c3d78510ddf8092e98d66f5bfe1752a294e960f636bc375c13d31e",
+          "bytes": 61
+        }
+      ]
+    },
+    {
+      "asset": "tsr:shell/floor.opening.4m",
+      "origin": "original-generated",
+      "generator": "tessera.catalog/floor_opening",
+      "generator_version": "1.0.0+1.0.0",
+      "authored_by": "Jaron K Bragg",
+      "source_inputs": [],
+      "third_party_review": "none-required",
+      "geometry_sha256": "3f133aaaee4a2b62222e4d91387fa70a36ad7048ada3e51cd569f897a11d5e23",
+      "license": {
+        "code_spdx": "0BSD",
+        "assets_spdx": "CC0-1.0",
+        "applies_to": "assets",
+        "attribution_required": false,
+        "commercial_use": true,
+        "redistribution": true
+      },
+      "files": [
+        {
+          "role": "glb",
+          "path": "build/meshes/floor.opening.4m.glb",
+          "sha256": "719c7a9f332aa0f10055b2e8630deefd2997c4a5a326e5420311d17b90dc2528",
+          "bytes": 28988
+        },
+        {
+          "role": "obj",
+          "path": "build/meshes/floor.opening.4m.obj",
+          "sha256": "abb42ffb647d46a92c6ac80ea245f3f55edbc3236071ae9b300d701507762573",
+          "bytes": 7583
+        },
+        {
+          "role": "mtl",
+          "path": "build/meshes/floor.opening.4m.mtl",
+          "sha256": "3a87536d94c3d78510ddf8092e98d66f5bfe1752a294e960f636bc375c13d31e",
+          "bytes": 61
+        }
+      ]
+    },
+    {
+      "asset": "tsr:shell/beam.4m",
+      "origin": "original-generated",
+      "generator": "tessera.catalog/beam",
+      "generator_version": "1.0.0+1.0.0",
+      "authored_by": "Jaron K Bragg",
+      "source_inputs": [],
+      "third_party_review": "none-required",
+      "geometry_sha256": "ae6b3a5b964ce91f7613fae127d023d87b2da249b2bd9f0848fc38affd54a7ed",
+      "license": {
+        "code_spdx": "0BSD",
+        "assets_spdx": "CC0-1.0",
+        "applies_to": "assets",
+        "attribution_required": false,
+        "commercial_use": true,
+        "redistribution": true
+      },
+      "files": [
+        {
+          "role": "glb",
+          "path": "build/meshes/beam.4m.glb",
+          "sha256": "f82ff045cac4fc3e40d85069e249745cbd36be3d276f2d7f1428332c838a2e96",
+          "bytes": 29744
+        },
+        {
+          "role": "obj",
+          "path": "build/meshes/beam.4m.obj",
+          "sha256": "533f64739802577a078497a3f95b751affa062c843db2c799e530890afae0adf",
+          "bytes": 7801
+        },
+        {
+          "role": "mtl",
+          "path": "build/meshes/beam.4m.mtl",
+          "sha256": "8faa08045a02b5d7341dbde51992a5ce8542e9e64c6da11a6b43417cf79be922",
+          "bytes": 59
+        }
+      ]
+    },
+    {
+      "asset": "tsr:shell/railing.4m",
+      "origin": "original-generated",
+      "generator": "tessera.catalog/railing",
+      "generator_version": "1.0.0+1.0.0",
+      "authored_by": "Jaron K Bragg",
+      "source_inputs": [],
+      "third_party_review": "none-required",
+      "geometry_sha256": "f98ddfa74ae0328e1ec0bf40aaf1e16f8f9394ccde1776257a5aacb795990ff2",
+      "license": {
+        "code_spdx": "0BSD",
+        "assets_spdx": "CC0-1.0",
+        "applies_to": "assets",
+        "attribution_required": false,
+        "commercial_use": true,
+        "redistribution": true
+      },
+      "files": [
+        {
+          "role": "glb",
+          "path": "build/meshes/railing.4m.glb",
+          "sha256": "d07206b87d9ef4e16365afe09143961ee0b39903b94c92626c6183fb76804ec8",
+          "bytes": 63056
+        },
+        {
+          "role": "obj",
+          "path": "build/meshes/railing.4m.obj",
+          "sha256": "71ff07ef050a6f3f84c636f2033935b2e9a55e4b9ce10ecfbcbfb516f1f2f9c2",
+          "bytes": 17009
+        },
+        {
+          "role": "mtl",
+          "path": "build/meshes/railing.4m.mtl",
+          "sha256": "8faa08045a02b5d7341dbde51992a5ce8542e9e64c6da11a6b43417cf79be922",
+          "bytes": 59
+        }
+      ]
+    },
+    {
+      "asset": "tsr:shell/column.3m",
+      "origin": "original-generated",
+      "generator": "tessera.catalog/column",
+      "generator_version": "1.0.0+1.0.0",
+      "authored_by": "Jaron K Bragg",
+      "source_inputs": [],
+      "third_party_review": "none-required",
+      "geometry_sha256": "8b4a45ff8a5bb9add16bafa770d24d90357f8f562da704c2618220505ae6b9c6",
+      "license": {
+        "code_spdx": "0BSD",
+        "assets_spdx": "CC0-1.0",
+        "applies_to": "assets",
+        "attribution_required": false,
+        "commercial_use": true,
+        "redistribution": true
+      },
+      "files": [
+        {
+          "role": "glb",
+          "path": "build/meshes/column.3m.glb",
+          "sha256": "e5df29a8a738bb9fa904ee7547f29d7389e6bbdbd8ba8c06412ba2aae288f726",
+          "bytes": 41384
+        },
+        {
+          "role": "obj",
+          "path": "build/meshes/column.3m.obj",
+          "sha256": "72628a87cdbb9dba0c95cd0df96767b61ffb1f07c8341b6585bf0a70ea55050d",
+          "bytes": 11165
+        },
+        {
+          "role": "mtl",
+          "path": "build/meshes/column.3m.mtl",
+          "sha256": "8faa08045a02b5d7341dbde51992a5ce8542e9e64c6da11a6b43417cf79be922",
+          "bytes": 59
+        }
+      ]
+    },
+    {
+      "asset": "tsr:shell/stair.stoop.1m2",
+      "origin": "original-generated",
+      "generator": "tessera.catalog/stair_stoop",
+      "generator_version": "1.0.0+1.0.0",
+      "authored_by": "Jaron K Bragg",
+      "source_inputs": [],
+      "third_party_review": "none-required",
+      "geometry_sha256": "7dee5538d623b4a1f103e1314d7a465bc5040b01182b5b81b900f0d45c77911e",
+      "license": {
+        "code_spdx": "0BSD",
+        "assets_spdx": "CC0-1.0",
+        "applies_to": "assets",
+        "attribution_required": false,
+        "commercial_use": true,
+        "redistribution": true
+      },
+      "files": [
+        {
+          "role": "glb",
+          "path": "build/meshes/stair.stoop.1m2.glb",
+          "sha256": "cd26486c18dd56bb026fc9cc64a07fec60811ac8d8ca87555847f9c92fd5c9de",
+          "bytes": 11828
+        },
+        {
+          "role": "obj",
+          "path": "build/meshes/stair.stoop.1m2.obj",
+          "sha256": "b00767348f3fba2fcffd9043e807b3c3513775b96ae48a5ae37df00c16c8549e",
+          "bytes": 3046
+        },
+        {
+          "role": "mtl",
+          "path": "build/meshes/stair.stoop.1m2.mtl",
+          "sha256": "3a87536d94c3d78510ddf8092e98d66f5bfe1752a294e960f636bc375c13d31e",
+          "bytes": 61
+        }
+      ]
     }
   ],
   "generators": [
@@ -547,7 +775,7 @@
     },
     {
       "path": "src/tessera/brief.py",
-      "sha256": "eef4d6cf3ab451ab79532b38fc6cfa10f2407dc8d78520ad1159a14ad43d8a9e"
+      "sha256": "052f5c66755b9b73c468500ff503f2492fc51cb3e5b269f428b20d9e28cbf443"
     },
     {
       "path": "src/tessera/catalog.py",
@@ -568,6 +796,10 @@
     {
       "path": "src/tessera/mesh.py",
       "sha256": "fdaeb0ab45f1c56bde31a38d543d5c5600184f22c08d1f30e50c1024a0dde875"
+    },
+    {
+      "path": "src/tessera/navigate.py",
+      "sha256": "5a6ef06156e1a5a04c81e4f08ca252ab6e6ac4363ec1dec8c4e09a1e501b8368"
     },
     {
       "path": "src/tessera/transform.py",
@@ -591,7 +823,7 @@
     },
     {
       "path": "src/tessera/validate/layout.py",
-      "sha256": "ebf572075e8c3418f9f42a42b14d1564d5d5f67c71fa7d7c5aafd2492c72941f"
+      "sha256": "3efa90f24d388422c23632eb44237a3a86e039a010c8827701632c4d75ef9546"
     },
     {
       "path": "src/tessera/validate/report.py",
@@ -615,11 +847,11 @@
     },
     {
       "path": "kits/shell_v1/config.py",
-      "sha256": "439e93798fa74c2eb7bfaabd3c503c24f335464bd2a5c33678430139c357ccd7"
+      "sha256": "857d145b2a17f8a860bd20809edf779ac851f99637aae92698cfa2dc943b2672"
     },
     {
       "path": "kits/shell_v1/parts.py",
-      "sha256": "34917520c6fc8cb03ac14eef89ab5480cb824a65fc2f743e387e2e06d89c8aa4"
+      "sha256": "178d591eb82babbc2b8f387b9168913fe2a5dc21c95ddd9a2fed51bf52abd47d"
     },
     {
       "path": "tools/export_parity.py",

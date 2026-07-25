@@ -50,6 +50,9 @@ measured there instead.
 | | |
 |---|---|
 | Bay module | `4.00 m` |
+| Storey height, floor top to floor top | `3.20 m` |
+| Character step-up limit | `0.45 m` (matches Unreal's `MaxStepHeight`) |
+| Comfortable step, what a stoop may ask | `0.25 m` |
 | Wall height | `3.00 m` |
 | Wall thickness | `0.20 m` |
 | Translation snap | `0.20 m` |
@@ -77,7 +80,9 @@ Published in `catalog.derived` so nobody adds them up by hand:
 | Terrain | `0.00` |
 | Foundation top | `0.30` |
 | Floor top — the walking surface | `0.50` |
-| Wall top / roof bearing | `3.50` |
+| Column top (one beam below the wall top) | `3.20` |
+| Wall top / beam top / roof bearing | `3.50` |
+| Second floor top | `3.70` |
 | Ridge | `6.02` |
 
 ## Naming

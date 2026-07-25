@@ -101,21 +101,51 @@ and repaired using only validator output. See
 
 ---
 
+## M3a — Traversal, and reachability as a measured property ✅ complete
+
+The benchmark showed a second storey with interior access was not expressible,
+so a constrained agent asked for one had no honest option. Closed by adding the
+parts *and* the check, because the parts alone would only have moved the lie one
+level up.
+
+- [x] `stair.straight.4m` — lands exactly on the floor above, one collision hull
+      per tread, headroom declared as clearance
+- [x] `stair.stoop.1m2` — exists because the solver refused a finished scene
+      whose door was open and whose floor was 0.50 m above the ground outside
+- [x] `floor.opening.4m` — a stairwell carved as a vertical aperture
+- [x] `beam.4m` and `column.3m` — column plus beam equals wall height exactly,
+      enforced by `config.validate()`, so a floor lands on one plane
+- [x] `railing.4m`
+- [x] `src/tessera/navigate.py` — character-aware flood fill over exact occupancy
+- [x] `layout.reachability` claims, proven or refuted by the validator
+- [x] `TSR_LAYOUT_UNREACHABLE`, `TSR_LAYOUT_STAIR_UNUSABLE`
+- [x] The two-storey safe house the benchmark could not have
+
+**Acceptance, all met**
+
+| Test | Target | Actual |
+|---|---|---|
+| Two-storey building with interior access, 0 manual corrections | yes | **yes, 36 instances** |
+| Routes proven rather than asserted | all | **4 / 4** |
+| Removing the stair makes the claim fail | yes | **yes** |
+| Stacked crates rejected as a staircase | yes | **yes** |
+| False positives on known-good scenes | 0 | **0** |
+| Solver never claims a route that does not exist | conservative | **box test, not capsule** |
+
+---
+
 ## M3 — Kit expansion, contract unchanged
 
 The contract should not need to change to describe more building. If it does,
 that is the finding.
 
-- [ ] **Traversal, now the highest priority in this milestone.** The benchmark
-      showed a second storey with interior access is not expressible today, so a
-      constrained agent asked for one has no honest option. Stairs (straight,
-      L-turn, half-landing), ramp, ladder, railing, each with apertures and
-      clearance authored.
-- [ ] **A floor slab with a stair opening**, and a beam, so a second storey can
-      span rather than only bear on a bay perimeter
+- [x] Straight stair, stoop, floor with a stairwell, beam, column, railing — M3a
+- [ ] L-turn and half-landing stairs, ramp, ladder
 - [ ] **Interior corner and doorway pieces**, so an interior room can be closed
       *and* entered. The L corner closes a perimeter without overlap but carries
       no opening, which is why the benchmark repair could only build an alcove
+- [ ] A shorter beam, so a stairwell can be trimmed without a beam crossing the
+      flight — the two-storey example is shaped around not having one
 - [ ] Junctions: inner-corner trim, wall-to-floor trim, column caps — the pieces
       that stop assembled kits showing seams
 - [ ] Roof: hip corner, cross-gable valley, eave fascia, dormer

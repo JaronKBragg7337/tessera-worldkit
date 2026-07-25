@@ -83,6 +83,35 @@ plainly in its own docstring which requested feature it did not build and why.
 That is the behaviour the framework should encourage: refuse and explain, rather
 than produce something that validates and does not work.
 
+### The gap is now closed
+
+Six parts were added — stair, stoop, floor with a stairwell, beam, column,
+railing — and, more importantly, **reachability became something the framework
+measures**. Adding the stair alone would have moved the lie one level up: a
+staircase that exists but nobody can climb validates exactly as well as three
+crates did.
+
+[`examples/safehouse_two_storey`](../../examples/safehouse_two_storey) is the
+building that was asked for. It declares four routes and the validator proves
+each by flooding the walkable volume. Delete the staircase and it fails; replace
+it with stacked crates and it fails. Both are regression tests.
+
+Building it surfaced two more defects that had been sitting in the validator:
+
+* the support threshold was applied **per box** rather than per instance, so a
+  floor resting squarely on two beams saw six 1.3% contacts, discarded every one
+  of them, and reported itself floating two metres above a staircase. Anything
+  with detailing on it — a lightened beam, a capped column — hit this.
+* the step-up limit was 25 cm, which makes *every* real staircase unclimbable: a
+  character with a 35 cm radius always has the tread two steps ahead inside its
+  body box, and that tread is 40 cm up. Unreal's default `MaxStepHeight` is
+  45 cm; modelling a tighter limit than the runtime uses produces false refusals
+  on correct geometry.
+
+And one in the kit itself: the workshop's front door was open, wide enough,
+collision-correct — and 0.50 m above the ground outside with no step. Nobody
+could get in. That is what `stair.stoop.1m2` exists for.
+
 ## Two rules exist because of this benchmark
 
 Running the draft surfaced a genuine hole. This validated clean before:
