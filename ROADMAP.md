@@ -149,6 +149,16 @@ that is the finding.
       no opening, which is why the benchmark repair could only build an alcove
 - [ ] A shorter beam, so a stairwell can be trimmed without a beam crossing the
       flight — the two-storey example is shaped around not having one
+- [ ] **A gable end wall.** Rendering the workshop showed daylight straight
+      through both ends of the roof. Every rule passes, because an open gable is
+      not floating, buried, intersecting or unreachable — it is simply a missing
+      piece, and only a picture showed it. Worth remembering that the validator
+      is not a substitute for looking once.
+- [ ] **Second-storey perimeter walls, and a roof that can sit on them.** The
+      two-storey example has no roof, and cannot: the mezzanine floor finishes
+      at 3.70 while the roof bears at 3.50, so a gable would cut through it. A
+      real second storey needs its own walls above the mezzanine to carry the
+      roof.
 - [ ] Junctions: inner-corner trim, wall-to-floor trim, column caps — the pieces
       that stop assembled kits showing seams
 - [ ] Roof: hip corner, cross-gable valley, eave fascia, dormer

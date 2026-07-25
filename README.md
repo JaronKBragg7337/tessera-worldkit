@@ -38,6 +38,11 @@ ERROR   TSR_LAYOUT_FLOATING    Instance floats above its support.
 
 The agent applies `fix_transform` and re-runs. It never renders anything.
 
+![The Workshop Shell, assembled from metadata](docs/previews/workshop_shell.png)
+
+*The Workshop Shell: 41 instances, every transform solved from the placement
+contract, rendered with headless Blender by `tools/render_previews.py`.*
+
 ---
 
 ## The proof
@@ -148,6 +153,11 @@ The stacked crates DeepSeek used as a staircase were a model routing around a
 missing asset, producing geometry the validator accepts and a player cannot
 climb. The repaired example builds what *is* expressible and says in its own
 docstring what it did not build and why.
+
+![The two-storey safe house](docs/previews/safehouse_two_storey.png)
+
+*The two-storey safe house: columns carrying a beam, a mezzanine, and a stair
+that a flood fill proves a character can actually climb.*
 
 Full log, classification and reproduction:
 [`benchmarks/constrained_agent/`](benchmarks/constrained_agent/).

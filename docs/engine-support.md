@@ -48,6 +48,21 @@ Running it found three real defects that reading the code did not:
 * Auto-smooth has moved twice across Blender versions and needed handling for
   both, plus a path for neither.
 
+### Rendering
+
+`tools/render_previews.py` renders the asset sheet and the assembled scenes with
+the same headless Blender. It uses Cycles rather than Workbench: Workbench is an
+OpenGL engine and needs libEGL, which a headless container does not have, while
+Cycles is a pure software path tracer and runs anywhere the rest of the pipeline
+runs. Denoising is off because it is the largest memory consumer here and a
+small container kills the process with no traceback at all.
+
+Renders are documentation, not verification, and nothing in them is asserted by
+a test. They did earn their keep immediately, though: the first correct framing
+of the workshop showed daylight through both gable ends. No rule catches that —
+an open gable is not floating, buried, intersecting or unreachable. It is a
+missing piece, and only a picture showed it.
+
 ### What Blender verification proves transitively
 
 The GLB writer is pure Python with no Blender involved, so a real DCC tool
