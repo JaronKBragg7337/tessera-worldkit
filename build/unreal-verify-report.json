@@ -1,0 +1,498 @@
+{
+  "engine": "5.6.1-44394996+++UE5+Release-5.6",
+  "fingerprint": "2694a0892c21182d98e23cf523d566e4a392b8c1b2fe2af1a13600bb632525fc",
+  "checks": 94,
+  "failed": 0,
+  "auto_generated_hulls_before_replacement": {
+    "foundation.pad.4m": 1,
+    "floor.slab.4m": 1,
+    "wall.straight.4m": 1,
+    "wall.corner.4m": 1,
+    "wall.doorway.4m": 1,
+    "door.leaf.1m2": 1,
+    "wall.window.4m": 1,
+    "window.leaf.1m8": 1,
+    "roof.panel.4m": 1,
+    "roof.ridge.4m": 1,
+    "prop.crate.small": 1,
+    "prop.workbench": 1,
+    "stair.straight.4m": 1,
+    "floor.opening.4m": 1,
+    "beam.4m": 1,
+    "railing.4m": 1,
+    "column.3m": 1,
+    "stair.stoop.1m2": 1
+  },
+  "results": [
+    {
+      "name": "foundation.pad.4m imports",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "name": "foundation.pad.4m bounds match the contract",
+      "ok": true,
+      "detail": "worst axis error 0.0000 cm"
+    },
+    {
+      "name": "foundation.pad.4m collision rebuilt from the contract",
+      "ok": true,
+      "detail": "5 of 5 hulls"
+    },
+    {
+      "name": "foundation.pad.4m auto-generated collision removed",
+      "ok": true,
+      "detail": "0 convex hull(s) left"
+    },
+    {
+      "name": "foundation.pad.4m box collision persisted",
+      "ok": true,
+      "detail": "5 box(es) stored"
+    },
+    {
+      "name": "floor.slab.4m imports",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "name": "floor.slab.4m bounds match the contract",
+      "ok": true,
+      "detail": "worst axis error 0.0000 cm"
+    },
+    {
+      "name": "floor.slab.4m collision rebuilt from the contract",
+      "ok": true,
+      "detail": "7 of 7 hulls"
+    },
+    {
+      "name": "floor.slab.4m auto-generated collision removed",
+      "ok": true,
+      "detail": "0 convex hull(s) left"
+    },
+    {
+      "name": "floor.slab.4m box collision persisted",
+      "ok": true,
+      "detail": "7 box(es) stored"
+    },
+    {
+      "name": "wall.straight.4m imports",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "name": "wall.straight.4m bounds match the contract",
+      "ok": true,
+      "detail": "worst axis error 0.0000 cm"
+    },
+    {
+      "name": "wall.straight.4m collision rebuilt from the contract",
+      "ok": true,
+      "detail": "8 of 8 hulls"
+    },
+    {
+      "name": "wall.straight.4m auto-generated collision removed",
+      "ok": true,
+      "detail": "0 convex hull(s) left"
+    },
+    {
+      "name": "wall.straight.4m box collision persisted",
+      "ok": true,
+      "detail": "8 box(es) stored"
+    },
+    {
+      "name": "wall.corner.4m imports",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "name": "wall.corner.4m bounds match the contract",
+      "ok": true,
+      "detail": "worst axis error 0.0000 cm"
+    },
+    {
+      "name": "wall.corner.4m collision rebuilt from the contract",
+      "ok": true,
+      "detail": "12 of 12 hulls"
+    },
+    {
+      "name": "wall.corner.4m auto-generated collision removed",
+      "ok": true,
+      "detail": "0 convex hull(s) left"
+    },
+    {
+      "name": "wall.corner.4m box collision persisted",
+      "ok": true,
+      "detail": "12 box(es) stored"
+    },
+    {
+      "name": "wall.doorway.4m imports",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "name": "wall.doorway.4m bounds match the contract",
+      "ok": true,
+      "detail": "worst axis error 0.0000 cm"
+    },
+    {
+      "name": "wall.doorway.4m collision rebuilt from the contract",
+      "ok": true,
+      "detail": "17 of 17 hulls"
+    },
+    {
+      "name": "wall.doorway.4m auto-generated collision removed",
+      "ok": true,
+      "detail": "0 convex hull(s) left"
+    },
+    {
+      "name": "wall.doorway.4m box collision persisted",
+      "ok": true,
+      "detail": "17 box(es) stored"
+    },
+    {
+      "name": "door.leaf.1m2 imports",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "name": "door.leaf.1m2 bounds match the contract",
+      "ok": true,
+      "detail": "worst axis error 0.0000 cm"
+    },
+    {
+      "name": "door.leaf.1m2 collision rebuilt from the contract",
+      "ok": true,
+      "detail": "9 of 9 hulls"
+    },
+    {
+      "name": "door.leaf.1m2 auto-generated collision removed",
+      "ok": true,
+      "detail": "0 convex hull(s) left"
+    },
+    {
+      "name": "door.leaf.1m2 box collision persisted",
+      "ok": true,
+      "detail": "9 box(es) stored"
+    },
+    {
+      "name": "wall.window.4m imports",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "name": "wall.window.4m bounds match the contract",
+      "ok": true,
+      "detail": "worst axis error 0.0000 cm"
+    },
+    {
+      "name": "wall.window.4m collision rebuilt from the contract",
+      "ok": true,
+      "detail": "17 of 17 hulls"
+    },
+    {
+      "name": "wall.window.4m auto-generated collision removed",
+      "ok": true,
+      "detail": "0 convex hull(s) left"
+    },
+    {
+      "name": "wall.window.4m box collision persisted",
+      "ok": true,
+      "detail": "17 box(es) stored"
+    },
+    {
+      "name": "window.leaf.1m8 imports",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "name": "window.leaf.1m8 bounds match the contract",
+      "ok": true,
+      "detail": "worst axis error 0.0000 cm"
+    },
+    {
+      "name": "window.leaf.1m8 collision rebuilt from the contract",
+      "ok": true,
+      "detail": "31 of 31 hulls"
+    },
+    {
+      "name": "window.leaf.1m8 auto-generated collision removed",
+      "ok": true,
+      "detail": "0 convex hull(s) left"
+    },
+    {
+      "name": "window.leaf.1m8 box collision persisted",
+      "ok": true,
+      "detail": "31 box(es) stored"
+    },
+    {
+      "name": "roof.panel.4m imports",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "name": "roof.panel.4m bounds match the contract",
+      "ok": true,
+      "detail": "worst axis error 0.0000 cm"
+    },
+    {
+      "name": "roof.panel.4m collision rebuilt from the contract",
+      "ok": true,
+      "detail": "64 of 64 hulls"
+    },
+    {
+      "name": "roof.panel.4m auto-generated collision removed",
+      "ok": true,
+      "detail": "0 convex hull(s) left"
+    },
+    {
+      "name": "roof.panel.4m box collision persisted",
+      "ok": true,
+      "detail": "64 box(es) stored"
+    },
+    {
+      "name": "roof.ridge.4m imports",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "name": "roof.ridge.4m bounds match the contract",
+      "ok": true,
+      "detail": "worst axis error 0.0000 cm"
+    },
+    {
+      "name": "roof.ridge.4m collision rebuilt from the contract",
+      "ok": true,
+      "detail": "8 of 8 hulls"
+    },
+    {
+      "name": "roof.ridge.4m auto-generated collision removed",
+      "ok": true,
+      "detail": "0 convex hull(s) left"
+    },
+    {
+      "name": "roof.ridge.4m box collision persisted",
+      "ok": true,
+      "detail": "8 box(es) stored"
+    },
+    {
+      "name": "prop.crate.small imports",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "name": "prop.crate.small bounds match the contract",
+      "ok": true,
+      "detail": "worst axis error 0.0000 cm"
+    },
+    {
+      "name": "prop.crate.small collision rebuilt from the contract",
+      "ok": true,
+      "detail": "17 of 17 hulls"
+    },
+    {
+      "name": "prop.crate.small auto-generated collision removed",
+      "ok": true,
+      "detail": "0 convex hull(s) left"
+    },
+    {
+      "name": "prop.crate.small box collision persisted",
+      "ok": true,
+      "detail": "17 box(es) stored"
+    },
+    {
+      "name": "prop.workbench imports",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "name": "prop.workbench bounds match the contract",
+      "ok": true,
+      "detail": "worst axis error 0.0000 cm"
+    },
+    {
+      "name": "prop.workbench collision rebuilt from the contract",
+      "ok": true,
+      "detail": "11 of 11 hulls"
+    },
+    {
+      "name": "prop.workbench auto-generated collision removed",
+      "ok": true,
+      "detail": "0 convex hull(s) left"
+    },
+    {
+      "name": "prop.workbench box collision persisted",
+      "ok": true,
+      "detail": "11 box(es) stored"
+    },
+    {
+      "name": "stair.straight.4m imports",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "name": "stair.straight.4m bounds match the contract",
+      "ok": true,
+      "detail": "worst axis error 0.0000 cm"
+    },
+    {
+      "name": "stair.straight.4m collision rebuilt from the contract",
+      "ok": true,
+      "detail": "18 of 18 hulls"
+    },
+    {
+      "name": "stair.straight.4m auto-generated collision removed",
+      "ok": true,
+      "detail": "0 convex hull(s) left"
+    },
+    {
+      "name": "stair.straight.4m box collision persisted",
+      "ok": true,
+      "detail": "18 box(es) stored"
+    },
+    {
+      "name": "floor.opening.4m imports",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "name": "floor.opening.4m bounds match the contract",
+      "ok": true,
+      "detail": "worst axis error 0.0000 cm"
+    },
+    {
+      "name": "floor.opening.4m collision rebuilt from the contract",
+      "ok": true,
+      "detail": "11 of 11 hulls"
+    },
+    {
+      "name": "floor.opening.4m auto-generated collision removed",
+      "ok": true,
+      "detail": "0 convex hull(s) left"
+    },
+    {
+      "name": "floor.opening.4m box collision persisted",
+      "ok": true,
+      "detail": "11 box(es) stored"
+    },
+    {
+      "name": "beam.4m imports",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "name": "beam.4m bounds match the contract",
+      "ok": true,
+      "detail": "worst axis error 0.0000 cm"
+    },
+    {
+      "name": "beam.4m collision rebuilt from the contract",
+      "ok": true,
+      "detail": "19 of 19 hulls"
+    },
+    {
+      "name": "beam.4m auto-generated collision removed",
+      "ok": true,
+      "detail": "0 convex hull(s) left"
+    },
+    {
+      "name": "beam.4m box collision persisted",
+      "ok": true,
+      "detail": "19 box(es) stored"
+    },
+    {
+      "name": "railing.4m imports",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "name": "railing.4m bounds match the contract",
+      "ok": true,
+      "detail": "worst axis error 0.0000 cm"
+    },
+    {
+      "name": "railing.4m collision rebuilt from the contract",
+      "ok": true,
+      "detail": "22 of 22 hulls"
+    },
+    {
+      "name": "railing.4m auto-generated collision removed",
+      "ok": true,
+      "detail": "0 convex hull(s) left"
+    },
+    {
+      "name": "railing.4m box collision persisted",
+      "ok": true,
+      "detail": "22 box(es) stored"
+    },
+    {
+      "name": "column.3m imports",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "name": "column.3m bounds match the contract",
+      "ok": true,
+      "detail": "worst axis error 0.0000 cm"
+    },
+    {
+      "name": "column.3m collision rebuilt from the contract",
+      "ok": true,
+      "detail": "11 of 11 hulls"
+    },
+    {
+      "name": "column.3m auto-generated collision removed",
+      "ok": true,
+      "detail": "0 convex hull(s) left"
+    },
+    {
+      "name": "column.3m box collision persisted",
+      "ok": true,
+      "detail": "11 box(es) stored"
+    },
+    {
+      "name": "stair.stoop.1m2 imports",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "name": "stair.stoop.1m2 bounds match the contract",
+      "ok": true,
+      "detail": "worst axis error 0.0000 cm"
+    },
+    {
+      "name": "stair.stoop.1m2 collision rebuilt from the contract",
+      "ok": true,
+      "detail": "4 of 4 hulls"
+    },
+    {
+      "name": "stair.stoop.1m2 auto-generated collision removed",
+      "ok": true,
+      "detail": "0 convex hull(s) left"
+    },
+    {
+      "name": "stair.stoop.1m2 box collision persisted",
+      "ok": true,
+      "detail": "4 box(es) stored"
+    },
+    {
+      "name": "doorway collision leaves the aperture void",
+      "ok": true,
+      "detail": "0 hull(s) inside the opening"
+    },
+    {
+      "name": "Unreal would have sealed it without us",
+      "ok": true,
+      "detail": "auto-generated 1 convex hull(s) on import"
+    },
+    {
+      "name": "layout spawns every instance",
+      "ok": true,
+      "detail": "37 of 37"
+    },
+    {
+      "name": "actors land at the layout's transforms",
+      "ok": true,
+      "detail": "worst 0.0000 cm ()"
+    }
+  ]
+}

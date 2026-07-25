@@ -28,6 +28,7 @@ H = cfg.WALL_HEIGHT
 T = cfg.WALL_THICKNESS
 FT = cfg.FLOOR_THICKNESS
 FDT = cfg.FOUNDATION_THICKNESS
+IT = cfg.INTERIOR_WALL_THICKNESS
 
 MATERIALS = {
     "M_Concrete": MaterialSlot(0, "M_Concrete", "structure",
@@ -42,6 +43,8 @@ MATERIALS = {
                                 [0.34, 0.32, 0.33, 1.0], 0.7, 0.55),
     "M_Glass": MaterialSlot(0, "M_Glass", "glazing",
                             [0.72, 0.82, 0.85, 0.28], 0.0, 0.08),
+    "M_Plaster": MaterialSlot(0, "M_Plaster", "interior",
+                              [0.78, 0.76, 0.72, 1.0], 0.0, 0.90),
 }
 
 
@@ -91,6 +94,37 @@ def wall_shell(length=M, height=H, thickness=T):
     s.add((0, -cfg.PLINTH_PROUD, 0), (length, thickness + cfg.PLINTH_PROUD,
                                       cfg.PLINTH_HEIGHT))
     return s
+
+
+def partition_shell(length=M, height=H, thickness=IT):
+    """Bare partition slab. The common body of every interior wall part.
+
+    Deliberately *not* :func:`wall_shell`: an interior wall carries no plinth.
+    The plinth stands ``PLINTH_PROUD`` of the wall face to throw water clear,
+    which indoors buys nothing and stops a workbench standing flush against the
+    wall -- the exact clearance complaint the workshop scene already raises.
+    """
+    return BoxSet.from_box((0, 0, 0), (length, thickness, height))
+
+
+def skirting(solid, a0, a1, axis=0, thickness=IT):
+    """Recessed shadow groove along both faces of a partition.
+
+    ``axis`` is the axis the wall runs along: 0 for a wall lying along X (faces
+    normal to Y), 1 for one lying along Y (faces normal to X). Passing the
+    thickness rather than reading ``T`` is what lets the corner groove both of
+    its legs from one function without either of them assuming a dimension.
+    """
+    g = cfg.INTERIOR_SKIRT_GROOVE
+    z0 = cfg.INTERIOR_SKIRT_HEIGHT
+    z1 = z0 + g
+    if axis == 0:
+        solid.subtract((a0, -0.001, z0), (a1, g, z1))
+        solid.subtract((a0, thickness - g, z0), (a1, thickness + 0.001, z1))
+    else:
+        solid.subtract((-0.001, a0, z0), (g, a1, z1))
+        solid.subtract((thickness - g, a0, z0), (thickness + 0.001, a1, z1))
+    return solid
 
 
 def wall_connectors(length=M, height=H, thickness=T, extra=()):
@@ -963,9 +997,168 @@ def stair_stoop():
     )
 
 
+# ========================================================= 19 interior wall
+#: Shared by all three interior pieces, so a partition cannot end up resting on
+#: a foundation pad in one part and a floor slab in another.
+#:
+#: ``floor_top`` only, deliberately. An exterior wall may bear on a foundation
+#: pad because it stands on the building line, where the pad is. A partition
+#: stands *inside* the building, where there is a floor; one bearing directly on
+#: a foundation is a partition outside the floor plate, which is either a
+#: misplaced wall or a missing slab. Both are worth an error, and neither is
+#: visible in a picture.
+INTERIOR_SUPPORT = dict(requires_support=True, rests_on=["floor_top"],
+                        support_axis="z", may_float=False)
+
+
+def wall_interior():
+    """A partition. Divides an interior; carries no roof and no weather.
+
+    Same thickness as an exterior wall, which is a decision recorded in
+    ``docs/decisions/0009-interior-pieces.md``: GRID_XY is the wall thickness,
+    so a thinner partition would force the placement lattice finer and weaken
+    the off-grid check for every piece in the kit.
+    """
+    s = partition_shell()
+    skirting(s, 0, M, axis=0)
+    return dict(
+        asset_id="tsr:shell/wall.interior.4m",
+        name="Interior Wall 4 m",
+        # Role is "wall", not a new "partition" role, and that is deliberate.
+        # semantic_role decides which rules apply, and every rule that applies
+        # to a wall applies to a partition unchanged -- including
+        # BASE_PIVOT_ROLES, the check that catches a floating pivot. A new role
+        # would have quietly exempted these three pieces from it. What actually
+        # differs about a partition is what it may rest on, and that belongs in
+        # `support`, where it is stated below.
+        category="structure", semantic_role="wall",
+        tags=["modular", "interior", "partition"],
+        solid=s, mesh=surface_from_boxset(s, "M_Plaster"),
+        materials=slots("M_Plaster"),
+        connectors=wall_connectors(thickness=IT),
+        pivot_convention="bay_min_corner_on_base",
+        support=INTERIOR_SUPPORT,
+        clearance_boxes=[],
+        notes=("Runs the full bay along +X, %0.2f m thick along +Y. Seams to "
+               "other partitions on the bay grid. It cannot terminate flush "
+               "against a *perimeter* wall: that wall's innermost surface is "
+               "its plinth, at derived.perimeter_inner_face_inset from the bay "
+               "line, which is not a whole number of grid units -- see "
+               "derived.perimeter_inset_is_on_grid." % IT),
+    )
+
+
+# ====================================================== 20 interior doorway
+def wall_interior_doorway():
+    """A partition with a door in it. The piece an interior room is entered by.
+
+    Without this, an interior room could be closed and not entered: the L corner
+    seals a corner without overlapping anything, but carries no opening, so two
+    of them box in a room with no way in. The benchmark repair hit exactly that
+    and settled for an alcove open on one side.
+
+    The aperture is the same ``DOOR_WIDTH x DOOR_HEIGHT`` as the exterior
+    doorway, on purpose -- ``door.leaf.1m2`` hangs in either without a second
+    leaf asset, and the reference-character checks that already govern the
+    exterior door govern this one unchanged.
+    """
+    s = partition_shell()
+    x0 = (M - cfg.DOOR_WIDTH) / 2
+    x1 = x0 + cfg.DOOR_WIDTH
+    skirting(s, 0, x0, axis=0)
+    skirting(s, x1, M, axis=0)
+    # carve_aperture, not subtract: the hole has to be *recorded* as a door, or
+    # traversal, collision and blockage have nothing to test against.
+    s.carve_aperture("door", "door",
+                     (x0, -0.01, 0), (x1, IT + 0.01, cfg.DOOR_HEIGHT),
+                     axis=1, traversable=True)
+    return dict(
+        asset_id="tsr:shell/wall.interior.doorway.4m",
+        name="Interior Wall Doorway 4 m",
+        category="structure", semantic_role="wall_opening",
+        tags=["modular", "interior", "partition", "traversable"],
+        solid=s, mesh=surface_from_boxset(s, "M_Plaster"),
+        materials=slots("M_Plaster"),
+        connectors=wall_connectors(thickness=IT, extra=[
+            conn("jamb_neg_y", "opening_jamb", (M / 2, IT / 2, cfg.DOOR_HEIGHT / 2),
+                 (0, -1, 0), (1, 0, 0), role="hinge_receiver",
+                 notes="mid-reveal mount point; a leaf mated here sits centred "
+                       "in the wall thickness rather than surface-hung"),
+            conn("jamb_pos_y", "opening_jamb", (M / 2, IT / 2, cfg.DOOR_HEIGHT / 2),
+                 (0, 1, 0), (1, 0, 0), role="hinge_receiver",
+                 notes="same point, opposite facing, for a leaf approaching from +Y"),
+        ]),
+        pivot_convention="bay_min_corner_on_base",
+        support=INTERIOR_SUPPORT,
+        clearance_boxes=[
+            [x0, -cfg.DOOR_SWING_CLEARANCE, 0, x1, 0, cfg.DOOR_HEIGHT],
+            [x0, IT, 0, x1, IT + cfg.DOOR_SWING_CLEARANCE, cfg.DOOR_HEIGHT],
+        ],
+        notes=("Aperture is %.2f x %.2f m, identical to the exterior doorway so "
+               "the same leaf fits. Both swing volumes must stay empty; indoors "
+               "that is the constraint people actually break, because furniture "
+               "goes against walls." % (cfg.DOOR_WIDTH, cfg.DOOR_HEIGHT)),
+    )
+
+
+# ======================================================== 21 interior corner
+def wall_interior_corner():
+    """L piece turning a partition through 90 degrees without overlap.
+
+    The same argument as ``wall.corner.4m`` and for the same reason -- two
+    partitions meeting at a corner overlap in a thickness-squared column, which
+    is a real intersection and is correctly refused. See
+    ``docs/decisions/0006-corner-piece-is-an-L.md``.
+
+    Solid, with no opening, and that is a constraint rather than an omission: a
+    room whose partition sides are one module each is closed by a single corner
+    and cannot be entered. Give it two modules on one side and the second module
+    is a ``wall.interior.doorway.4m``. Stated here so it is read rather than
+    discovered.
+    """
+    s = BoxSet.from_box((0, 0, 0), (M, IT, H))
+    s.add((0, 0, 0), (IT, M, H))
+    # Groove only the legs, not the fused square where they meet: a groove
+    # carried around the inside of the corner cuts the return face of the other
+    # leg and leaves a notch at the junction.
+    skirting(s, IT, M, axis=0, thickness=IT)
+    skirting(s, IT, M, axis=1, thickness=IT)
+    return dict(
+        asset_id="tsr:shell/wall.interior.corner.4m",
+        name="Interior Wall Corner 4 m",
+        category="structure", semantic_role="corner",
+        tags=["modular", "interior", "partition", "junction"],
+        solid=s, mesh=surface_from_boxset(s, "M_Plaster"),
+        materials=slots("M_Plaster"),
+        connectors=[
+            conn("base", "wall_base", (M / 2, IT / 2, 0), (0, 0, -1), (1, 0, 0),
+                 mode="surface", extent_half=(M / 2, IT / 2), role="support",
+                 required=True),
+            conn("base_y", "wall_base", (IT / 2, M / 2, 0), (0, 0, -1), (0, 1, 0),
+                 mode="surface", extent_half=(IT / 2, M / 2), role="support"),
+            conn("top_x", "wall_top", (M / 2, IT / 2, H), (0, 0, 1), (1, 0, 0),
+                 mode="surface", extent_half=(M / 2, IT / 2), role="bearing"),
+            conn("top_y", "wall_top", (IT / 2, M / 2, H), (0, 0, 1), (0, 1, 0),
+                 mode="surface", extent_half=(IT / 2, M / 2), role="bearing"),
+            conn("edge_pos_x", "wall_edge", (M, IT / 2, H / 2), (1, 0, 0), (0, 0, 1),
+                 role="seam"),
+            conn("edge_pos_y", "wall_edge", (IT / 2, M, H / 2), (0, 1, 0), (0, 0, 1),
+                 role="seam"),
+        ],
+        pivot_convention="bay_min_corner_on_base",
+        support=INTERIOR_SUPPORT,
+        clearance_boxes=[],
+        notes=("Occupies the -X and -Y edges of its bay; seams out along +X and "
+               "+Y. Solid: a one-module-per-side interior room closed by this "
+               "piece alone has no way in, which is a property of the room, not "
+               "a defect in the piece."),
+    )
+
+
 PARTS = [
     foundation_pad, floor_slab, wall_straight, wall_corner, wall_doorway,
     door_leaf, wall_window, window_leaf, roof_panel, roof_ridge,
     prop_crate, prop_workbench,
     stair_straight, floor_opening, beam, railing, column, stair_stoop,
+    wall_interior, wall_interior_doorway, wall_interior_corner,
 ]

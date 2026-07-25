@@ -28,6 +28,16 @@ Each adapter has a verification status, and the status is the honest one:
 | **Unreal Engine 5** | `adapters/unreal/tessera_unreal.py` | `verified-locally` | 94 checks against **Unreal Engine 5.6.1**, headless: all 18 assets import with bounds matching the contract to **0.0000 cm**, collision is rebuilt one hull per declared hull and persists, a 37-instance layout spawns at its declared transforms to **0.0000 cm**, and a doorway's collision is void where its aperture is. Not in CI: Unreal needs a licensed multi-gigabyte install, so it cannot follow Blender's pip route |
 | **Unity** | `adapters/unity/Editor/TesseraImporter.cs` | `script-provided-unverified` | reviewed and structurally checked; not compiled against a Unity install |
 
+> **The asset counts above are 18, and the kit now has 21.** The three M3
+> interior pieces — `wall.interior.4m`, `wall.interior.doorway.4m`,
+> `wall.interior.corner.4m` — have not been through either engine yet. Blender
+> is `verified-in-ci`, so its run covers them on the next commit and the count
+> becomes 21 when that run is read, not before. Unreal is `verified-locally`
+> and needs `tools/verify_unreal.py` re-run by hand against the licensed
+> install; until someone does, its 94 checks describe the 18 assets that were
+> present at the last run. Restating a number an engine has not actually
+> produced is exactly the kind of claim this table exists to prevent.
+
 ### What Unreal actually does with collision
 
 Worth stating plainly, because it is the founding claim of this repository and

@@ -3,9 +3,14 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
 import { readFileSync } from 'node:fs';
+import { fileURLToPath } from 'node:url';
 import { validateLayout, Transform, solveGround } from '../src/tessera-core.mjs';
 
-const root = new URL('../../../', import.meta.url).pathname;
+// fileURLToPath, not URL.pathname: on Windows the latter yields "/C:/Users/..."
+// with a leading slash, which resolves to "C:\C:\Users\..." and makes every
+// read fail. The parity check is the one that holds JS to Python's verdict, so
+// it has to be runnable on the machine doing the work, not only in CI.
+const root = fileURLToPath(new URL('../../../', import.meta.url));
 const catalog = JSON.parse(readFileSync(`${root}build/catalog.json`, 'utf8'));
 const layout = JSON.parse(readFileSync(`${root}examples/workshop_shell/layout.json`, 'utf8'));
 const expected = JSON.parse(readFileSync(`${root}build/parity-expected.json`, 'utf8'));

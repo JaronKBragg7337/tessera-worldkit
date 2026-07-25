@@ -52,6 +52,27 @@ def two_storey(root, catalog):
     return layout
 
 
+@pytest.fixture(scope="module")
+def interior_rooms(root, catalog):
+    """The free-standing room, assembled against the fixture catalog."""
+    path = os.path.join(root, "examples", "interior_rooms", "build.py")
+    spec = importlib.util.spec_from_file_location("interior_rooms_build", path)
+    module = importlib.util.module_from_spec(spec)
+    spec.loader.exec_module(module)
+    builder = module.build(catalog)
+    layout = builder.to_layout()
+    ground = catalog["derived"]["floor_top_z"]
+    layout["reachability"] = [
+        {"label": "terrain up the stoop to the threshold",
+         "from": [6.0, -1.6, 0.0], "to": [6.0, -0.15, ground], "must": True},
+        {"label": "corridor into the room through the interior doorway",
+         "from": [8.0, 1.0, ground], "to": [8.0, 6.0, ground], "must": True},
+        {"label": "back out of the room to the entrance",
+         "from": [12.0, 8.0, ground], "to": [2.0, 1.0, ground], "must": True},
+    ]
+    return layout
+
+
 def test_the_world_has_an_edge(catalog):
     """Without one, a flood fill started outdoors never terminates.
 
@@ -197,3 +218,81 @@ def test_a_doorway_you_cannot_step_up_to_is_not_an_entrance(catalog):
     with_stoop = _grid(catalog, b.to_layout())
     ok2, detail = with_stoop.route_exists((2.0, -1.5, 0.0), (2.0, 2.0, 0.5))
     assert ok2, detail
+
+
+# ------------------------------------------------------- M3 interior pieces
+# An interior room has to be two things at once, and before the interior
+# doorway existed it could only be one: the L corner closes a corner without
+# overlapping anything but carries no opening, so a room boxed in with corners
+# alone had no way in. These four tests hold both halves.
+
+def test_the_interior_room_proves_every_route_it_claims(catalog, interior_rooms):
+    result = validate_layout(interior_rooms, catalog)
+    assert result.ok, "\n".join(d.human() for d in result.errors)
+    proven = [d for d in result.diagnostics
+              if d.code == "TSR_LAYOUT_REACHABILITY_PROVEN"]
+    assert len(proven) == len(interior_rooms["reachability"])
+
+
+def test_the_interior_room_can_be_entered(catalog, interior_rooms):
+    """Closed *and* enterable. The thing M3 existed to make expressible."""
+    grid = _grid(catalog, interior_rooms)
+    ground = catalog["derived"]["floor_top_z"]
+    ok, detail = grid.route_exists((8.0, 1.0, ground), (8.0, 6.0, ground))
+    assert ok, detail
+    back, _ = grid.route_exists((12.0, 8.0, ground), (2.0, 1.0, ground))
+    assert back, "a room you cannot leave is a trap, not a room"
+
+
+def test_swapping_the_doorway_for_a_wall_seals_the_room(catalog, interior_rooms):
+    """The control, and the whole point.
+
+    Replace the one interior doorway with a solid interior wall at the same
+    transform and the room must become unreachable. If this still passed, the
+    test above would be proving nothing about the doorway -- it would only be
+    proving that a flood fill can find *some* route, which it can, around the
+    outside of the room.
+    """
+    import copy
+    sealed = copy.deepcopy(interior_rooms)
+    swapped = 0
+    for inst in sealed["instances"]:
+        if inst["asset"] == "tsr:shell/wall.interior.doorway.4m":
+            inst["asset"] = "tsr:shell/wall.interior.4m"
+            swapped += 1
+    assert swapped == 1, "the example is meant to have exactly one way in"
+
+    grid = _grid(catalog, sealed)
+    ground = catalog["derived"]["floor_top_z"]
+    ok, _ = grid.route_exists((8.0, 1.0, ground), (8.0, 6.0, ground))
+    assert not ok, ("the room is enterable with no opening in it, so the "
+                    "doorway was never what was letting the character in")
+
+    result = validate_layout(sealed, catalog)
+    codes = {d.code for d in result.diagnostics}
+    assert "TSR_LAYOUT_UNREACHABLE" in codes
+    assert not result.ok
+
+
+def test_the_interior_corner_carries_no_opening(catalog):
+    """Stated as a constraint in the part, asserted here so it stays true.
+
+    A room whose partition sides are one module each is closed by corners alone
+    and cannot be entered. That is a property of the room and it is why the
+    example uses a three-module side; if someone later carves an aperture into
+    the corner to "fix" it, this test says so.
+    """
+    index = {a["id"]: a for a in catalog["assets"]}
+    corner = index["tsr:shell/wall.interior.corner.4m"]
+    assert corner["apertures"] == []
+
+    doorway = index["tsr:shell/wall.interior.doorway.4m"]
+    assert len(doorway["apertures"]) == 1
+    hole = doorway["apertures"][0]
+    assert hole["traversable"]
+    assert hole["fits_capsule"]["admits_reference_character"], (
+        "an interior doorway the reference character cannot pass is not a door")
+    # Same clear opening as the exterior doorway, so one leaf serves both.
+    outside = index["tsr:shell/wall.doorway.4m"]["apertures"][0]
+    assert hole["clear_width"] == outside["clear_width"]
+    assert hole["clear_height"] == outside["clear_height"]

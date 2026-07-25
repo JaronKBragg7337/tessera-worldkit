@@ -1,7 +1,7 @@
 {
   "schema": "tessera.provenance/1",
-  "generated_utc": "2026-07-25T12:33:50+00:00",
-  "git_commit": "b6e6a691618997aae145998c7bd9fcee27635c00",
+  "generated_utc": "2026-07-25T17:31:50+00:00",
+  "git_commit": "b0d35b12b607e3bebe338d89101fc9a5b894ff46",
   "declaration": "Every asset listed here was generated from scratch by the named function in this repository. No third-party mesh, texture, model, scan, photograph or asset library is read at any point in the generation pipeline. source_inputs is empty for every entry, and the validator fails any asset for which it is not.",
   "license": {
     "code_spdx": "0BSD",
@@ -73,7 +73,7 @@
       "code_copied": "none - concepts only, reimplemented in Python and JS"
     }
   ],
-  "asset_count": 18,
+  "asset_count": 21,
   "assets": [
     {
       "asset": "tsr:shell/foundation.pad.4m",
@@ -758,6 +758,120 @@
           "bytes": 61
         }
       ]
+    },
+    {
+      "asset": "tsr:shell/wall.interior.4m",
+      "origin": "original-generated",
+      "generator": "tessera.catalog/wall_interior",
+      "generator_version": "1.0.0+1.0.0",
+      "authored_by": "Jaron K Bragg",
+      "source_inputs": [],
+      "third_party_review": "none-required",
+      "geometry_sha256": "8a9ce2e89711350c7b6f93ef9541a1fc1dc1692095b0432f3119579f899e31dc",
+      "license": {
+        "code_spdx": "0BSD",
+        "assets_spdx": "CC0-1.0",
+        "applies_to": "assets",
+        "attribution_required": false,
+        "commercial_use": true,
+        "redistribution": true
+      },
+      "files": [
+        {
+          "role": "glb",
+          "path": "build/meshes/wall.interior.4m.glb",
+          "sha256": "dbd9411806de59a5fe0dc3fe6d6c595bb5af03aad938215648399e3b498ef356",
+          "bytes": 10768
+        },
+        {
+          "role": "obj",
+          "path": "build/meshes/wall.interior.4m.obj",
+          "sha256": "432c42c625a58cbe202938bf9122d6a242cad9d3b6d7c879bf66e9c4aec3f0e2",
+          "bytes": 2766
+        },
+        {
+          "role": "mtl",
+          "path": "build/meshes/wall.interior.4m.mtl",
+          "sha256": "b28cbd6ff492e27a9d9373266a19ed9221d3a1f0cd0e696cff8eb23d3f9ea6a9",
+          "bytes": 60
+        }
+      ]
+    },
+    {
+      "asset": "tsr:shell/wall.interior.doorway.4m",
+      "origin": "original-generated",
+      "generator": "tessera.catalog/wall_interior_doorway",
+      "generator_version": "1.0.0+1.0.0",
+      "authored_by": "Jaron K Bragg",
+      "source_inputs": [],
+      "third_party_review": "none-required",
+      "geometry_sha256": "bdca3b375cff43fab6eae6fc3f19aa57d74f52eceda2c86272946baf9b8ad6ea",
+      "license": {
+        "code_spdx": "0BSD",
+        "assets_spdx": "CC0-1.0",
+        "applies_to": "assets",
+        "attribution_required": false,
+        "commercial_use": true,
+        "redistribution": true
+      },
+      "files": [
+        {
+          "role": "glb",
+          "path": "build/meshes/wall.interior.doorway.4m.glb",
+          "sha256": "5110366b1cb071668ac92856c4d8a97a04399e253e4c05846b687fa093608070",
+          "bytes": 23988
+        },
+        {
+          "role": "obj",
+          "path": "build/meshes/wall.interior.doorway.4m.obj",
+          "sha256": "45faef6c88fcf04dcca37b310ce88e30658bfeabbfa6793b71f6e2bb15481413",
+          "bytes": 6240
+        },
+        {
+          "role": "mtl",
+          "path": "build/meshes/wall.interior.doorway.4m.mtl",
+          "sha256": "b28cbd6ff492e27a9d9373266a19ed9221d3a1f0cd0e696cff8eb23d3f9ea6a9",
+          "bytes": 60
+        }
+      ]
+    },
+    {
+      "asset": "tsr:shell/wall.interior.corner.4m",
+      "origin": "original-generated",
+      "generator": "tessera.catalog/wall_interior_corner",
+      "generator_version": "1.0.0+1.0.0",
+      "authored_by": "Jaron K Bragg",
+      "source_inputs": [],
+      "third_party_review": "none-required",
+      "geometry_sha256": "ad6447cc289e1953815fc11d4f10ce50b31b176f8c0e3cdee59566473f425fc8",
+      "license": {
+        "code_spdx": "0BSD",
+        "assets_spdx": "CC0-1.0",
+        "applies_to": "assets",
+        "attribution_required": false,
+        "commercial_use": true,
+        "redistribution": true
+      },
+      "files": [
+        {
+          "role": "glb",
+          "path": "build/meshes/wall.interior.corner.4m.glb",
+          "sha256": "4a69db4c4c356779bf44acf54115f59008a74557f5d153b1cf03bdc056438527",
+          "bytes": 22120
+        },
+        {
+          "role": "obj",
+          "path": "build/meshes/wall.interior.corner.4m.obj",
+          "sha256": "7f3905f92ed0cab904a304d1eceee9cbb4dded7924f22def03298a7bf9245d65",
+          "bytes": 5747
+        },
+        {
+          "role": "mtl",
+          "path": "build/meshes/wall.interior.corner.4m.mtl",
+          "sha256": "b28cbd6ff492e27a9d9373266a19ed9221d3a1f0cd0e696cff8eb23d3f9ea6a9",
+          "bytes": 60
+        }
+      ]
     }
   ],
   "generators": [
@@ -810,6 +924,22 @@
       "sha256": "fe11036f0c94e8d5ceeaaa68b01c4c777836d03cb9e06b1f9c974cff13c70f17"
     },
     {
+      "path": "src/tessera/export/__init__.py",
+      "sha256": "2c6a7cfb4823c26d808ecd30ef747f1df5d4413e623c1fd05ce5191b5efe3632"
+    },
+    {
+      "path": "src/tessera/export/glb.py",
+      "sha256": "f57c12f2e2bcd10f6e068ab891d34b270602ffc8186a92b91faf91abc611ea9c"
+    },
+    {
+      "path": "src/tessera/export/obj.py",
+      "sha256": "b498eca4e42524fb83ada84b79502abdd02dd7089dba6eef1f35f817f0a082b2"
+    },
+    {
+      "path": "src/tessera/export/uv.py",
+      "sha256": "86f3284fc4cc8bc2159f23844235953dd4049119503dde8b3562a729d52c8dfd"
+    },
+    {
       "path": "src/tessera/validate/__init__.py",
       "sha256": "f217f317bc1e4bc74a3acddfebf207ace5d5e7e83f3f6c6b8a47b57c941656d6"
     },
@@ -830,28 +960,12 @@
       "sha256": "fe03fc34ed8eda020c2d4a6cdeb473f3e1ac67b17292b5f362a7401cb3fd9038"
     },
     {
-      "path": "src/tessera/export/__init__.py",
-      "sha256": "2c6a7cfb4823c26d808ecd30ef747f1df5d4413e623c1fd05ce5191b5efe3632"
-    },
-    {
-      "path": "src/tessera/export/glb.py",
-      "sha256": "f57c12f2e2bcd10f6e068ab891d34b270602ffc8186a92b91faf91abc611ea9c"
-    },
-    {
-      "path": "src/tessera/export/obj.py",
-      "sha256": "b498eca4e42524fb83ada84b79502abdd02dd7089dba6eef1f35f817f0a082b2"
-    },
-    {
-      "path": "src/tessera/export/uv.py",
-      "sha256": "86f3284fc4cc8bc2159f23844235953dd4049119503dde8b3562a729d52c8dfd"
-    },
-    {
       "path": "kits/shell_v1/config.py",
-      "sha256": "857d145b2a17f8a860bd20809edf779ac851f99637aae92698cfa2dc943b2672"
+      "sha256": "9c62e9f79c159de51ccce2a8ab12e490d5c8a4916f3cd5ae146fe55b858d3e00"
     },
     {
       "path": "kits/shell_v1/parts.py",
-      "sha256": "178d591eb82babbc2b8f387b9168913fe2a5dc21c95ddd9a2fed51bf52abd47d"
+      "sha256": "8731f2188e12dd1f62913b9a15cec8beda9157a2fddca278e0e51b7aa9ab619b"
     },
     {
       "path": "tools/export_parity.py",

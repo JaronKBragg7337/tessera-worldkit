@@ -4,7 +4,7 @@
 
 [![Code: 0BSD](https://img.shields.io/badge/code-0BSD-blue.svg)](LICENSE-CODE)
 [![Assets: CC0-1.0](https://img.shields.io/badge/assets-CC0--1.0-lightgrey.svg)](LICENSE-ASSETS)
-![Assets](https://img.shields.io/badge/assets-18-informational)
+![Assets](https://img.shields.io/badge/assets-21-informational)
 ![Dependencies](https://img.shields.io/badge/runtime%20dependencies-0-success)
 
 Give this repository to an AI agent and it stops guessing.

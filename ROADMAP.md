@@ -148,9 +148,24 @@ that is the finding.
 
 - [x] Straight stair, stoop, floor with a stairwell, beam, column, railing — M3a
 - [ ] L-turn and half-landing stairs, ramp, ladder
-- [ ] **Interior corner and doorway pieces**, so an interior room can be closed
-      *and* entered. The L corner closes a perimeter without overlap but carries
-      no opening, which is why the benchmark repair could only build an alcove
+- [x] **Interior wall, doorway and corner pieces**, so an interior room can be
+      closed *and* entered. The L corner closes a perimeter without overlap but
+      carries no opening, which is why the benchmark repair could only build an
+      alcove. `examples/interior_rooms/` is the room it could not be: 58
+      instances, 0 manual corrections, 0 errors, 0 warnings, three routes proven
+      by flood fill, and a control test that swaps the doorway for a solid wall
+      and requires `TSR_LAYOUT_UNREACHABLE`. Decisions in
+      [`docs/decisions/0009-interior-pieces.md`](docs/decisions/0009-interior-pieces.md)
+- [ ] **A wall-to-wall junction, so a partition can meet a perimeter wall.**
+      Found while building the above. A perimeter wall's innermost surface is
+      its plinth, at `WALL_THICKNESS + PLINTH_PROUD` = 0.23 m from the bay
+      line, and 0.23 is not a whole number of `GRID_XY` units — so a
+      module-length partition on the grid cannot finish flush against one. It
+      overlaps by 0.0011 m³, which is small enough to look like noise, or it
+      leaves a 0.17 m slot. Published as `derived.perimeter_inner_face_inset`
+      and `derived.perimeter_inset_is_on_grid`. Until it exists, an interior
+      room must stand clear of the perimeter, which is why the example has a
+      corridor all the way round rather than a room in a corner
 - [ ] A shorter beam, so a stairwell can be trimmed without a beam crossing the
       flight — the two-storey example is shaped around not having one
 - [ ] **A gable end wall.** Rendering the workshop showed daylight straight

@@ -5,7 +5,7 @@
     "id": "shell_v1",
     "version": "1.0.0"
   },
-  "generated_utc": "2026-07-25T12:33:49+00:00",
+  "generated_utc": "2026-07-25T17:31:12+00:00",
   "space": {
     "convention": "tessera.space/1",
     "linear_unit": "metre",
@@ -45,6 +45,9 @@
     "FOUNDATION_THICKNESS": 0.3,
     "GRID_XY": 0.2,
     "GRID_Z": 0.05,
+    "INTERIOR_SKIRT_GROOVE": 0.02,
+    "INTERIOR_SKIRT_HEIGHT": 0.1,
+    "INTERIOR_WALL_THICKNESS": 0.2,
     "KIT_ID": "shell_v1",
     "KIT_VERSION": "1.0.0",
     "LOD_SCREEN_SIZES": [
@@ -101,16 +104,19 @@
     "door_head_z": 2.2,
     "window_head_z": 2.2,
     "bay_module": 4.0,
+    "perimeter_inner_face_inset": 0.23,
+    "perimeter_inset_is_on_grid": false,
+    "partition_thickness": 0.2,
     "storey_height": 3.2,
     "second_floor_top_z": 3.7,
     "stair_steps": 16,
     "stair_run": 4.0,
     "stair_angle_degrees": 38.66
   },
-  "asset_count": 18,
+  "asset_count": 21,
   "totals": {
-    "triangles": 4510,
-    "vertices": 2275
+    "triangles": 4912,
+    "vertices": 2482
   },
   "assets": [
     {
@@ -677,7 +683,7 @@
       "provenance": {
         "generator": "tessera.catalog/foundation_pad",
         "generator_version": "1.0.0+1.0.0",
-        "created_utc": "2026-07-25T12:33:49+00:00",
+        "created_utc": "2026-07-25T17:31:12+00:00",
         "authored_by": "Jaron K Bragg",
         "origin": "original-generated",
         "source_inputs": [],
@@ -1344,7 +1350,7 @@
       "provenance": {
         "generator": "tessera.catalog/floor_slab",
         "generator_version": "1.0.0+1.0.0",
-        "created_utc": "2026-07-25T12:33:49+00:00",
+        "created_utc": "2026-07-25T17:31:12+00:00",
         "authored_by": "Jaron K Bragg",
         "origin": "original-generated",
         "source_inputs": [],
@@ -1948,7 +1954,7 @@
       "provenance": {
         "generator": "tessera.catalog/wall_straight",
         "generator_version": "1.0.0+1.0.0",
-        "created_utc": "2026-07-25T12:33:49+00:00",
+        "created_utc": "2026-07-25T17:31:12+00:00",
         "authored_by": "Jaron K Bragg",
         "origin": "original-generated",
         "source_inputs": [],
@@ -2727,7 +2733,7 @@
       "provenance": {
         "generator": "tessera.catalog/wall_corner",
         "generator_version": "1.0.0+1.0.0",
-        "created_utc": "2026-07-25T12:33:49+00:00",
+        "created_utc": "2026-07-25T17:31:12+00:00",
         "authored_by": "Jaron K Bragg",
         "origin": "original-generated",
         "source_inputs": [],
@@ -3621,7 +3627,7 @@
       "provenance": {
         "generator": "tessera.catalog/wall_doorway",
         "generator_version": "1.0.0+1.0.0",
-        "created_utc": "2026-07-25T12:33:49+00:00",
+        "created_utc": "2026-07-25T17:31:12+00:00",
         "authored_by": "Jaron K Bragg",
         "origin": "original-generated",
         "source_inputs": [],
@@ -4176,7 +4182,7 @@
       "provenance": {
         "generator": "tessera.catalog/door_leaf",
         "generator_version": "1.0.0+1.0.0",
-        "created_utc": "2026-07-25T12:33:49+00:00",
+        "created_utc": "2026-07-25T17:31:12+00:00",
         "authored_by": "Jaron K Bragg",
         "origin": "original-generated",
         "source_inputs": [],
@@ -5047,7 +5053,7 @@
       "provenance": {
         "generator": "tessera.catalog/wall_window",
         "generator_version": "1.0.0+1.0.0",
-        "created_utc": "2026-07-25T12:33:49+00:00",
+        "created_utc": "2026-07-25T17:31:12+00:00",
         "authored_by": "Jaron K Bragg",
         "origin": "original-generated",
         "source_inputs": [],
@@ -6042,7 +6048,7 @@
       "provenance": {
         "generator": "tessera.catalog/window_leaf",
         "generator_version": "1.0.0+1.0.0",
-        "created_utc": "2026-07-25T12:33:49+00:00",
+        "created_utc": "2026-07-25T17:31:12+00:00",
         "authored_by": "Jaron K Bragg",
         "origin": "original-generated",
         "source_inputs": [],
@@ -7586,7 +7592,7 @@
       "provenance": {
         "generator": "tessera.catalog/roof_panel",
         "generator_version": "1.0.0+1.0.0",
-        "created_utc": "2026-07-25T12:33:49+00:00",
+        "created_utc": "2026-07-25T17:31:12+00:00",
         "authored_by": "Jaron K Bragg",
         "origin": "original-generated",
         "source_inputs": [],
@@ -8144,7 +8150,7 @@
       "provenance": {
         "generator": "tessera.catalog/roof_ridge",
         "generator_version": "1.0.0+1.0.0",
-        "created_utc": "2026-07-25T12:33:49+00:00",
+        "created_utc": "2026-07-25T17:31:12+00:00",
         "authored_by": "Jaron K Bragg",
         "origin": "original-generated",
         "source_inputs": [],
@@ -8866,7 +8872,7 @@
       "provenance": {
         "generator": "tessera.catalog/prop_crate",
         "generator_version": "1.0.0+1.0.0",
-        "created_utc": "2026-07-25T12:33:49+00:00",
+        "created_utc": "2026-07-25T17:31:12+00:00",
         "authored_by": "Jaron K Bragg",
         "origin": "original-generated",
         "source_inputs": [],
@@ -9447,7 +9453,7 @@
       "provenance": {
         "generator": "tessera.catalog/prop_workbench",
         "generator_version": "1.0.0+1.0.0",
-        "created_utc": "2026-07-25T12:33:49+00:00",
+        "created_utc": "2026-07-25T17:31:12+00:00",
         "authored_by": "Jaron K Bragg",
         "origin": "original-generated",
         "source_inputs": [],
@@ -10394,7 +10400,7 @@
       "provenance": {
         "generator": "tessera.catalog/stair_straight",
         "generator_version": "1.0.0+1.0.0",
-        "created_utc": "2026-07-25T12:33:49+00:00",
+        "created_utc": "2026-07-25T17:31:12+00:00",
         "authored_by": "Jaron K Bragg",
         "origin": "original-generated",
         "source_inputs": [],
@@ -11181,7 +11187,7 @@
       "provenance": {
         "generator": "tessera.catalog/floor_opening",
         "generator_version": "1.0.0+1.0.0",
-        "created_utc": "2026-07-25T12:33:49+00:00",
+        "created_utc": "2026-07-25T17:31:12+00:00",
         "authored_by": "Jaron K Bragg",
         "origin": "original-generated",
         "source_inputs": [],
@@ -12034,7 +12040,7 @@
       "provenance": {
         "generator": "tessera.catalog/beam",
         "generator_version": "1.0.0+1.0.0",
-        "created_utc": "2026-07-25T12:33:49+00:00",
+        "created_utc": "2026-07-25T17:31:12+00:00",
         "authored_by": "Jaron K Bragg",
         "origin": "original-generated",
         "source_inputs": [],
@@ -12897,7 +12903,7 @@
       "provenance": {
         "generator": "tessera.catalog/railing",
         "generator_version": "1.0.0+1.0.0",
-        "created_utc": "2026-07-25T12:33:49+00:00",
+        "created_utc": "2026-07-25T17:31:12+00:00",
         "authored_by": "Jaron K Bragg",
         "origin": "original-generated",
         "source_inputs": [],
@@ -13457,7 +13463,7 @@
       "provenance": {
         "generator": "tessera.catalog/column",
         "generator_version": "1.0.0+1.0.0",
-        "created_utc": "2026-07-25T12:33:49+00:00",
+        "created_utc": "2026-07-25T17:31:12+00:00",
         "authored_by": "Jaron K Bragg",
         "origin": "original-generated",
         "source_inputs": [],
@@ -13975,7 +13981,7 @@
       "provenance": {
         "generator": "tessera.catalog/stair_stoop",
         "generator_version": "1.0.0+1.0.0",
-        "created_utc": "2026-07-25T12:33:49+00:00",
+        "created_utc": "2026-07-25T17:31:12+00:00",
         "authored_by": "Jaron K Bragg",
         "origin": "original-generated",
         "source_inputs": [],
@@ -14009,7 +14015,2206 @@
         "id": "shell_v1",
         "version": "1.0.0"
       }
+    },
+    {
+      "schema": "tessera.asset/1",
+      "contract_version": "1.0.0",
+      "id": "tsr:shell/wall.interior.4m",
+      "name": "Interior Wall 4 m",
+      "category": "structure",
+      "semantic_role": "wall",
+      "tags": [
+        "interior",
+        "modular",
+        "partition"
+      ],
+      "scale_class": "standard",
+      "scale_factor": 1.0,
+      "space": {
+        "convention": "tessera.space/1",
+        "handedness": "right",
+        "up": [
+          0.0,
+          0.0,
+          1.0
+        ],
+        "forward": [
+          0.0,
+          1.0,
+          0.0
+        ],
+        "right": [
+          1.0,
+          0.0,
+          0.0
+        ],
+        "linear_unit": "metre",
+        "angle_unit": "degree",
+        "rotation_order": "ZYX-intrinsic"
+      },
+      "dimensions": {
+        "bounds": {
+          "min": [
+            0.0,
+            0.0,
+            0.0
+          ],
+          "max": [
+            4.0,
+            0.2,
+            3.0
+          ]
+        },
+        "size": [
+          4.0,
+          0.19999999999999998,
+          3.0
+        ],
+        "grounded_bounds": {
+          "min": [
+            0.0,
+            0.0,
+            0.0
+          ],
+          "max": [
+            4.0,
+            0.2,
+            3.0
+          ]
+        },
+        "is_authored_grounded": true,
+        "base_z_local": 0.0,
+        "top_z_local": 3.0
+      },
+      "pivot": {
+        "origin_local": [
+          0.0,
+          0.0,
+          0.0
+        ],
+        "convention": "bay_min_corner_on_base",
+        "rationale": "Origin at the minimum corner of the bay, on the asset's own base. One rule for every modular piece means an agent never has to branch: put the origin on the supporting surface at a grid corner and the piece is correctly placed. base_offset_z is 0 by construction.",
+        "offset_from_bounds_min": [
+          0.0,
+          0.0,
+          0.0
+        ],
+        "offset_from_footprint_centre": [
+          -2.0,
+          -0.09999999999999999,
+          0.0
+        ],
+        "base_offset_z": 0.0
+      },
+      "axes": {
+        "forward": [
+          0.0,
+          1.0,
+          0.0
+        ],
+        "up": [
+          0.0,
+          0.0,
+          1.0
+        ],
+        "right": [
+          1.0,
+          0.0,
+          0.0
+        ],
+        "ground_plane": "z=0",
+        "intended_ground_normal": [
+          0.0,
+          0.0,
+          1.0
+        ]
+      },
+      "placement": {
+        "grid": {
+          "module": 4.0,
+          "snap_xy": 0.2,
+          "snap_z": 0.05,
+          "yaw_step_degrees": 90.0,
+          "policy": "module",
+          "rationale": "Modular pieces seam only on the bay grid they were authored on."
+        },
+        "allowed_rotations": [
+          0.0,
+          90.0,
+          180.0,
+          270.0
+        ],
+        "allowed_scaling": {
+          "uniform_only": true,
+          "min": 1.0,
+          "max": 1.0,
+          "rationale": "Modular pieces are a dimensional standard. Scaling one moves its connectors off the grid and stops it seaming with every other piece in the kit."
+        },
+        "prohibited_scaling": [
+          "non-uniform",
+          "any scale other than 1.0"
+        ],
+        "constraints": [],
+        "support": {
+          "requires_support": true,
+          "rests_on": [
+            "floor_top"
+          ],
+          "support_axis": "z",
+          "may_float": false
+        },
+        "footprint_rects": [
+          [
+            0.0,
+            0.02,
+            4.0,
+            0.18
+          ],
+          [
+            0.0,
+            0.18,
+            4.0,
+            0.19999999999999998
+          ],
+          [
+            0.0,
+            0.0,
+            4.0,
+            0.02
+          ]
+        ],
+        "footprint_area": 0.7999999999999999,
+        "allow_pitch_roll": false
+      },
+      "connectors": [
+        {
+          "id": "base",
+          "kind": "wall_base",
+          "position": [
+            2.0,
+            0.1,
+            0.0
+          ],
+          "normal": [
+            0.0,
+            0.0,
+            -1.0
+          ],
+          "tangent": [
+            1.0,
+            0.0,
+            0.0
+          ],
+          "mating_mode": "surface",
+          "extent_half": [
+            2.0,
+            0.1
+          ],
+          "role": "support",
+          "scale_class": "standard",
+          "compatible_kinds": [
+            "floor_top",
+            "foundation_top"
+          ],
+          "incompatible_kinds": [
+            "floor_edge",
+            "leaf_hinge",
+            "opening_jamb",
+            "prop_base",
+            "roof_bearing",
+            "roof_edge",
+            "roof_ridge",
+            "wall_base",
+            "wall_edge",
+            "wall_top"
+          ],
+          "tolerance": {
+            "position_metres": 0.001,
+            "angle_degrees": 1.0,
+            "roll_degrees": 1.0
+          },
+          "required": true,
+          "notes": "rests on any floor_top or foundation_top surface"
+        },
+        {
+          "id": "top",
+          "kind": "wall_top",
+          "position": [
+            2.0,
+            0.1,
+            3.0
+          ],
+          "normal": [
+            0.0,
+            0.0,
+            1.0
+          ],
+          "tangent": [
+            1.0,
+            0.0,
+            0.0
+          ],
+          "mating_mode": "surface",
+          "extent_half": [
+            2.0,
+            0.1
+          ],
+          "role": "bearing",
+          "scale_class": "standard",
+          "compatible_kinds": [
+            "roof_bearing"
+          ],
+          "incompatible_kinds": [
+            "floor_edge",
+            "floor_top",
+            "foundation_top",
+            "leaf_hinge",
+            "opening_jamb",
+            "prop_base",
+            "roof_edge",
+            "roof_ridge",
+            "wall_base",
+            "wall_edge",
+            "wall_top"
+          ],
+          "tolerance": {
+            "position_metres": 0.001,
+            "angle_degrees": 1.0,
+            "roll_degrees": 1.0
+          },
+          "required": false,
+          "notes": "carries a roof panel's roof_bearing"
+        },
+        {
+          "id": "edge_neg_x",
+          "kind": "wall_edge",
+          "position": [
+            0.0,
+            0.1,
+            1.5
+          ],
+          "normal": [
+            -1.0,
+            0.0,
+            0.0
+          ],
+          "tangent": [
+            0.0,
+            0.0,
+            1.0
+          ],
+          "mating_mode": "point",
+          "extent_half": null,
+          "role": "seam",
+          "scale_class": "standard",
+          "compatible_kinds": [
+            "wall_edge"
+          ],
+          "incompatible_kinds": [
+            "floor_edge",
+            "floor_top",
+            "foundation_top",
+            "leaf_hinge",
+            "opening_jamb",
+            "prop_base",
+            "roof_bearing",
+            "roof_edge",
+            "roof_ridge",
+            "wall_base",
+            "wall_top"
+          ],
+          "tolerance": {
+            "position_metres": 0.001,
+            "angle_degrees": 1.0,
+            "roll_degrees": 1.0
+          },
+          "required": false,
+          "notes": ""
+        },
+        {
+          "id": "edge_pos_x",
+          "kind": "wall_edge",
+          "position": [
+            4.0,
+            0.1,
+            1.5
+          ],
+          "normal": [
+            1.0,
+            0.0,
+            0.0
+          ],
+          "tangent": [
+            0.0,
+            0.0,
+            1.0
+          ],
+          "mating_mode": "point",
+          "extent_half": null,
+          "role": "seam",
+          "scale_class": "standard",
+          "compatible_kinds": [
+            "wall_edge"
+          ],
+          "incompatible_kinds": [
+            "floor_edge",
+            "floor_top",
+            "foundation_top",
+            "leaf_hinge",
+            "opening_jamb",
+            "prop_base",
+            "roof_bearing",
+            "roof_edge",
+            "roof_ridge",
+            "wall_base",
+            "wall_top"
+          ],
+          "tolerance": {
+            "position_metres": 0.001,
+            "angle_degrees": 1.0,
+            "roll_degrees": 1.0
+          },
+          "required": false,
+          "notes": ""
+        }
+      ],
+      "occupancy": {
+        "representation": "axis_aligned_box_set",
+        "exact": true,
+        "box_count": 5,
+        "volume": 2.3968,
+        "boxes": [
+          [
+            0.0,
+            0.02,
+            0.0,
+            4.0,
+            0.18,
+            3.0
+          ],
+          [
+            0.0,
+            0.18,
+            0.0,
+            4.0,
+            0.19999999999999998,
+            0.09999999999999999
+          ],
+          [
+            0.0,
+            0.18,
+            0.12,
+            4.0,
+            0.19999999999999998,
+            3.0
+          ],
+          [
+            0.0,
+            0.0,
+            0.0,
+            4.0,
+            0.02,
+            0.09999999999999999
+          ],
+          [
+            0.0,
+            0.0,
+            0.12,
+            4.0,
+            0.02,
+            3.0
+          ]
+        ],
+        "disjoint": true,
+        "approximation_tolerance": 0.0
+      },
+      "clearance": {
+        "representation": "axis_aligned_box_set",
+        "box_count": 0,
+        "boxes": [],
+        "purpose": "volumes that must remain free for the asset to function"
+      },
+      "apertures": [],
+      "collision": {
+        "mode": "convex_decomposition",
+        "source": "occupancy_box_set",
+        "exact": true,
+        "hull_count": 5,
+        "hulls": [
+          [
+            0.0,
+            0.02,
+            0.0,
+            4.0,
+            0.18,
+            3.0
+          ],
+          [
+            0.0,
+            0.18,
+            0.0,
+            4.0,
+            0.19999999999999998,
+            0.09999999999999999
+          ],
+          [
+            0.0,
+            0.18,
+            0.12,
+            4.0,
+            0.19999999999999998,
+            3.0
+          ],
+          [
+            0.0,
+            0.0,
+            0.0,
+            4.0,
+            0.02,
+            0.09999999999999999
+          ],
+          [
+            0.0,
+            0.0,
+            0.12,
+            4.0,
+            0.02,
+            3.0
+          ]
+        ],
+        "preserves_apertures": true,
+        "auto_convex_would_seal_apertures": false,
+        "engine_hint": "import as convex hulls; do NOT let the engine auto-generate"
+      },
+      "materials": [
+        {
+          "slot": 0,
+          "name": "M_Plaster",
+          "role": "interior",
+          "base_color": [
+            0.78,
+            0.76,
+            0.72,
+            1.0
+          ],
+          "metallic": 0.0,
+          "roughness": 0.9
+        }
+      ],
+      "lods": [],
+      "geometry": {
+        "triangles": 72,
+        "vertices": 38,
+        "surface_area": 27.118399999999998,
+        "signed_volume": 2.3968,
+        "watertight": true,
+        "non_manifold_edges": 0,
+        "boundary_edges": 0,
+        "outward_winding": true,
+        "sha256": "8a9ce2e89711350c7b6f93ef9541a1fc1dc1692095b0432f3119579f899e31dc"
+      },
+      "files": {
+        "glb": "meshes/wall.interior.4m.glb",
+        "obj": "meshes/wall.interior.4m.obj",
+        "mtl": "meshes/wall.interior.4m.mtl"
+      },
+      "engine": {
+        "unreal": {
+          "import_uniform_scale": 1.0,
+          "unit_conversion": "1 metre -> 100 uu (applied by the adapter)",
+          "combine_meshes": false,
+          "generate_lightmap_uvs": false,
+          "import_normals": "Import Normals and Tangents",
+          "auto_generate_collision": false,
+          "collision_source": "UCX_ hulls from occupancy",
+          "note": "auto collision seals apertures; use the shipped hulls"
+        },
+        "unity": {
+          "scale_factor": 1.0,
+          "convert_units": true,
+          "normals": "Import",
+          "generate_colliders": false,
+          "collision_source": "compound BoxCollider set from occupancy"
+        },
+        "three": {
+          "format": "glb",
+          "up_axis": "+Y",
+          "conversion": "canonical Z-up right-handed -> glTF Y-up right-handed"
+        },
+        "blender": {
+          "format": "glb",
+          "conversion": "identity"
+        }
+      },
+      "provenance": {
+        "generator": "tessera.catalog/wall_interior",
+        "generator_version": "1.0.0+1.0.0",
+        "created_utc": "2026-07-25T17:31:12+00:00",
+        "authored_by": "Jaron K Bragg",
+        "origin": "original-generated",
+        "source_inputs": [],
+        "generated_files": [
+          "meshes/wall.interior.4m.glb",
+          "meshes/wall.interior.4m.mtl",
+          "meshes/wall.interior.4m.obj"
+        ],
+        "derived_from": [],
+        "third_party_review": "none-required",
+        "notes": "Generated from scratch by the named function using only the Tessera geometry kernel. No third-party mesh, texture or model file is read at any point in this pipeline."
+      },
+      "license": {
+        "code_spdx": "0BSD",
+        "assets_spdx": "CC0-1.0",
+        "applies_to": "assets",
+        "attribution_required": false,
+        "commercial_use": true,
+        "redistribution": true
+      },
+      "validation": {
+        "status": "unvalidated",
+        "validator_version": "",
+        "checked_utc": "",
+        "checks_passed": [],
+        "checks_failed": [],
+        "coverage": {}
+      },
+      "notes": "Runs the full bay along +X, 0.20 m thick along +Y. Seams to other partitions on the bay grid. It cannot terminate flush against a *perimeter* wall: that wall's innermost surface is its plinth, at derived.perimeter_inner_face_inset from the bay line, which is not a whole number of grid units -- see derived.perimeter_inset_is_on_grid.",
+      "kit": {
+        "id": "shell_v1",
+        "version": "1.0.0"
+      }
+    },
+    {
+      "schema": "tessera.asset/1",
+      "contract_version": "1.0.0",
+      "id": "tsr:shell/wall.interior.doorway.4m",
+      "name": "Interior Wall Doorway 4 m",
+      "category": "structure",
+      "semantic_role": "wall_opening",
+      "tags": [
+        "interior",
+        "modular",
+        "partition",
+        "traversable"
+      ],
+      "scale_class": "standard",
+      "scale_factor": 1.0,
+      "space": {
+        "convention": "tessera.space/1",
+        "handedness": "right",
+        "up": [
+          0.0,
+          0.0,
+          1.0
+        ],
+        "forward": [
+          0.0,
+          1.0,
+          0.0
+        ],
+        "right": [
+          1.0,
+          0.0,
+          0.0
+        ],
+        "linear_unit": "metre",
+        "angle_unit": "degree",
+        "rotation_order": "ZYX-intrinsic"
+      },
+      "dimensions": {
+        "bounds": {
+          "min": [
+            0.0,
+            0.0,
+            0.0
+          ],
+          "max": [
+            4.0,
+            0.2,
+            3.0
+          ]
+        },
+        "size": [
+          4.0,
+          0.19999999999999998,
+          3.0
+        ],
+        "grounded_bounds": {
+          "min": [
+            0.0,
+            0.0,
+            0.0
+          ],
+          "max": [
+            4.0,
+            0.2,
+            3.0
+          ]
+        },
+        "is_authored_grounded": true,
+        "base_z_local": 0.0,
+        "top_z_local": 3.0
+      },
+      "pivot": {
+        "origin_local": [
+          0.0,
+          0.0,
+          0.0
+        ],
+        "convention": "bay_min_corner_on_base",
+        "rationale": "Origin at the minimum corner of the bay, on the asset's own base. One rule for every modular piece means an agent never has to branch: put the origin on the supporting surface at a grid corner and the piece is correctly placed. base_offset_z is 0 by construction.",
+        "offset_from_bounds_min": [
+          0.0,
+          0.0,
+          0.0
+        ],
+        "offset_from_footprint_centre": [
+          -2.0,
+          -0.09999999999999999,
+          0.0
+        ],
+        "base_offset_z": 0.0
+      },
+      "axes": {
+        "forward": [
+          0.0,
+          1.0,
+          0.0
+        ],
+        "up": [
+          0.0,
+          0.0,
+          1.0
+        ],
+        "right": [
+          1.0,
+          0.0,
+          0.0
+        ],
+        "ground_plane": "z=0",
+        "intended_ground_normal": [
+          0.0,
+          0.0,
+          1.0
+        ]
+      },
+      "placement": {
+        "grid": {
+          "module": 4.0,
+          "snap_xy": 0.2,
+          "snap_z": 0.05,
+          "yaw_step_degrees": 90.0,
+          "policy": "module",
+          "rationale": "Modular pieces seam only on the bay grid they were authored on."
+        },
+        "allowed_rotations": [
+          0.0,
+          90.0,
+          180.0,
+          270.0
+        ],
+        "allowed_scaling": {
+          "uniform_only": true,
+          "min": 1.0,
+          "max": 1.0,
+          "rationale": "Modular pieces are a dimensional standard. Scaling one moves its connectors off the grid and stops it seaming with every other piece in the kit."
+        },
+        "prohibited_scaling": [
+          "non-uniform",
+          "any scale other than 1.0"
+        ],
+        "constraints": [],
+        "support": {
+          "requires_support": true,
+          "rests_on": [
+            "floor_top"
+          ],
+          "support_axis": "z",
+          "may_float": false
+        },
+        "footprint_rects": [
+          [
+            2.6,
+            0.02,
+            4.0,
+            0.18
+          ],
+          [
+            2.6,
+            0.18,
+            4.0,
+            0.19999999999999998
+          ],
+          [
+            2.6,
+            0.0,
+            4.0,
+            0.02
+          ],
+          [
+            0.0,
+            0.02,
+            1.4,
+            0.18
+          ],
+          [
+            0.0,
+            0.18,
+            1.4,
+            0.19999999999999998
+          ],
+          [
+            0.0,
+            0.0,
+            1.4,
+            0.02
+          ]
+        ],
+        "footprint_area": 0.5599999999999999,
+        "allow_pitch_roll": false
+      },
+      "connectors": [
+        {
+          "id": "base",
+          "kind": "wall_base",
+          "position": [
+            2.0,
+            0.1,
+            0.0
+          ],
+          "normal": [
+            0.0,
+            0.0,
+            -1.0
+          ],
+          "tangent": [
+            1.0,
+            0.0,
+            0.0
+          ],
+          "mating_mode": "surface",
+          "extent_half": [
+            2.0,
+            0.1
+          ],
+          "role": "support",
+          "scale_class": "standard",
+          "compatible_kinds": [
+            "floor_top",
+            "foundation_top"
+          ],
+          "incompatible_kinds": [
+            "floor_edge",
+            "leaf_hinge",
+            "opening_jamb",
+            "prop_base",
+            "roof_bearing",
+            "roof_edge",
+            "roof_ridge",
+            "wall_base",
+            "wall_edge",
+            "wall_top"
+          ],
+          "tolerance": {
+            "position_metres": 0.001,
+            "angle_degrees": 1.0,
+            "roll_degrees": 1.0
+          },
+          "required": true,
+          "notes": "rests on any floor_top or foundation_top surface"
+        },
+        {
+          "id": "top",
+          "kind": "wall_top",
+          "position": [
+            2.0,
+            0.1,
+            3.0
+          ],
+          "normal": [
+            0.0,
+            0.0,
+            1.0
+          ],
+          "tangent": [
+            1.0,
+            0.0,
+            0.0
+          ],
+          "mating_mode": "surface",
+          "extent_half": [
+            2.0,
+            0.1
+          ],
+          "role": "bearing",
+          "scale_class": "standard",
+          "compatible_kinds": [
+            "roof_bearing"
+          ],
+          "incompatible_kinds": [
+            "floor_edge",
+            "floor_top",
+            "foundation_top",
+            "leaf_hinge",
+            "opening_jamb",
+            "prop_base",
+            "roof_edge",
+            "roof_ridge",
+            "wall_base",
+            "wall_edge",
+            "wall_top"
+          ],
+          "tolerance": {
+            "position_metres": 0.001,
+            "angle_degrees": 1.0,
+            "roll_degrees": 1.0
+          },
+          "required": false,
+          "notes": "carries a roof panel's roof_bearing"
+        },
+        {
+          "id": "edge_neg_x",
+          "kind": "wall_edge",
+          "position": [
+            0.0,
+            0.1,
+            1.5
+          ],
+          "normal": [
+            -1.0,
+            0.0,
+            0.0
+          ],
+          "tangent": [
+            0.0,
+            0.0,
+            1.0
+          ],
+          "mating_mode": "point",
+          "extent_half": null,
+          "role": "seam",
+          "scale_class": "standard",
+          "compatible_kinds": [
+            "wall_edge"
+          ],
+          "incompatible_kinds": [
+            "floor_edge",
+            "floor_top",
+            "foundation_top",
+            "leaf_hinge",
+            "opening_jamb",
+            "prop_base",
+            "roof_bearing",
+            "roof_edge",
+            "roof_ridge",
+            "wall_base",
+            "wall_top"
+          ],
+          "tolerance": {
+            "position_metres": 0.001,
+            "angle_degrees": 1.0,
+            "roll_degrees": 1.0
+          },
+          "required": false,
+          "notes": ""
+        },
+        {
+          "id": "edge_pos_x",
+          "kind": "wall_edge",
+          "position": [
+            4.0,
+            0.1,
+            1.5
+          ],
+          "normal": [
+            1.0,
+            0.0,
+            0.0
+          ],
+          "tangent": [
+            0.0,
+            0.0,
+            1.0
+          ],
+          "mating_mode": "point",
+          "extent_half": null,
+          "role": "seam",
+          "scale_class": "standard",
+          "compatible_kinds": [
+            "wall_edge"
+          ],
+          "incompatible_kinds": [
+            "floor_edge",
+            "floor_top",
+            "foundation_top",
+            "leaf_hinge",
+            "opening_jamb",
+            "prop_base",
+            "roof_bearing",
+            "roof_edge",
+            "roof_ridge",
+            "wall_base",
+            "wall_top"
+          ],
+          "tolerance": {
+            "position_metres": 0.001,
+            "angle_degrees": 1.0,
+            "roll_degrees": 1.0
+          },
+          "required": false,
+          "notes": ""
+        },
+        {
+          "id": "jamb_neg_y",
+          "kind": "opening_jamb",
+          "position": [
+            2.0,
+            0.1,
+            1.1
+          ],
+          "normal": [
+            0.0,
+            -1.0,
+            0.0
+          ],
+          "tangent": [
+            1.0,
+            0.0,
+            0.0
+          ],
+          "mating_mode": "point",
+          "extent_half": null,
+          "role": "hinge_receiver",
+          "scale_class": "standard",
+          "compatible_kinds": [
+            "leaf_hinge"
+          ],
+          "incompatible_kinds": [
+            "floor_edge",
+            "floor_top",
+            "foundation_top",
+            "opening_jamb",
+            "prop_base",
+            "roof_bearing",
+            "roof_edge",
+            "roof_ridge",
+            "wall_base",
+            "wall_edge",
+            "wall_top"
+          ],
+          "tolerance": {
+            "position_metres": 0.001,
+            "angle_degrees": 1.0,
+            "roll_degrees": 1.0
+          },
+          "required": false,
+          "notes": "mid-reveal mount point; a leaf mated here sits centred in the wall thickness rather than surface-hung"
+        },
+        {
+          "id": "jamb_pos_y",
+          "kind": "opening_jamb",
+          "position": [
+            2.0,
+            0.1,
+            1.1
+          ],
+          "normal": [
+            0.0,
+            1.0,
+            0.0
+          ],
+          "tangent": [
+            1.0,
+            0.0,
+            0.0
+          ],
+          "mating_mode": "point",
+          "extent_half": null,
+          "role": "hinge_receiver",
+          "scale_class": "standard",
+          "compatible_kinds": [
+            "leaf_hinge"
+          ],
+          "incompatible_kinds": [
+            "floor_edge",
+            "floor_top",
+            "foundation_top",
+            "opening_jamb",
+            "prop_base",
+            "roof_bearing",
+            "roof_edge",
+            "roof_ridge",
+            "wall_base",
+            "wall_edge",
+            "wall_top"
+          ],
+          "tolerance": {
+            "position_metres": 0.001,
+            "angle_degrees": 1.0,
+            "roll_degrees": 1.0
+          },
+          "required": false,
+          "notes": "same point, opposite facing, for a leaf approaching from +Y"
+        }
+      ],
+      "occupancy": {
+        "representation": "axis_aligned_box_set",
+        "exact": true,
+        "box_count": 11,
+        "volume": 1.8697599999999999,
+        "boxes": [
+          [
+            1.4,
+            0.0,
+            2.1999999999999997,
+            2.6,
+            0.19999999999999998,
+            3.0
+          ],
+          [
+            2.6,
+            0.02,
+            0.0,
+            4.0,
+            0.18,
+            3.0
+          ],
+          [
+            2.6,
+            0.18,
+            0.0,
+            4.0,
+            0.19999999999999998,
+            0.09999999999999999
+          ],
+          [
+            2.6,
+            0.18,
+            0.12,
+            4.0,
+            0.19999999999999998,
+            3.0
+          ],
+          [
+            2.6,
+            0.0,
+            0.0,
+            4.0,
+            0.02,
+            0.09999999999999999
+          ],
+          [
+            2.6,
+            0.0,
+            0.12,
+            4.0,
+            0.02,
+            3.0
+          ],
+          [
+            0.0,
+            0.02,
+            0.0,
+            1.4,
+            0.18,
+            3.0
+          ],
+          [
+            0.0,
+            0.18,
+            0.0,
+            1.4,
+            0.19999999999999998,
+            0.09999999999999999
+          ],
+          [
+            0.0,
+            0.18,
+            0.12,
+            1.4,
+            0.19999999999999998,
+            3.0
+          ],
+          [
+            0.0,
+            0.0,
+            0.0,
+            1.4,
+            0.02,
+            0.09999999999999999
+          ],
+          [
+            0.0,
+            0.0,
+            0.12,
+            1.4,
+            0.02,
+            3.0
+          ]
+        ],
+        "disjoint": true,
+        "approximation_tolerance": 0.0
+      },
+      "clearance": {
+        "representation": "axis_aligned_box_set",
+        "box_count": 2,
+        "boxes": [
+          [
+            1.4,
+            -1.0999999999999999,
+            0.0,
+            2.6,
+            0.0,
+            2.1999999999999997
+          ],
+          [
+            1.4,
+            0.19999999999999998,
+            0.0,
+            2.6,
+            1.3,
+            2.1999999999999997
+          ]
+        ],
+        "purpose": "volumes that must remain free for the asset to function"
+      },
+      "apertures": [
+        {
+          "id": "door",
+          "kind": "door",
+          "bounds": {
+            "min": [
+              1.4,
+              -0.01,
+              0.0
+            ],
+            "max": [
+              2.6,
+              0.21,
+              2.2
+            ]
+          },
+          "traversal_axis": "y",
+          "clear_width": 1.2,
+          "clear_height": 2.2,
+          "traversable": true,
+          "fits_capsule": {
+            "radius": 0.6,
+            "height": 2.2,
+            "admits_reference_character": true,
+            "reference_character": {
+              "radius": 0.35,
+              "height": 1.8
+            }
+          }
+        }
+      ],
+      "collision": {
+        "mode": "convex_decomposition",
+        "source": "occupancy_box_set",
+        "exact": true,
+        "hull_count": 11,
+        "hulls": [
+          [
+            1.4,
+            0.0,
+            2.1999999999999997,
+            2.6,
+            0.19999999999999998,
+            3.0
+          ],
+          [
+            2.6,
+            0.02,
+            0.0,
+            4.0,
+            0.18,
+            3.0
+          ],
+          [
+            2.6,
+            0.18,
+            0.0,
+            4.0,
+            0.19999999999999998,
+            0.09999999999999999
+          ],
+          [
+            2.6,
+            0.18,
+            0.12,
+            4.0,
+            0.19999999999999998,
+            3.0
+          ],
+          [
+            2.6,
+            0.0,
+            0.0,
+            4.0,
+            0.02,
+            0.09999999999999999
+          ],
+          [
+            2.6,
+            0.0,
+            0.12,
+            4.0,
+            0.02,
+            3.0
+          ],
+          [
+            0.0,
+            0.02,
+            0.0,
+            1.4,
+            0.18,
+            3.0
+          ],
+          [
+            0.0,
+            0.18,
+            0.0,
+            1.4,
+            0.19999999999999998,
+            0.09999999999999999
+          ],
+          [
+            0.0,
+            0.18,
+            0.12,
+            1.4,
+            0.19999999999999998,
+            3.0
+          ],
+          [
+            0.0,
+            0.0,
+            0.0,
+            1.4,
+            0.02,
+            0.09999999999999999
+          ],
+          [
+            0.0,
+            0.0,
+            0.12,
+            1.4,
+            0.02,
+            3.0
+          ]
+        ],
+        "preserves_apertures": true,
+        "auto_convex_would_seal_apertures": true,
+        "engine_hint": "import as convex hulls; do NOT let the engine auto-generate"
+      },
+      "materials": [
+        {
+          "slot": 0,
+          "name": "M_Plaster",
+          "role": "interior",
+          "base_color": [
+            0.78,
+            0.76,
+            0.72,
+            1.0
+          ],
+          "metallic": 0.0,
+          "roughness": 0.9
+        }
+      ],
+      "lods": [],
+      "geometry": {
+        "triangles": 172,
+        "vertices": 88,
+        "surface_area": 22.6208,
+        "signed_volume": 1.8697599999999999,
+        "watertight": true,
+        "non_manifold_edges": 0,
+        "boundary_edges": 0,
+        "outward_winding": true,
+        "sha256": "bdca3b375cff43fab6eae6fc3f19aa57d74f52eceda2c86272946baf9b8ad6ea"
+      },
+      "files": {
+        "glb": "meshes/wall.interior.doorway.4m.glb",
+        "obj": "meshes/wall.interior.doorway.4m.obj",
+        "mtl": "meshes/wall.interior.doorway.4m.mtl"
+      },
+      "engine": {
+        "unreal": {
+          "import_uniform_scale": 1.0,
+          "unit_conversion": "1 metre -> 100 uu (applied by the adapter)",
+          "combine_meshes": false,
+          "generate_lightmap_uvs": false,
+          "import_normals": "Import Normals and Tangents",
+          "auto_generate_collision": false,
+          "collision_source": "UCX_ hulls from occupancy",
+          "note": "auto collision seals apertures; use the shipped hulls"
+        },
+        "unity": {
+          "scale_factor": 1.0,
+          "convert_units": true,
+          "normals": "Import",
+          "generate_colliders": false,
+          "collision_source": "compound BoxCollider set from occupancy"
+        },
+        "three": {
+          "format": "glb",
+          "up_axis": "+Y",
+          "conversion": "canonical Z-up right-handed -> glTF Y-up right-handed"
+        },
+        "blender": {
+          "format": "glb",
+          "conversion": "identity"
+        }
+      },
+      "provenance": {
+        "generator": "tessera.catalog/wall_interior_doorway",
+        "generator_version": "1.0.0+1.0.0",
+        "created_utc": "2026-07-25T17:31:12+00:00",
+        "authored_by": "Jaron K Bragg",
+        "origin": "original-generated",
+        "source_inputs": [],
+        "generated_files": [
+          "meshes/wall.interior.doorway.4m.glb",
+          "meshes/wall.interior.doorway.4m.mtl",
+          "meshes/wall.interior.doorway.4m.obj"
+        ],
+        "derived_from": [],
+        "third_party_review": "none-required",
+        "notes": "Generated from scratch by the named function using only the Tessera geometry kernel. No third-party mesh, texture or model file is read at any point in this pipeline."
+      },
+      "license": {
+        "code_spdx": "0BSD",
+        "assets_spdx": "CC0-1.0",
+        "applies_to": "assets",
+        "attribution_required": false,
+        "commercial_use": true,
+        "redistribution": true
+      },
+      "validation": {
+        "status": "unvalidated",
+        "validator_version": "",
+        "checked_utc": "",
+        "checks_passed": [],
+        "checks_failed": [],
+        "coverage": {}
+      },
+      "notes": "Aperture is 1.20 x 2.20 m, identical to the exterior doorway so the same leaf fits. Both swing volumes must stay empty; indoors that is the constraint people actually break, because furniture goes against walls.",
+      "kit": {
+        "id": "shell_v1",
+        "version": "1.0.0"
+      }
+    },
+    {
+      "schema": "tessera.asset/1",
+      "contract_version": "1.0.0",
+      "id": "tsr:shell/wall.interior.corner.4m",
+      "name": "Interior Wall Corner 4 m",
+      "category": "structure",
+      "semantic_role": "corner",
+      "tags": [
+        "interior",
+        "junction",
+        "modular",
+        "partition"
+      ],
+      "scale_class": "standard",
+      "scale_factor": 1.0,
+      "space": {
+        "convention": "tessera.space/1",
+        "handedness": "right",
+        "up": [
+          0.0,
+          0.0,
+          1.0
+        ],
+        "forward": [
+          0.0,
+          1.0,
+          0.0
+        ],
+        "right": [
+          1.0,
+          0.0,
+          0.0
+        ],
+        "linear_unit": "metre",
+        "angle_unit": "degree",
+        "rotation_order": "ZYX-intrinsic"
+      },
+      "dimensions": {
+        "bounds": {
+          "min": [
+            0.0,
+            0.0,
+            0.0
+          ],
+          "max": [
+            4.0,
+            4.0,
+            3.0
+          ]
+        },
+        "size": [
+          4.0,
+          4.0,
+          3.0
+        ],
+        "grounded_bounds": {
+          "min": [
+            0.0,
+            0.0,
+            0.0
+          ],
+          "max": [
+            4.0,
+            4.0,
+            3.0
+          ]
+        },
+        "is_authored_grounded": true,
+        "base_z_local": 0.0,
+        "top_z_local": 3.0
+      },
+      "pivot": {
+        "origin_local": [
+          0.0,
+          0.0,
+          0.0
+        ],
+        "convention": "bay_min_corner_on_base",
+        "rationale": "Origin at the minimum corner of the bay, on the asset's own base. One rule for every modular piece means an agent never has to branch: put the origin on the supporting surface at a grid corner and the piece is correctly placed. base_offset_z is 0 by construction.",
+        "offset_from_bounds_min": [
+          0.0,
+          0.0,
+          0.0
+        ],
+        "offset_from_footprint_centre": [
+          -2.0,
+          -2.0,
+          0.0
+        ],
+        "base_offset_z": 0.0
+      },
+      "axes": {
+        "forward": [
+          0.0,
+          1.0,
+          0.0
+        ],
+        "up": [
+          0.0,
+          0.0,
+          1.0
+        ],
+        "right": [
+          1.0,
+          0.0,
+          0.0
+        ],
+        "ground_plane": "z=0",
+        "intended_ground_normal": [
+          0.0,
+          0.0,
+          1.0
+        ]
+      },
+      "placement": {
+        "grid": {
+          "module": 4.0,
+          "snap_xy": 0.2,
+          "snap_z": 0.05,
+          "yaw_step_degrees": 90.0,
+          "policy": "module",
+          "rationale": "Modular pieces seam only on the bay grid they were authored on."
+        },
+        "allowed_rotations": [
+          0.0,
+          90.0,
+          180.0,
+          270.0
+        ],
+        "allowed_scaling": {
+          "uniform_only": true,
+          "min": 1.0,
+          "max": 1.0,
+          "rationale": "Modular pieces are a dimensional standard. Scaling one moves its connectors off the grid and stops it seaming with every other piece in the kit."
+        },
+        "prohibited_scaling": [
+          "non-uniform",
+          "any scale other than 1.0"
+        ],
+        "constraints": [],
+        "support": {
+          "requires_support": true,
+          "rests_on": [
+            "floor_top"
+          ],
+          "support_axis": "z",
+          "may_float": false
+        },
+        "footprint_rects": [
+          [
+            0.19999999999999998,
+            0.02,
+            4.0,
+            0.18
+          ],
+          [
+            0.19999999999999998,
+            0.18,
+            4.0,
+            0.19999999999999998
+          ],
+          [
+            0.19999999999999998,
+            0.0,
+            4.0,
+            0.02
+          ],
+          [
+            0.02,
+            0.0,
+            0.18,
+            4.0
+          ],
+          [
+            0.18,
+            0.0,
+            0.19999999999999998,
+            0.19999999999999998
+          ],
+          [
+            0.18,
+            0.19999999999999998,
+            0.19999999999999998,
+            4.0
+          ],
+          [
+            0.0,
+            0.0,
+            0.02,
+            0.19999999999999998
+          ],
+          [
+            0.0,
+            0.19999999999999998,
+            0.02,
+            4.0
+          ]
+        ],
+        "footprint_area": 1.5599999999999998,
+        "allow_pitch_roll": false
+      },
+      "connectors": [
+        {
+          "id": "base",
+          "kind": "wall_base",
+          "position": [
+            2.0,
+            0.1,
+            0.0
+          ],
+          "normal": [
+            0.0,
+            0.0,
+            -1.0
+          ],
+          "tangent": [
+            1.0,
+            0.0,
+            0.0
+          ],
+          "mating_mode": "surface",
+          "extent_half": [
+            2.0,
+            0.1
+          ],
+          "role": "support",
+          "scale_class": "standard",
+          "compatible_kinds": [
+            "floor_top",
+            "foundation_top"
+          ],
+          "incompatible_kinds": [
+            "floor_edge",
+            "leaf_hinge",
+            "opening_jamb",
+            "prop_base",
+            "roof_bearing",
+            "roof_edge",
+            "roof_ridge",
+            "wall_base",
+            "wall_edge",
+            "wall_top"
+          ],
+          "tolerance": {
+            "position_metres": 0.001,
+            "angle_degrees": 1.0,
+            "roll_degrees": 1.0
+          },
+          "required": true,
+          "notes": ""
+        },
+        {
+          "id": "base_y",
+          "kind": "wall_base",
+          "position": [
+            0.1,
+            2.0,
+            0.0
+          ],
+          "normal": [
+            0.0,
+            0.0,
+            -1.0
+          ],
+          "tangent": [
+            0.0,
+            1.0,
+            0.0
+          ],
+          "mating_mode": "surface",
+          "extent_half": [
+            0.1,
+            2.0
+          ],
+          "role": "support",
+          "scale_class": "standard",
+          "compatible_kinds": [
+            "floor_top",
+            "foundation_top"
+          ],
+          "incompatible_kinds": [
+            "floor_edge",
+            "leaf_hinge",
+            "opening_jamb",
+            "prop_base",
+            "roof_bearing",
+            "roof_edge",
+            "roof_ridge",
+            "wall_base",
+            "wall_edge",
+            "wall_top"
+          ],
+          "tolerance": {
+            "position_metres": 0.001,
+            "angle_degrees": 1.0,
+            "roll_degrees": 1.0
+          },
+          "required": false,
+          "notes": ""
+        },
+        {
+          "id": "top_x",
+          "kind": "wall_top",
+          "position": [
+            2.0,
+            0.1,
+            3.0
+          ],
+          "normal": [
+            0.0,
+            0.0,
+            1.0
+          ],
+          "tangent": [
+            1.0,
+            0.0,
+            0.0
+          ],
+          "mating_mode": "surface",
+          "extent_half": [
+            2.0,
+            0.1
+          ],
+          "role": "bearing",
+          "scale_class": "standard",
+          "compatible_kinds": [
+            "roof_bearing"
+          ],
+          "incompatible_kinds": [
+            "floor_edge",
+            "floor_top",
+            "foundation_top",
+            "leaf_hinge",
+            "opening_jamb",
+            "prop_base",
+            "roof_edge",
+            "roof_ridge",
+            "wall_base",
+            "wall_edge",
+            "wall_top"
+          ],
+          "tolerance": {
+            "position_metres": 0.001,
+            "angle_degrees": 1.0,
+            "roll_degrees": 1.0
+          },
+          "required": false,
+          "notes": ""
+        },
+        {
+          "id": "top_y",
+          "kind": "wall_top",
+          "position": [
+            0.1,
+            2.0,
+            3.0
+          ],
+          "normal": [
+            0.0,
+            0.0,
+            1.0
+          ],
+          "tangent": [
+            0.0,
+            1.0,
+            0.0
+          ],
+          "mating_mode": "surface",
+          "extent_half": [
+            0.1,
+            2.0
+          ],
+          "role": "bearing",
+          "scale_class": "standard",
+          "compatible_kinds": [
+            "roof_bearing"
+          ],
+          "incompatible_kinds": [
+            "floor_edge",
+            "floor_top",
+            "foundation_top",
+            "leaf_hinge",
+            "opening_jamb",
+            "prop_base",
+            "roof_edge",
+            "roof_ridge",
+            "wall_base",
+            "wall_edge",
+            "wall_top"
+          ],
+          "tolerance": {
+            "position_metres": 0.001,
+            "angle_degrees": 1.0,
+            "roll_degrees": 1.0
+          },
+          "required": false,
+          "notes": ""
+        },
+        {
+          "id": "edge_pos_x",
+          "kind": "wall_edge",
+          "position": [
+            4.0,
+            0.1,
+            1.5
+          ],
+          "normal": [
+            1.0,
+            0.0,
+            0.0
+          ],
+          "tangent": [
+            0.0,
+            0.0,
+            1.0
+          ],
+          "mating_mode": "point",
+          "extent_half": null,
+          "role": "seam",
+          "scale_class": "standard",
+          "compatible_kinds": [
+            "wall_edge"
+          ],
+          "incompatible_kinds": [
+            "floor_edge",
+            "floor_top",
+            "foundation_top",
+            "leaf_hinge",
+            "opening_jamb",
+            "prop_base",
+            "roof_bearing",
+            "roof_edge",
+            "roof_ridge",
+            "wall_base",
+            "wall_top"
+          ],
+          "tolerance": {
+            "position_metres": 0.001,
+            "angle_degrees": 1.0,
+            "roll_degrees": 1.0
+          },
+          "required": false,
+          "notes": ""
+        },
+        {
+          "id": "edge_pos_y",
+          "kind": "wall_edge",
+          "position": [
+            0.1,
+            4.0,
+            1.5
+          ],
+          "normal": [
+            0.0,
+            1.0,
+            0.0
+          ],
+          "tangent": [
+            0.0,
+            0.0,
+            1.0
+          ],
+          "mating_mode": "point",
+          "extent_half": null,
+          "role": "seam",
+          "scale_class": "standard",
+          "compatible_kinds": [
+            "wall_edge"
+          ],
+          "incompatible_kinds": [
+            "floor_edge",
+            "floor_top",
+            "foundation_top",
+            "leaf_hinge",
+            "opening_jamb",
+            "prop_base",
+            "roof_bearing",
+            "roof_edge",
+            "roof_ridge",
+            "wall_base",
+            "wall_top"
+          ],
+          "tolerance": {
+            "position_metres": 0.001,
+            "angle_degrees": 1.0,
+            "roll_degrees": 1.0
+          },
+          "required": false,
+          "notes": ""
+        }
+      ],
+      "occupancy": {
+        "representation": "axis_aligned_box_set",
+        "exact": true,
+        "box_count": 12,
+        "volume": 4.67392,
+        "boxes": [
+          [
+            0.19999999999999998,
+            0.02,
+            0.0,
+            4.0,
+            0.18,
+            3.0
+          ],
+          [
+            0.19999999999999998,
+            0.18,
+            0.0,
+            4.0,
+            0.19999999999999998,
+            0.09999999999999999
+          ],
+          [
+            0.19999999999999998,
+            0.18,
+            0.12,
+            4.0,
+            0.19999999999999998,
+            3.0
+          ],
+          [
+            0.19999999999999998,
+            0.0,
+            0.0,
+            4.0,
+            0.02,
+            0.09999999999999999
+          ],
+          [
+            0.19999999999999998,
+            0.0,
+            0.12,
+            4.0,
+            0.02,
+            3.0
+          ],
+          [
+            0.02,
+            0.0,
+            0.0,
+            0.18,
+            4.0,
+            3.0
+          ],
+          [
+            0.18,
+            0.0,
+            0.0,
+            0.19999999999999998,
+            0.19999999999999998,
+            3.0
+          ],
+          [
+            0.18,
+            0.19999999999999998,
+            0.0,
+            0.19999999999999998,
+            4.0,
+            0.09999999999999999
+          ],
+          [
+            0.18,
+            0.19999999999999998,
+            0.12,
+            0.19999999999999998,
+            4.0,
+            3.0
+          ],
+          [
+            0.0,
+            0.0,
+            0.0,
+            0.02,
+            0.19999999999999998,
+            3.0
+          ],
+          [
+            0.0,
+            0.19999999999999998,
+            0.0,
+            0.02,
+            4.0,
+            0.09999999999999999
+          ],
+          [
+            0.0,
+            0.19999999999999998,
+            0.12,
+            0.02,
+            4.0,
+            3.0
+          ]
+        ],
+        "disjoint": true,
+        "approximation_tolerance": 0.0
+      },
+      "clearance": {
+        "representation": "axis_aligned_box_set",
+        "box_count": 0,
+        "boxes": [],
+        "purpose": "volumes that must remain free for the asset to function"
+      },
+      "apertures": [],
+      "collision": {
+        "mode": "convex_decomposition",
+        "source": "occupancy_box_set",
+        "exact": true,
+        "hull_count": 12,
+        "hulls": [
+          [
+            0.19999999999999998,
+            0.02,
+            0.0,
+            4.0,
+            0.18,
+            3.0
+          ],
+          [
+            0.19999999999999998,
+            0.18,
+            0.0,
+            4.0,
+            0.19999999999999998,
+            0.09999999999999999
+          ],
+          [
+            0.19999999999999998,
+            0.18,
+            0.12,
+            4.0,
+            0.19999999999999998,
+            3.0
+          ],
+          [
+            0.19999999999999998,
+            0.0,
+            0.0,
+            4.0,
+            0.02,
+            0.09999999999999999
+          ],
+          [
+            0.19999999999999998,
+            0.0,
+            0.12,
+            4.0,
+            0.02,
+            3.0
+          ],
+          [
+            0.02,
+            0.0,
+            0.0,
+            0.18,
+            4.0,
+            3.0
+          ],
+          [
+            0.18,
+            0.0,
+            0.0,
+            0.19999999999999998,
+            0.19999999999999998,
+            3.0
+          ],
+          [
+            0.18,
+            0.19999999999999998,
+            0.0,
+            0.19999999999999998,
+            4.0,
+            0.09999999999999999
+          ],
+          [
+            0.18,
+            0.19999999999999998,
+            0.12,
+            0.19999999999999998,
+            4.0,
+            3.0
+          ],
+          [
+            0.0,
+            0.0,
+            0.0,
+            0.02,
+            0.19999999999999998,
+            3.0
+          ],
+          [
+            0.0,
+            0.19999999999999998,
+            0.0,
+            0.02,
+            4.0,
+            0.09999999999999999
+          ],
+          [
+            0.0,
+            0.19999999999999998,
+            0.12,
+            0.02,
+            4.0,
+            3.0
+          ]
+        ],
+        "preserves_apertures": true,
+        "auto_convex_would_seal_apertures": false,
+        "engine_hint": "import as convex hulls; do NOT let the engine auto-generate"
+      },
+      "materials": [
+        {
+          "slot": 0,
+          "name": "M_Plaster",
+          "role": "interior",
+          "base_color": [
+            0.78,
+            0.76,
+            0.72,
+            1.0
+          ],
+          "metallic": 0.0,
+          "roughness": 0.9
+        }
+      ],
+      "lods": [],
+      "geometry": {
+        "triangles": 158,
+        "vertices": 81,
+        "surface_area": 51.727999999999994,
+        "signed_volume": 4.67392,
+        "watertight": true,
+        "non_manifold_edges": 0,
+        "boundary_edges": 0,
+        "outward_winding": true,
+        "sha256": "ad6447cc289e1953815fc11d4f10ce50b31b176f8c0e3cdee59566473f425fc8"
+      },
+      "files": {
+        "glb": "meshes/wall.interior.corner.4m.glb",
+        "obj": "meshes/wall.interior.corner.4m.obj",
+        "mtl": "meshes/wall.interior.corner.4m.mtl"
+      },
+      "engine": {
+        "unreal": {
+          "import_uniform_scale": 1.0,
+          "unit_conversion": "1 metre -> 100 uu (applied by the adapter)",
+          "combine_meshes": false,
+          "generate_lightmap_uvs": false,
+          "import_normals": "Import Normals and Tangents",
+          "auto_generate_collision": false,
+          "collision_source": "UCX_ hulls from occupancy",
+          "note": "auto collision seals apertures; use the shipped hulls"
+        },
+        "unity": {
+          "scale_factor": 1.0,
+          "convert_units": true,
+          "normals": "Import",
+          "generate_colliders": false,
+          "collision_source": "compound BoxCollider set from occupancy"
+        },
+        "three": {
+          "format": "glb",
+          "up_axis": "+Y",
+          "conversion": "canonical Z-up right-handed -> glTF Y-up right-handed"
+        },
+        "blender": {
+          "format": "glb",
+          "conversion": "identity"
+        }
+      },
+      "provenance": {
+        "generator": "tessera.catalog/wall_interior_corner",
+        "generator_version": "1.0.0+1.0.0",
+        "created_utc": "2026-07-25T17:31:12+00:00",
+        "authored_by": "Jaron K Bragg",
+        "origin": "original-generated",
+        "source_inputs": [],
+        "generated_files": [
+          "meshes/wall.interior.corner.4m.glb",
+          "meshes/wall.interior.corner.4m.mtl",
+          "meshes/wall.interior.corner.4m.obj"
+        ],
+        "derived_from": [],
+        "third_party_review": "none-required",
+        "notes": "Generated from scratch by the named function using only the Tessera geometry kernel. No third-party mesh, texture or model file is read at any point in this pipeline."
+      },
+      "license": {
+        "code_spdx": "0BSD",
+        "assets_spdx": "CC0-1.0",
+        "applies_to": "assets",
+        "attribution_required": false,
+        "commercial_use": true,
+        "redistribution": true
+      },
+      "validation": {
+        "status": "unvalidated",
+        "validator_version": "",
+        "checked_utc": "",
+        "checks_passed": [],
+        "checks_failed": [],
+        "coverage": {}
+      },
+      "notes": "Occupies the -X and -Y edges of its bay; seams out along +X and +Y. Solid: a one-module-per-side interior room closed by this piece alone has no way in, which is a property of the room, not a defect in the piece.",
+      "kit": {
+        "id": "shell_v1",
+        "version": "1.0.0"
+      }
     }
   ],
-  "fingerprint": "2694a0892c21182d98e23cf523d566e4a392b8c1b2fe2af1a13600bb632525fc"
+  "fingerprint": "58102ca826808059740353ed6927fe3d84bbcd5bb0cb2b3095cf6fcbc137726d"
 }

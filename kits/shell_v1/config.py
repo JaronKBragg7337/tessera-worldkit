@@ -39,6 +39,26 @@ WINDOW_HEIGHT = 1.20
 WINDOW_SILL = 1.00
 DOOR_SWING_CLEARANCE = 1.10   # depth of the volume that must stay free
 
+# ---------------------------------------------------------- interior walls
+# A partition is the same thickness as an exterior wall, and that is a decision
+# rather than an oversight. GRID_XY *is* the wall thickness, because a wall
+# rotated 90 degrees is offset from its bay line by its own thickness. A thinner
+# partition would force the lattice down to divide it as well, and a finer
+# lattice catches fewer off-grid placements -- a wall half a thickness out of
+# position would start passing. Trading a working check for a visual nicety is
+# the wrong trade. See docs/decisions/0009-interior-pieces.md.
+#
+# It is a named constant anyway, so that anyone who does diverge it gets
+# CFG_INTERIOR_THICKNESS_OFF_GRID instead of a kit that silently stops seaming.
+INTERIOR_WALL_THICKNESS = WALL_THICKNESS
+
+# A partition is finished with a recessed skirting groove, not the exterior
+# plinth. The plinth stands PLINTH_PROUD of the wall face to throw water clear,
+# which indoors only stops furniture standing flush against the wall. A groove
+# does the same visual job and leaves the interior face flat.
+INTERIOR_SKIRT_HEIGHT = 0.10
+INTERIOR_SKIRT_GROOVE = 0.02
+
 # --------------------------------------------------------------- detailing
 PANEL_INSET = 0.25        # border between the wall edge and the recessed bay
 PANEL_DEPTH = 0.04
@@ -142,6 +162,27 @@ def derived() -> dict:
         "door_head_z": DOOR_HEIGHT,
         "window_head_z": WINDOW_SILL + WINDOW_HEIGHT,
         "bay_module": MODULE,
+        # How far the *innermost surface* of a perimeter wall stands in from its
+        # bay line. Note that this is the plinth, not the wall face: the plinth
+        # stands PLINTH_PROUD past the slab on both faces, so the first solid a
+        # partition meets is 0.23 in, not 0.20.
+        #
+        # Read the next number before running a partition up to a perimeter
+        # wall. This inset is deliberately published because it is NOT a whole
+        # number of GRID_XY units, and that has a consequence: a module-length
+        # partition placed on the grid cannot terminate flush against a
+        # perimeter wall. It either ends at 0.20 and drives its bottom
+        # PLINTH_HEIGHT through the plinth (TSR_LAYOUT_INTERSECTION, about
+        # 0.001 m3 -- small enough to look like noise and real enough to
+        # z-fight), or it stops a grid step short and leaves a slot.
+        #
+        # Until the M3 junction pieces exist, keep partition runs clear of
+        # perimeter walls; see docs/decisions/0009-interior-pieces.md.
+        "perimeter_inner_face_inset": WALL_THICKNESS + PLINTH_PROUD,
+        "perimeter_inset_is_on_grid": abs(
+            (WALL_THICKNESS + PLINTH_PROUD) / GRID_XY
+            - round((WALL_THICKNESS + PLINTH_PROUD) / GRID_XY)) < 1e-9,
+        "partition_thickness": INTERIOR_WALL_THICKNESS,
         "storey_height": STOREY_HEIGHT,
         "second_floor_top_z": floor_top + STOREY_HEIGHT,
         "stair_steps": round(STOREY_HEIGHT / STAIR_RISE),
@@ -197,6 +238,38 @@ def validate() -> list:
     if abs(WALL_HEIGHT / GRID_Z - round(WALL_HEIGHT / GRID_Z)) > 1e-9:
         bad("CFG_HEIGHT_OFF_GRID", "wall height is not a multiple of the Z grid",
             "WALL_HEIGHT / %.3f to be an integer" % GRID_Z, WALL_HEIGHT / GRID_Z)
+
+    # ---- interior walls -----------------------------------------------
+    # The grid lattice has to divide *every* wall thickness in the kit, not just
+    # the exterior one. A partition rotated 90 degrees is offset from its bay
+    # line by its own thickness, exactly as an exterior wall is; if the lattice
+    # does not divide it, every correctly placed partition reports off-grid and
+    # the only way to silence that is to make the lattice finer, which weakens
+    # the check for everything else.
+    if abs(INTERIOR_WALL_THICKNESS / GRID_XY
+           - round(INTERIOR_WALL_THICKNESS / GRID_XY)) > 1e-9:
+        bad("CFG_INTERIOR_THICKNESS_OFF_GRID",
+            "interior wall thickness is not a multiple of the snap grid",
+            "INTERIOR_WALL_THICKNESS / %.3f to be an integer" % GRID_XY,
+            INTERIOR_WALL_THICKNESS / GRID_XY)
+    if INTERIOR_SKIRT_GROOVE * 2 >= INTERIOR_WALL_THICKNESS:
+        bad("CFG_INTERIOR_GROOVE_TOO_DEEP",
+            "skirting grooves cut from both faces would meet inside the partition",
+            "< %.3f" % (INTERIOR_WALL_THICKNESS / 2), INTERIOR_SKIRT_GROOVE)
+    if INTERIOR_SKIRT_HEIGHT + INTERIOR_SKIRT_GROOVE >= WALL_HEIGHT:
+        bad("CFG_INTERIOR_SKIRT_TOO_TALL",
+            "the skirting groove runs off the top of the partition",
+            "INTERIOR_SKIRT_HEIGHT + INTERIOR_SKIRT_GROOVE < %.2f" % WALL_HEIGHT,
+            INTERIOR_SKIRT_HEIGHT + INTERIOR_SKIRT_GROOVE)
+    # An interior doorway carves the same aperture as an exterior one out of a
+    # module-long partition, leaving a pier each side. A pier thinner than the
+    # wall it is part of is a modelling error, not a slim design: it reads as a
+    # sliver, and at 90-degree yaw it is the piece that has to carry the head.
+    interior_pier = (MODULE - DOOR_WIDTH) / 2
+    if interior_pier < INTERIOR_WALL_THICKNESS:
+        bad("CFG_INTERIOR_DOOR_PIER_TOO_NARROW",
+            "the piers beside an interior doorway are thinner than the wall itself",
+            ">= %.2f" % INTERIOR_WALL_THICKNESS, interior_pier)
 
     # ---- traversal ----------------------------------------------------
     if STOOP_RISE / STOOP_STEPS > COMFORTABLE_STEP_UP + 1e-9:
