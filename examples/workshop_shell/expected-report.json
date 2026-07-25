@@ -1,0 +1,63 @@
+{
+  "schema": "tessera.report/1",
+  "validator_version": "1.0.0",
+  "generated_utc": "2026-07-25T02:01:17+00:00",
+  "subject": "Workshop Shell",
+  "subject_kind": "layout",
+  "status": "passed",
+  "counts": {
+    "errors": 0,
+    "warnings": 0,
+    "info": 1
+  },
+  "coverage": {
+    "checks_run": [
+      "layout.schema",
+      "layout.space",
+      "layout.asset_known",
+      "layout.instance_ids_unique",
+      "layout.grid",
+      "layout.rotation_allowed",
+      "layout.scale_allowed",
+      "layout.intersection",
+      "layout.support",
+      "layout.grounded",
+      "layout.connector.kind",
+      "layout.connector.direction",
+      "layout.connector.roll",
+      "layout.connector.gap",
+      "layout.connector.scale_class",
+      "layout.aperture_clear",
+      "layout.clearance"
+    ],
+    "checks_run_count": 17,
+    "rules_failed": []
+  },
+  "by_code": {
+    "TSR_LAYOUT_APERTURE_OCCUPIED_BY_LEAF": 1
+  },
+  "diagnostics": [
+    {
+      "code": "TSR_LAYOUT_APERTURE_OCCUPIED_BY_LEAF",
+      "severity": "info",
+      "what": "Aperture is filled by its own leaf.",
+      "where": {
+        "instance": "wall_doorway_4m_01",
+        "asset": "tsr:shell/wall.doorway.4m",
+        "aperture": "door",
+        "other_instance": "door_leaf_1m2_01",
+        "other_asset": "tsr:shell/door.leaf.1m2"
+      },
+      "why": "The blocking instance is connected to this wall, so it is the door or window that belongs in the hole. The opening is closed but not obstructed.",
+      "expected": "informational",
+      "actual": "0.0888 m3 of the opening is occupied",
+      "fix": "none needed; open the leaf if the route must be passable",
+      "fix_transform": null,
+      "rule": "layout.aperture_clear"
+    }
+  ],
+  "connections": {
+    "declared": 51,
+    "verified": 51
+  }
+}

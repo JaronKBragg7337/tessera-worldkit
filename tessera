@@ -1,0 +1,7 @@
+#!/usr/bin/env python3
+"""Repo-local launcher so `./tessera ...` works without installing.
+SPDX-License-Identifier: 0BSD"""
+import os, sys
+sys.path.insert(0, os.path.join(os.path.dirname(os.path.abspath(__file__)), "src"))
+from tessera.cli import main
+sys.exit(main())
