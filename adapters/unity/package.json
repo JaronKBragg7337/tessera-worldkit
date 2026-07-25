@@ -1,0 +1,11 @@
+{
+  "name": "org.tessera.worldkit",
+  "version": "0.1.0",
+  "displayName": "Tessera WorldKit",
+  "description": "Unity editor importer and verification harness for Tessera catalogs and layouts.",
+  "unity": "6000.0",
+  "license": "0BSD",
+  "dependencies": {
+    "com.unity.nuget.newtonsoft-json": "3.2.1"
+  }
+}

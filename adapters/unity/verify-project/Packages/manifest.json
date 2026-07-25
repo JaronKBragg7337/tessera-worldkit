@@ -1,0 +1,6 @@
+{
+  "dependencies": {
+    "org.khronos.unitygltf": "https://github.com/KhronosGroup/UnityGLTF.git#release/2.14.1",
+    "org.tessera.worldkit": "file:../.."
+  }
+}
