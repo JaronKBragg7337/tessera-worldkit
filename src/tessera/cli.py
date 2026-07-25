@@ -20,6 +20,8 @@ import sys
 from .assemble import Builder
 from .brief import build_brief, render_text, write_brief
 from .catalog import build_catalog, load_catalog, write_catalog
+from .handoff import TARGETS, write_handoff_pack
+from .repair import repair_layout
 from .validate import (
     Collector, build_report, render_terminal, validate_asset, validate_layout,
     write_report,
@@ -149,7 +151,7 @@ def cmd_assemble(args):
 def cmd_brief(args):
     """Emit the context-budgeted digest a remote or mobile agent can afford."""
     catalog = load_catalog(args.catalog)
-    brief = build_brief(catalog, include_notes=args.notes)
+    brief = build_brief(catalog, include_notes=args.notes, selectors=args.only)
     if args.out:
         write_brief(brief, args.out)
     if args.format == "text":
@@ -173,6 +175,52 @@ def cmd_brief(args):
             "approx_tokens_brief_text": round(rendered / 3.6),
         }, indent=2), file=sys.stderr)
     return EXIT_OK
+
+
+def cmd_pack(args):
+    """Package the smallest useful set of hands for the target environment."""
+    catalog = load_catalog(args.catalog)
+    layout = None
+    if args.layout:
+        with open(args.layout, encoding="utf-8") as fh:
+            layout = json.load(fh)
+    result = write_handoff_pack(
+        catalog=catalog,
+        target=args.target,
+        out_path=args.out,
+        repo_root=args.repo,
+        prompt=args.prompt or "",
+        selectors=args.only,
+        layout=layout,
+    )
+    if args.json:
+        print(json.dumps(result, indent=2))
+    else:
+        print("packed %s handoff with %d asset(s) -> %s"
+              % (args.target, result["asset_count"], args.out))
+        print("fingerprint %s" % result["fingerprint"])
+    return EXIT_OK
+
+
+def cmd_repair(args):
+    """Apply validator-supplied transforms until valid or no safe fix remains."""
+    catalog = load_catalog(args.catalog)
+    with open(args.layout, encoding="utf-8") as fh:
+        layout = json.load(fh)
+    repaired, summary, report = repair_layout(
+        layout, catalog, max_passes=args.max_passes)
+    with open(args.out, "w", encoding="utf-8", newline="\n") as fh:
+        json.dump(repaired, fh, indent=2)
+    if args.report:
+        write_report(report, args.report)
+    if args.json:
+        print(json.dumps({**summary, "out": args.out}, indent=2))
+    else:
+        print("repair %s after %d pass(es): %d applied, %d remaining error(s)"
+              % (summary["status"], summary["passes"],
+                 summary["applied_count"], summary["remaining_errors"]))
+        print("wrote %s" % args.out)
+    return EXIT_OK if report["status"] == "passed" else EXIT_INVALID
 
 
 def cmd_doctor(args):
@@ -247,9 +295,34 @@ def main(argv=None):
     br.add_argument("--out", help="also write the JSON brief here")
     br.add_argument("--notes", action="store_true",
                     help="include per-asset prose notes (costs budget)")
+    br.add_argument("--only", action="append",
+                    help=("select roles or asset globs, comma-separated "
+                          "(wall,id:roof.*)"))
     br.add_argument("--stats", action="store_true",
                     help="print size comparison to stderr")
     br.set_defaults(func=cmd_brief)
+
+    pack = sub.add_parser("pack", parents=[common],
+                          help="build a portable handoff for an AI environment")
+    pack.add_argument("--catalog", default="build/catalog.json")
+    pack.add_argument("--target", choices=sorted(TARGETS), default="chat")
+    pack.add_argument("--only", action="append",
+                      help="select roles or asset globs, comma-separated")
+    pack.add_argument("--prompt", help="the task the receiving AI should perform")
+    pack.add_argument("--layout", help="include a layout to validate or continue")
+    pack.add_argument("--repo", default=".",
+                      help="repository root used for sandbox source files")
+    pack.add_argument("--out", default="tessera-handoff.zip")
+    pack.set_defaults(func=cmd_pack)
+
+    repair = sub.add_parser("repair", parents=[common],
+                            help="apply unambiguous fix_transform corrections")
+    repair.add_argument("--catalog", default="build/catalog.json")
+    repair.add_argument("--layout", required=True)
+    repair.add_argument("--out", default="repaired-layout.json")
+    repair.add_argument("--report")
+    repair.add_argument("--max-passes", type=int, default=5)
+    repair.set_defaults(func=cmd_repair)
 
     doc = sub.add_parser("doctor", parents=[common], help="report what this environment can do")
     doc.set_defaults(func=cmd_doctor)
@@ -259,6 +332,9 @@ def main(argv=None):
         return args.func(args)
     except FileNotFoundError as exc:
         print("cannot open %s" % exc.filename, file=sys.stderr)
+        return EXIT_ERROR
+    except ValueError as exc:
+        print(str(exc), file=sys.stderr)
         return EXIT_ERROR
 
 

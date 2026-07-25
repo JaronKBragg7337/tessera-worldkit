@@ -25,17 +25,19 @@ Tessera does the first half by construction. `tessera brief` does the second.
 ## What a brief costs
 
 ```bash
-./tessera brief --format text          # ~1,800 tokens
-./tessera brief --format json --stats  # ~2,400 tokens
+./tessera brief --format text                    # ~3,300 tokens for 22 assets
+./tessera brief --only wall --format text        # ~830 tokens
+./tessera brief --only wall,id:*.doorway.* --stats
 ```
 
 | | chars | approx tokens | share |
 |---|---|---|---|
-| Full catalog, minified | 108,089 | ~30,000 | 100% |
-| Brief, JSON | 8,755 | ~2,400 | 8.1% |
-| Brief, text | 6,535 | ~1,800 | 6.0% |
+| Full catalog, minified | 204,027 | ~56,700 | 100% |
+| Full brief, JSON | 16,125 | ~4,500 | 7.9% |
+| Full brief, text | 12,020 | ~3,300 | 5.9% |
+| Wall-only brief, text | 2,989 | ~830 | 1.5% |
 
-Twelve times smaller, and it is not a summary. It is the same facts with
+Seventeen times smaller in the normal text form, and it is not a summary. It is the same facts with
 everything placement does not use removed: occupancy boxes, collision hulls,
 material and LOD tables, engine import settings, mesh statistics, provenance and
 licence. What remains is dimensions, the grounding offset, grid and rotation
@@ -101,6 +103,22 @@ the whole catalog in memory. **This is additive in both directions** — nothing
 about the digest removes capability from an agent that has a filesystem and an
 engine. It is the same contract at two budgets.
 
+## A fourth surface: the public Workshop
+
+<https://jaronkbragg7337.github.io/tessera-worldkit/>
+
+The Workshop makes the capability split executable:
+
+- chat target: copy or download a sliced capsule;
+- browser target: inspect a plan and run a labelled runtime subset;
+- sandbox target: download the complete Python validator, repair hand and
+  selected generated assets;
+- desktop target: continue into the full repository and engine adapters.
+
+No account is required, and pasted layouts stay in the browser. The site is
+generated from the same catalog, briefs and examples as the CLI. See
+[`docs/workshop.md`](workshop.md).
+
 ## The pin that makes the split safe
 
 Splitting composition from execution introduces one failure mode that is worse
@@ -162,16 +180,17 @@ the execution and repair half — which is precisely levels 2 and 3 above.
 
 Honest list, in the order it would help most.
 
-1. **A hosted validation endpoint.** Level 2 currently assumes the caller can
-   run Python. A small stateless service wrapping `validate` would remove that.
-2. **Low-resolution previews.** Not for the agent to interpret — for the *user*
-   to glance at. An orthographic plan render from occupancy boxes is cheap and
-   needs no renderer.
+1. **A hosted full-validation endpoint.** The Workshop now runs the JavaScript
+   runtime subset and labels its coverage. Full validation still requires the
+   downloadable sandbox or a connected machine. A small stateless service
+   wrapping the Python validator would close that gap.
+2. **Low-resolution previews — done.** The Workshop renders an orthographic
+   occupancy plan for the user without a renderer or server.
 3. **Layout diffs.** Resending a whole layout to change one wall wastes the
    budget the brief just saved. A patch format keyed on instance id would make
    the repair loop nearly free.
-4. **Per-kit brief slicing.** `--only wall,roof` for agents that know what they
-   need, taking a 2,400-token brief under 800.
+4. **Per-kit brief slicing — done.** `--only` accepts roles and asset-id globs.
+   A wall-only text brief is about 830 tokens against the current 22-part kit.
 5. **The intent layer.** Discussed below; it is the deepest of these and the
    easiest to get wrong.
 

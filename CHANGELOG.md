@@ -14,6 +14,22 @@ the perimeter plinth.
 
 ### Added
 
+- **The public Tessera Workshop** — a phone-first, no-login GitHub Pages
+  application that slices a handoff by environment and asset role, renders an
+  orthographic occupancy plan, runs the labelled JavaScript validation subset,
+  and produces downloadable chat and full-validator sandbox packs.
+- **`tessera pack`** — deterministic `chat`, `browser`, `sandbox` and `desktop`
+  handoff ZIPs. Richer targets add executable surfaces without weakening the
+  contract given to constrained ones.
+- **`tessera brief --only`** — semantic-role and asset-id glob slicing. Against
+  the current kit, a wall-only text brief is about 830 tokens instead of the
+  roughly 56,700-token full catalog.
+- **`tessera repair`** — tries validator-supplied transforms on copies,
+  revalidates them, and commits only a candidate that strictly reduces the
+  error count.
+- **`tessera.handoff/1`**, the machine-readable capability manifest carried in
+  every pack.
+- **[`docs/decisions/0011-hands-are-capability-adapters.md`](docs/decisions/0011-hands-are-capability-adapters.md)**.
 - **Four interior parts** — `wall.interior.4m`, `wall.interior.doorway.4m`,
   `wall.interior.corner.4m`, `wall.junction.trim.3m8`. 22 assets, all passing
   the same 19 asset rules

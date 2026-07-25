@@ -27,6 +27,7 @@ catalog to ask for and can prove it is the right one.
 """
 from __future__ import annotations
 
+import fnmatch
 import json
 
 from .contract import CONNECTOR_COMPATIBILITY, MatingTolerance
@@ -84,10 +85,52 @@ def _aperture(a) -> list:
     ]
 
 
-def build_brief(catalog, include_notes=False) -> dict:
+def select_assets(catalog, selectors=None) -> list:
+    """Return the assets named by a compact selector list.
+
+    Selectors are deliberately forgiving at the interface and exact in the
+    result. ``wall`` selects the semantic role, ``wall.*`` selects short ids,
+    and ``role:wall`` / ``id:wall.*`` remove any ambiguity.  This is the
+    browser/chat selector's core, not a second catalog implementation.
+    """
+    assets = list(catalog["assets"])
+    if not selectors:
+        return assets
+
+    wanted = []
+    for raw in selectors:
+        wanted.extend(part.strip() for part in str(raw).split(",") if part.strip())
+    if not wanted:
+        return assets
+
+    selected = []
+    for asset in assets:
+        short = _short(asset["id"])
+        role = asset["semantic_role"]
+        for selector in wanted:
+            if selector.startswith("role:"):
+                matched = fnmatch.fnmatchcase(role, selector[5:])
+            elif selector.startswith("id:"):
+                matched = fnmatch.fnmatchcase(short, selector[3:]) \
+                    or fnmatch.fnmatchcase(asset["id"], selector[3:])
+            else:
+                matched = role == selector or fnmatch.fnmatchcase(short, selector) \
+                    or fnmatch.fnmatchcase(asset["id"], selector)
+            if matched:
+                selected.append(asset)
+                break
+
+    if not selected:
+        raise ValueError(
+            "no assets match %s; use `tessera catalog --ids` to inspect the kit"
+            % ", ".join(wanted))
+    return selected
+
+
+def build_brief(catalog, include_notes=False, selectors=None) -> dict:
     """Compress a catalog to what an agent needs in order to place things."""
     assets = []
-    for a in catalog["assets"]:
+    for a in select_assets(catalog, selectors):
         place = a["placement"]
         support = place.get("support", {}) or {}
         scaling = place.get("allowed_scaling", {}) or {}

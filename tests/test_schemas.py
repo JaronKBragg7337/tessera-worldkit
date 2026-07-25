@@ -20,7 +20,8 @@ def _registry(root):
     from referencing import Registry, Resource
     resources = []
     for name in ("asset.schema.json", "catalog.schema.json",
-                 "layout.schema.json", "report.schema.json"):
+                 "layout.schema.json", "report.schema.json",
+                 "handoff.schema.json"):
         doc = _load(root, name)
         resources.append((doc["$id"], Resource.from_contents(doc)))
     return Registry().with_resources(resources)
