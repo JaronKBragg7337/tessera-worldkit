@@ -1,7 +1,7 @@
 {
   "schema": "tessera.report/1",
   "validator_version": "1.0.0",
-  "generated_utc": "2026-07-25T02:03:23+00:00",
+  "generated_utc": "2026-07-25T04:46:24+00:00",
   "subject": "Workshop Shell",
   "subject_kind": "layout",
   "status": "passed",
@@ -14,6 +14,7 @@
     "checks_run": [
       "layout.schema",
       "layout.space",
+      "layout.catalog_pinned",
       "layout.asset_known",
       "layout.instance_ids_unique",
       "layout.grid",
@@ -30,7 +31,7 @@
       "layout.aperture_clear",
       "layout.clearance"
     ],
-    "checks_run_count": 17,
+    "checks_run_count": 18,
     "rules_failed": []
   },
   "by_code": {

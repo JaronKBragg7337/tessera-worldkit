@@ -103,7 +103,34 @@ that is the finding.
 
 ---
 
-## M4 — Layout intelligence
+## M1.5 — Constrained-context agents ✅ complete
+
+Added after the observation that the binding limit for a phone assistant is not
+vision but context budget: the catalog was ~30,000 tokens for twelve assets and
+grows linearly.
+
+- [x] `tessera brief` — a digest at 8% of the catalog (~2,400 tokens JSON,
+      ~1,800 as text), carrying everything placement needs and nothing else
+- [x] `tessera.brief/1` schema, tested against the shipped data
+- [x] `brief.expand()` round-trip, so sufficiency is testable
+- [x] Catalog `fingerprint` and layout pinning, with
+      `TSR_LAYOUT_CATALOG_MISMATCH` for a mismatch and a warning when unpinned
+- [x] `docs/remote-agents.md` — the three capability levels, the repair loop,
+      and the design for a checkable intent layer
+
+**Acceptance, all met**
+
+| Test | Target | Actual |
+|---|---|---|
+| Brief size relative to the catalog | < 15% | **8.1%** |
+| Brief in approximate tokens | < 4,000 | **~2,400** |
+| Scene assembled from a brief alone, validated against the full catalog | 0 errors | **0 errors, 37 instances** |
+| Catalog mismatch detected | yes | **yes** |
+| Fingerprint stable across rebuilds, unstable across geometry changes | yes | **yes** |
+
+---
+
+## M4 — Layout intelligence and the intent layer
 
 Today an agent must still decide *where* a building goes. This milestone gives
 it a solver for the parts that are mechanical.
@@ -117,6 +144,18 @@ it a solver for the parts that are mechanical.
 - [ ] `tessera repair --layout` — apply every `fix_transform` and re-validate,
       iterating to a fixed point or reporting what it cannot fix
 - [ ] A cost metric per layout: guesses avoided, corrections applied
+- [ ] **A checkable intent layer.** Regions declared as a layout overlay --
+      `room`, `entrance`, `storage`, `cover`, `loot_zone`, `spawn_safe_area` --
+      not as asset roles. A room is not a thing you place; it emerges from an
+      arrangement of walls, and putting it on an asset would guarantee it drifts
+      out of sync with the geometry. Designed in
+      [`docs/remote-agents.md`](docs/remote-agents.md); it depends on the flood
+      fill above, which is why it lives here rather than being half-shipped.
+- [ ] A layout patch format keyed on instance id, so a repair round trip costs
+      hundreds of tokens rather than a whole layout
+- [ ] `--only <roles>` slicing for briefs, taking a 2,400-token digest under 800
+- [ ] Orthographic plan previews rendered from occupancy boxes -- for the *user*
+      to glance at, not for an agent to interpret
 
 **Acceptance**
 
@@ -126,6 +165,11 @@ it a solver for the parts that are mechanical.
       is closed and reachable when it is open
 - [ ] `tessera repair` fixes ≥ 90% of injected single-instance perturbations in
       one pass across all 15 fixtures
+- [ ] Every declared region intent is falsifiable: an enclosure claim fails on a
+      wall-less region, an entrance claim fails when it names an aperture the
+      reference character cannot pass, a `spawn_safe_area` fails when a
+      character capsule intersects occupancy, and `cover` fails when the sight
+      line from its named direction is unobstructed
 
 ---
 

@@ -5,7 +5,7 @@
     "id": "shell_v1",
     "version": "1.0.0"
   },
-  "generated_utc": "2026-07-25T02:03:23+00:00",
+  "generated_utc": "2026-07-25T04:46:24+00:00",
   "space": {
     "convention": "tessera.space/1",
     "linear_unit": "metre",
@@ -650,7 +650,7 @@
       "provenance": {
         "generator": "tessera.catalog/foundation_pad",
         "generator_version": "1.0.0+1.0.0",
-        "created_utc": "2026-07-25T02:03:23+00:00",
+        "created_utc": "2026-07-25T04:46:24+00:00",
         "authored_by": "Jaron K Bragg",
         "origin": "original-generated",
         "source_inputs": [],
@@ -1317,7 +1317,7 @@
       "provenance": {
         "generator": "tessera.catalog/floor_slab",
         "generator_version": "1.0.0+1.0.0",
-        "created_utc": "2026-07-25T02:03:23+00:00",
+        "created_utc": "2026-07-25T04:46:24+00:00",
         "authored_by": "Jaron K Bragg",
         "origin": "original-generated",
         "source_inputs": [],
@@ -1921,7 +1921,7 @@
       "provenance": {
         "generator": "tessera.catalog/wall_straight",
         "generator_version": "1.0.0+1.0.0",
-        "created_utc": "2026-07-25T02:03:23+00:00",
+        "created_utc": "2026-07-25T04:46:24+00:00",
         "authored_by": "Jaron K Bragg",
         "origin": "original-generated",
         "source_inputs": [],
@@ -2700,7 +2700,7 @@
       "provenance": {
         "generator": "tessera.catalog/wall_corner",
         "generator_version": "1.0.0+1.0.0",
-        "created_utc": "2026-07-25T02:03:23+00:00",
+        "created_utc": "2026-07-25T04:46:24+00:00",
         "authored_by": "Jaron K Bragg",
         "origin": "original-generated",
         "source_inputs": [],
@@ -3594,7 +3594,7 @@
       "provenance": {
         "generator": "tessera.catalog/wall_doorway",
         "generator_version": "1.0.0+1.0.0",
-        "created_utc": "2026-07-25T02:03:23+00:00",
+        "created_utc": "2026-07-25T04:46:24+00:00",
         "authored_by": "Jaron K Bragg",
         "origin": "original-generated",
         "source_inputs": [],
@@ -4149,7 +4149,7 @@
       "provenance": {
         "generator": "tessera.catalog/door_leaf",
         "generator_version": "1.0.0+1.0.0",
-        "created_utc": "2026-07-25T02:03:23+00:00",
+        "created_utc": "2026-07-25T04:46:24+00:00",
         "authored_by": "Jaron K Bragg",
         "origin": "original-generated",
         "source_inputs": [],
@@ -5020,7 +5020,7 @@
       "provenance": {
         "generator": "tessera.catalog/wall_window",
         "generator_version": "1.0.0+1.0.0",
-        "created_utc": "2026-07-25T02:03:23+00:00",
+        "created_utc": "2026-07-25T04:46:24+00:00",
         "authored_by": "Jaron K Bragg",
         "origin": "original-generated",
         "source_inputs": [],
@@ -6015,7 +6015,7 @@
       "provenance": {
         "generator": "tessera.catalog/window_leaf",
         "generator_version": "1.0.0+1.0.0",
-        "created_utc": "2026-07-25T02:03:23+00:00",
+        "created_utc": "2026-07-25T04:46:24+00:00",
         "authored_by": "Jaron K Bragg",
         "origin": "original-generated",
         "source_inputs": [],
@@ -7559,7 +7559,7 @@
       "provenance": {
         "generator": "tessera.catalog/roof_panel",
         "generator_version": "1.0.0+1.0.0",
-        "created_utc": "2026-07-25T02:03:23+00:00",
+        "created_utc": "2026-07-25T04:46:24+00:00",
         "authored_by": "Jaron K Bragg",
         "origin": "original-generated",
         "source_inputs": [],
@@ -8117,7 +8117,7 @@
       "provenance": {
         "generator": "tessera.catalog/roof_ridge",
         "generator_version": "1.0.0+1.0.0",
-        "created_utc": "2026-07-25T02:03:23+00:00",
+        "created_utc": "2026-07-25T04:46:24+00:00",
         "authored_by": "Jaron K Bragg",
         "origin": "original-generated",
         "source_inputs": [],
@@ -8839,7 +8839,7 @@
       "provenance": {
         "generator": "tessera.catalog/prop_crate",
         "generator_version": "1.0.0+1.0.0",
-        "created_utc": "2026-07-25T02:03:23+00:00",
+        "created_utc": "2026-07-25T04:46:24+00:00",
         "authored_by": "Jaron K Bragg",
         "origin": "original-generated",
         "source_inputs": [],
@@ -9420,7 +9420,7 @@
       "provenance": {
         "generator": "tessera.catalog/prop_workbench",
         "generator_version": "1.0.0+1.0.0",
-        "created_utc": "2026-07-25T02:03:23+00:00",
+        "created_utc": "2026-07-25T04:46:24+00:00",
         "authored_by": "Jaron K Bragg",
         "origin": "original-generated",
         "source_inputs": [],
@@ -9455,5 +9455,6 @@
         "version": "1.0.0"
       }
     }
-  ]
+  ],
+  "fingerprint": "0e52a8027687785f4805a0bb2083c45b22b289366631afb1bf598149e7713319"
 }

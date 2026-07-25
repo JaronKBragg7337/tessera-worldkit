@@ -57,6 +57,7 @@ assembled into a sealed workshop:
 | Asset rules with a test that breaks them | **12 / 12** |
 | Assets whose mesh is independently verified watertight | **12 / 12** |
 | Runtime dependencies | **0** |
+| Catalog compressed for a constrained context | **30,000 -> 2,400 tokens** |
 
 `examples/workshop_shell/build.py` is 90 lines and contains exactly one
 hard-coded height: the terrain, at zero. Every other Z, and every transform that
@@ -74,6 +75,40 @@ python3 examples/workshop_shell/build.py               # assemble from metadata
 
 No install step, no virtualenv, no Blender. The whole pipeline is standard
 library Python 3.10+.
+
+---
+
+## It also fits on a phone
+
+The full catalog is about 30,000 tokens for twelve assets, and it grows linearly
+with the kit. That is fine for a desktop agent with a filesystem and impossible
+for an assistant running inside a phone app, where the whole conversation may
+have less budget than one kit.
+
+```bash
+./tessera brief --format text     # ~1,800 tokens
+./tessera brief --format json     # ~2,400 tokens, 8% of the catalog
+```
+
+The brief is not a summary. It is the same facts with everything placement does
+not use removed — occupancy boxes, collision hulls, materials, LODs, mesh
+statistics, engine settings, provenance — and the parts that are identical
+across every asset hoisted into a header. Dimensions, grounding offsets, grid
+and rotation policy, support relations, full connector frames, apertures and
+clearances all survive.
+
+That it is *sufficient* is a test, not a claim: a 37-instance workshop is
+assembled from a brief alone — the builder never sees the real catalog — and
+then validated **against the full catalog**, with zero errors. If the digest
+ever drops something placement depends on, that test fails.
+
+Every catalog carries a `fingerprint`, and every layout records the one it was
+composed against, so composing on one device and executing on another fails
+loudly instead of producing a building full of gaps that nothing reports. See
+[`docs/remote-agents.md`](docs/remote-agents.md).
+
+None of this removes anything from an agent that *does* have a filesystem and an
+engine. It is the same contract at two budgets.
 
 ---
 
@@ -150,6 +185,7 @@ skimming for a quickstart.
 | [`docs/architecture.md`](docs/architecture.md) | How the pieces fit and why |
 | [`docs/placement-contract.md`](docs/placement-contract.md) | Every field, with the failure it prevents |
 | [`docs/conventions.md`](docs/conventions.md) | Units, axes, pivots, grid, naming |
+| [`docs/remote-agents.md`](docs/remote-agents.md) | Phone and server agents: budgets, the repair loop, catalog pinning, the intent layer |
 | [`docs/engine-support.md`](docs/engine-support.md) | What is verified and what is not |
 | [`docs/provenance-policy.md`](docs/provenance-policy.md) | Why every byte here is safe to redistribute |
 | [`docs/characters.md`](docs/characters.md) | The original character pipeline, designed before it is built |

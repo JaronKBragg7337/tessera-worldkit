@@ -76,7 +76,26 @@ solves the translation that makes their points coincide. If no legal yaw works
 it **raises with the reason** rather than placing something approximately right.
 A refusal you can act on beats a placement you have to check.
 
-### 3.4 Always validate, and read the fix
+### 3.4 If your context is tight, use the brief
+
+```bash
+./tessera brief --format text     # ~1,800 tokens instead of ~30,000
+```
+
+It carries everything needed to place an asset: sizes, grounding offsets, grid
+and rotation policy, support relations, full connector frames, apertures,
+clearances, the mating table and the stack heights. It drops what placement does
+not use, and its `legend.omitted` names exactly what it dropped.
+
+If you later need collision hulls or provenance, fetch `full_catalog`. The
+brief's `fingerprint` proves you received the matching one.
+
+**Record that fingerprint in any layout you emit.** `Builder` does it for you. A
+layout composed against one catalog and executed against another produces a
+building full of gaps with no error anywhere; the pin turns that into
+`TSR_LAYOUT_CATALOG_MISMATCH`.
+
+### 3.5 Always validate, and read the fix
 
 ```bash
 ./tessera validate --layout my_layout.json --report report.json
@@ -99,7 +118,7 @@ the instance's position and re-run. Do not render to confirm; re-run the
 validator. There is a test in `tests/test_validators.py` asserting that applying
 `fix_transform` clears the error it came from.
 
-### 3.5 Never let an engine generate collision
+### 3.6 Never let an engine generate collision
 
 `collision.hulls` is a valid convex decomposition of the solid, and because
 apertures were carved out of the same box set, doorways are holes in the
@@ -108,7 +127,7 @@ convex `MeshCollider` in Unity, and use the shipped hulls. The adapters in
 `adapters/` already do this. `collision.auto_convex_would_seal_apertures` tells
 you when it matters.
 
-### 3.6 Respect the placement policy, and read its reason
+### 3.7 Respect the placement policy, and read its reason
 
 `placement.grid.policy` is one of:
 
@@ -125,7 +144,7 @@ axis-aligned box stays axis aligned, so occupancy, collision and aperture tests
 stay *exact*. Every policy field ships with a `rationale` string. Read it before
 you decide the rule is wrong.
 
-### 3.7 Do not scale modular pieces
+### 3.8 Do not scale modular pieces
 
 `placement.allowed_scaling` is `1.0 .. 1.0` for everything structural, with the
 reason attached. Scaling moves connectors off the grid, and the piece stops
